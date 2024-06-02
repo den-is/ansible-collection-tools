@@ -1,18 +1,18 @@
 ---
 - name: Preflight preparation
-  ansible.builtin.include_tasks: preflight.yml
+  ansible.builtin.include_tasks: preflight.yaml
   tags:
   - always
 
 - name: Installation from release archive
-  ansible.builtin.include_tasks: archive.yml
+  ansible.builtin.include_tasks: archive.yaml
   when:
   - fd_v is version(installed_fd_v, 'ne')
   - not fd_install_deb
   - not fd_brew
 
 - name: Deb package installation
-  ansible.builtin.include_tasks: deb.yml
+  ansible.builtin.include_tasks: deb.yaml
   when:
   - ansible_os_family == "Debian"
   - fd_install_deb
@@ -20,7 +20,7 @@
   - not fd_brew
 
 - name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yml
+  ansible.builtin.include_tasks: brew.yaml
   when:
   - fd_v is version(installed_fd_v, 'ne')
   - fd_brew

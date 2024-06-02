@@ -1,17 +1,17 @@
 ---
 - name: Preflight preparation
-  include_tasks: preflight.yml
+  include_tasks: preflight.yaml
   tags:
   - always
 
 - name: Installation from release archive
-  include_tasks: setup.yml
+  include_tasks: setup.yaml
   when:
   - stern_nov_v is version(installed_stern_v, 'ne')
   - not stern_brew
 
 - name: MacOS homebrew installation
-  include_tasks: brew.yml
+  include_tasks: brew.yaml
   when:
   - stern_nov_v is version(installed_stern_v, 'ne')
   - stern_brew

@@ -1,16 +1,17 @@
 ---
 - name: Preflight preparation
-  ansible.builtin.include_tasks: preflight.yml
+  ansible.builtin.include_tasks: preflight.yaml
   tags:
   - always
 
-- ansible.builtin.include_tasks: archive.yml
+- name: Installation from release archive
+  ansible.builtin.include_tasks: archive.yaml
   when:
   - terraform_v is version(installed_terraform_v, 'ne')
   - not terraform_brew
 
 - name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yml
+  ansible.builtin.include_tasks: brew.yaml
   when:
   - terraform_v is version(installed_terraform_v, 'ne')
   - terraform_brew

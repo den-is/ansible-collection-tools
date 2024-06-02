@@ -1,6 +1,6 @@
 ---
 - name: Preflight preparation
-  ansible.builtin.include_tasks: preflight.yml
+  ansible.builtin.include_tasks: preflight.yaml
   tags:
   - always
 
@@ -13,14 +13,14 @@
   - gpg
   - unzip
 
-- name: Install from Archive
-  ansible.builtin.include_tasks: archive.yml
+- name: Installation from release archive
+  ansible.builtin.include_tasks: archive.yaml
   when:
   - opentofu_v is version(installed_opentofu_v, 'ne')
   - not opentofu_brew
 
 - name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yml
+  ansible.builtin.include_tasks: brew.yaml
   when:
   - opentofu_v is version(installed_opentofu_v, 'ne')
   - opentofu_brew

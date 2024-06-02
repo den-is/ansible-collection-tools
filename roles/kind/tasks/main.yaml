@@ -1,17 +1,17 @@
 ---
 - name: Preflight preparation
-  ansible.builtin.include_tasks: preflight.yml
+  ansible.builtin.include_tasks: preflight.yaml
   tags:
   - always
 
 - name: Binary download and installation
-- ansible.builtin.include_tasks: download.yml
+  ansible.builtin.include_tasks: download.yaml
   when:
   - kind_v is version(current_kind_v, 'ne')
   - not kind_brew
 
 - name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yml
+  ansible.builtin.include_tasks: brew.yaml
   when:
   - kind_v is version(current_kind_v, 'ne')
   - kind_brew

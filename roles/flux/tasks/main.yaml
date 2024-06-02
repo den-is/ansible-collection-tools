@@ -1,17 +1,17 @@
 ---
 - name: Preflight preparation
-  ansible.builtin.include_tasks: preflight.yml
+  ansible.builtin.include_tasks: preflight.yaml
   tags:
   - always
 
 - name: Installation from release archive
-  ansible.builtin.include_tasks: archive.yml
+  ansible.builtin.include_tasks: archive.yaml
   when:
   - flux_nov is version(installed_flux_v, 'ne')
   - not flux_brew
 
 - name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yml
+  ansible.builtin.include_tasks: brew.yaml
   when:
   - flux_nov is version(installed_flux_v, 'ne')
   - flux_brew

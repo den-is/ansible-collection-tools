@@ -1,17 +1,17 @@
 ---
 - name: Preflight preparation
-  ansible.builtin.include_tasks: preflight.yml
+  ansible.builtin.include_tasks: preflight.yaml
   tags:
   - always
 
 - name: Installation from release archive
-  ansible.builtin.include_tasks: archive.yml
+  ansible.builtin.include_tasks: archive.yaml
   when:
   - kustomize_v is version(installed_kustomize_v, 'ne')
   - not kustomize_brew
 
 - name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yml
+  ansible.builtin.include_tasks: brew.yaml
   when:
   - kustomize_v is version(installed_kustomize_v, 'ne')
   - kustomize_brew
