@@ -2,6 +2,8 @@
 default_zshrc: false
 overwrite_zshrc: false
 
+omz_branch: master
+
 omz_theme: robbyrussell
 # zsh_theme: fishy
 

@@ -1,10 +1,10 @@
-- name: Checking if "{{ omz_user.name }}" user exists
+- name: Checking if user exists for "{{ omz_user.name }}"
   ansible.builtin.getent:
     database: passwd
     key: "{{ omz_user.name }}"
     fail_key: false
 
-- name: Seting fact about "{{ omz_user.name }}" user existance
+- name: Seting fact about user existance for "{{ omz_user.name }}"
   ansible.builtin.set_fact:
     target_user_exists: "{{ true if ansible_facts.getent_passwd[omz_user.name] else false }}"
 
@@ -13,11 +13,12 @@
     repo: https://github.com/robbyrussell/oh-my-zsh.git
     depth: 1
     dest: ~{{ omz_user.name }}/.oh-my-zsh
+    version: "{{ omz_branch }}"
   become: true
   become_user: "{{ omz_user.name }}"
   when: target_user_exists
 
-- name: Create "{{ omz_user.name }}" user fpath directories
+- name: Create user fpath directories for user "{{ omz_user.name }}"
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -29,7 +30,7 @@
   - ~/.oh-my-zsh/functions
   when: target_user_exists
 
-- name: Set ~{{ omz_user.name }}/.oh-my-zsh permissions
+- name: Set ~/.oh-my-zsh permissions for user "{{ omz_user.name }}"
   ansible.builtin.file:
     path: ~{{ omz_user.name }}/.oh-my-zsh
     state: directory
@@ -38,7 +39,7 @@
   become_user: "{{ omz_user.name }}"
   when: target_user_exists
 
-- name: Checking if ~{{ omz_user.name }}/.zshrc exists
+- name: Checking if ~/.zshrc exists for "{{ omz_user.name }}"
   ansible.builtin.stat:
     path: ~{{ omz_user.name }}/.zshrc
   register: current_zshrc
@@ -46,12 +47,12 @@
   changed_when: false
   when: target_user_exists
 
-- name: Adding default ~{{ omz_user.name }}/.zshrc
+- name: Adding default ~/.zshrc for "{{ omz_user.name }}"
   when:
   - default_zshrc
   - target_user_exists
   block:
-  - name: Putting ~{{ omz_user.name }}/.zshrc
+  - name: Putting ~/.zshrc for "{{ omz_user.name }}"
     ansible.builtin.copy:
       src: ~{{ omz_user.name }}/.oh-my-zsh/templates/zshrc.zsh-template
       dest: ~{{ omz_user.name }}/.zshrc
@@ -61,7 +62,7 @@
     become_user: "{{ omz_user.name }}"
     when: not current_zshrc.stat.exists or overwrite_zshrc
 
-  - name: Setting "{{ omz_theme }}" ZSH theme
+  - name: Setting ZSH theme "{{ omz_theme }}"
     ansible.builtin.lineinfile:
       path: ~{{ omz_user.name }}/.zshrc
       regexp: ^ZSH_THEME=
@@ -76,7 +77,9 @@
     mode: '0640'
   become: true
   become_user: "{{ omz_user.name }}"
-  when: not default_zshrc and target_user_exists
+  when:
+  - not default_zshrc
+  - target_user_exists
 
 - name: Setting zsh as default shell for the user "{{ omz_user.name }}"
   ansible.builtin.user:
