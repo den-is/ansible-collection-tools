@@ -65,8 +65,3 @@ ansible-galaxy collection install git+https://github.com/den-is/ansible-collecti
   ```sh
   ansible-playbook -i '<my-host-ip>,' common-tools-setup.yaml
   ```
-
-- rename extension yml into yaml
-- name brew package installation tasks the same way
-- name tasks which install from archive the same way
-- add package_arch and package_system maps everywhere
