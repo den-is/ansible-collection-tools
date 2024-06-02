@@ -33,6 +33,6 @@
 - name: Update kubectl to the latest/new version
   ansible.builtin.apt:
     name: kubectl
-    state: latest
+    state: present
     update_cache: yes
   when: kubectl_v is version(installed_kubectl_v, 'ne')

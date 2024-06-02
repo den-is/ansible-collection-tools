@@ -27,7 +27,7 @@
 - name: Update kubectl to the latest/new version
   ansible.builtin.dnf:
     name: kubectl
-    state: latest
+    state: present
     exclude: "{{ kubernetes_rpm_excludes }}"
     update_cache: true
   when: kubectl_v is version(installed_kubectl_v, 'ne')

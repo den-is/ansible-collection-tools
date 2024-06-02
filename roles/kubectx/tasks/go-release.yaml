@@ -5,13 +5,13 @@
     state: directory
   notify: Clean downloaded artifacts
 
-- name: Getting kubectx {{ kubectx_v }} archive and extracting it to {{ kubectx_full_download_path }}
+- name: Getting kubectx release archive
   ansible.builtin.unarchive:
     src: '{{ kubectx_release_url }}'
     dest: '{{ kubectx_full_download_path }}'
     remote_src: true
 
-- name: Getting kubens {{ kubectx_v }} archive and extracting it to {{ kubectx_full_download_path }}
+- name: Getting kubens release archive
   ansible.builtin.unarchive:
     src: '{{ kubens_release_url }}'
     dest: '{{ kubectx_full_download_path }}'

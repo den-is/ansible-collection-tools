@@ -1,6 +1,6 @@
 - name: Install ripgrep from EPEL packages
+  when: not ansible_distribution == "Fedora"
   block:
-
   - name: Install epel-release
     ansible.builtin.dnf:
       name: epel-release
@@ -10,9 +10,6 @@
     ansible.builtin.dnf:
       name: ripgrep
       state: present
-
-  when:
-  - not ansible_distribution == "Fedora"
 
 - name: Install ripgrep on Fedora
   ansible.builtin.dnf:

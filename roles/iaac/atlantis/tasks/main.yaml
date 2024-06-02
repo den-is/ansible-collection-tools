@@ -17,5 +17,6 @@
   - ansible_system == 'Darwin'
   - atlantis_brew
 
-- ansible.builtin.include_tasks: config.yaml
+- name: Atlantis server configuration
+  ansible.builtin.include_tasks: config.yaml
   when: atlantis_server
