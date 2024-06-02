@@ -12,7 +12,7 @@
   - not kubernetes_repo
 
 - name: DEB installation
-  ansible.builtin.include_tasks: apt.yaml
+  ansible.builtin.import_tasks: apt.yaml
   become: true
   when:
   - kubectl_v is version(installed_kubectl_v, 'ne')
@@ -20,7 +20,7 @@
   - kubernetes_repo
 
 - name: RPM Installation
-  ansible.builtin.include_tasks: rpm.yaml
+  ansible.builtin.import_tasks: rpm.yaml
   become: true
   when:
   - kubectl_v is version(installed_kubectl_v, 'ne')
