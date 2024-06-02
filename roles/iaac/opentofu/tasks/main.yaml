@@ -9,6 +9,7 @@
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
+  become: true
   loop:
   - gpg
   - unzip
