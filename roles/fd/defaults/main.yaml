@@ -15,8 +15,8 @@ fd_arch: |-
 
 fd_install_deb: true
 fd_release_base_url: https://github.com/sharkdp/fd/releases/download
-fd_release_url: "{{ fd_release_base_url }}/v{{ fd_v }}/fd-v{{ fd_v }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-{{ 'gnu' if fd_gnu else 'musl' }}.tar.gz"
-fd_deb_release_url: "{{ fd_release_base_url }}/v{{ fd_v }}/fd{{ '-musl' if not fd_gnu }}_{{ fd_v }}_{{ fd_arch }}.deb"
+fd_release_url: "{{ fd_release_base_url }}/v{{ fd_v }}/fd-v{{ fd_v }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-{{ 'gnu' if fd_glibc else 'musl' }}.tar.gz"
+fd_deb_release_url: "{{ fd_release_base_url }}/v{{ fd_v }}/fd{{ '-musl' if not fd_glibc }}_{{ fd_v }}_{{ fd_arch }}.deb"
 
 fd_archive_download_dst: /tmp
 fd_full_download_path: '{{ fd_archive_download_dst }}/fd_{{ fd_v }}'
