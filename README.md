@@ -1,4 +1,4 @@
-# Ansible Collection - den_is.tools
+# den_is.tools - Ansible collection
 
 This Ansible collection automates the installation of various tools, services and environments.
 
