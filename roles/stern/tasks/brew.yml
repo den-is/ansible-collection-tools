@@ -1,0 +1,5 @@
+- name: Brew install stern
+  community.general.homebrew:
+    name: '{{ stern_brew_package }}'
+    state: '{{ stern_brew_state }}'
+    update_homebrew: true

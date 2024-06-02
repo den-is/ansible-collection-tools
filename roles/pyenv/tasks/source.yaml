@@ -1,0 +1,8 @@
+- name: Clone pyenv repository
+  ansible.builtin.git:
+    repo: "{{ pyenv_git_repo }}"
+    dest: ~/.pyenv
+    clone: true
+    force: false
+    update: true
+    version: "{{ pyenv_v if not pyenv_git_latest else 'HEAD' }}"

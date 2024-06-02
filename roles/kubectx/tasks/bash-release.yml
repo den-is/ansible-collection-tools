@@ -1,0 +1,13 @@
+- name: Download and install kubectx
+  ansible.builtin.get_url:
+    url: "{{ kubectx_bash_release_url}}"
+    dest: "{{ kubectx_bin_dst }}/{{ kubectx_bin }}"
+    mode: '0755'
+    force: "{{ kubectx_force_download | default(false) }}"
+
+- name: Download and install kubens
+  ansible.builtin.get_url:
+    url: "{{ kubens_bash_release_url }}"
+    dest: "{{ kubectx_bin_dst }}/{{ kubens_bin }}"
+    mode: '0755'
+    force: "{{ kubectx_force_download | default(false) }}"

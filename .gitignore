@@ -1,0 +1,4 @@
+*.tar.gz
+roles/**/.linted
+.DS_Store
+__pycache__

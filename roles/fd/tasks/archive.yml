@@ -1,0 +1,23 @@
+---
+- name: Creating fd extraction dir {{ fd_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ fd_full_download_path }}'
+    state: directory
+
+- name: Getting fd {{ fd_v }} archive and extracting it to {{ fd_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ fd_release_url }}'
+    dest: '{{ fd_full_download_path }}'
+    remote_src: true
+
+- name: Copying fd to {{ fd_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ fd_full_download_path }}/fd'
+    dest: '{{ fd_bin_dst }}/{{ fd_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ fd_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ fd_full_download_path }}'
+    state: absent

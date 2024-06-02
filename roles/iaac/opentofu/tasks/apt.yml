@@ -1,0 +1,17 @@
+- name: Install OpenTofu APT GPG key
+  ansible.builtin.shell: curl -fsSL https://get.opentofu.org/opentofu.gpg > /etc/apt/keyrings/opentofu.gpg >/dev/null
+  args:
+    creates: /etc/apt/keyrings/opentofu.gpg
+
+- name: Install OpenTofu APT GPG key
+  ansible.builtin.shell: curl -fsSL https://packages.opentofu.org/opentofu/tofu/gpgkey | gpg --no-tty --batch --dearmor -o /etc/apt/keyrings/opentofu-repo.gpg
+  args:
+    creates: /etc/apt/keyrings/opentofu-repo.gpg
+
+- name: Add OpenTofu APT repo
+  ansible.builtin.apt_repository:
+    repo: |
+      deb [signed-by=/etc/apt/keyrings/opentofu.gpg,/etc/apt/keyrings/opentofu-repo.gpg] https://packages.opentofu.org/opentofu/tofu/any/ any main
+      deb-src [signed-by=/etc/apt/keyrings/opentofu.gpg,/etc/apt/keyrings/opentofu-repo.gpg] https://packages.opentofu.org/opentofu/tofu/any/ any main
+    state: present
+    filename: opentofu

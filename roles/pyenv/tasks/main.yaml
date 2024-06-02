@@ -1,0 +1,34 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Install compilation dependencies
+  ansible.builtin.include_tasks: deps.yaml
+  when:
+  - not pyenv_brew_install
+
+- name: Install pyenv from git repo
+  ansible.builtin.include_tasks: source.yaml
+  when:
+  - not pyenv_brew_install
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: homebrew.yaml
+  when:
+  - pyenv_brew_install
+  - ansible_os_family == "Darwin"
+
+
+- name: Enable pyenv instructions
+  ansible.builtin.debug:
+    msg: |
+      Docs https://github.com/pyenv/pyenv?tab=readme-ov-file#installation
+
+      Preffered method: Add the following to your shell profile file (e.g. ~/.bashrc, ~/.zshrc, ~/.profile, or ~/.bash_profile):
+
+        export PYENV_ROOT="$HOME/.pyenv"
+        eval "$(pyenv init --path)"
+        eval "$(pyenv init -)"
+
+      For oh-my-zsh you can try plugin https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pyenv

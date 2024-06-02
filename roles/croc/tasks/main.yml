@@ -1,0 +1,18 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yml
+  when:
+  - croc_v is version(installed_croc_v, 'ne')
+  - not croc_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - croc_v is version(installed_croc_v, 'ne')
+  - croc_brew
+  - ansible_system == 'Darwin'

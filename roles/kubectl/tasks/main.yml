@@ -1,0 +1,35 @@
+---
+- name: Preflight preparation
+  include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Binary installation
+  include_tasks: binary.yml
+  when:
+  - kubectl_v is version(installed_kubectl_v, 'ne')
+  - not kubectl_brew
+  - not kubernetes_repo
+
+- name: DEB installation
+  ansible.builtin.include_tasks: apt.yml
+  become: true
+  when:
+  - kubectl_v is version(installed_kubectl_v, 'ne')
+  - ansible_os_family == 'Debian'
+  - kubernetes_repo
+
+- name: RPM Installation
+  ansible.builtin.include_tasks: rpm.yml
+  become: true
+  when:
+  - kubectl_v is version(installed_kubectl_v, 'ne')
+  - ansible_os_family == 'RedHat'
+  - kubernetes_repo
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - kubectl_v is version(installed_kubectl_v, 'ne')
+  - kubectl_brew
+  - ansible_system == 'Darwin'

@@ -1,0 +1,22 @@
+---
+terraform_v: "1.8.4"
+
+terraform_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+terraform_release_base_url: https://releases.hashicorp.com/terraform
+terraform_release_url: '{{ terraform_release_base_url }}/{{ terraform_v }}/terraform_{{ terraform_v }}_{{ ansible_system | lower }}_{{ terraform_arch }}.zip'
+
+terraform_archive_download_dst: /tmp
+terraform_full_download_path: '{{ terraform_archive_download_dst }}/terraform-{{ terraform_v }}'
+
+terraform_bin_dst: /usr/local/bin
+terraform_bin: terraform
+
+terraform_brew: false
+terraform_brew_package: terraform
+terraform_brew_state: latest

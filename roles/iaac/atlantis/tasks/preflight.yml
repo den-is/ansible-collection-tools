@@ -1,0 +1,21 @@
+---
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: "command -v {{ atlantis_bin }}"
+  register: atlantis_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: '{{ atlantis_bin }} version | grep -E -o "v?[0-9]+\.[0-9]+\.[0-9]+"'
+  register: check_atlantis_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register installed version vars
+  ansible.builtin.set_fact:
+    atlantis_without_v: "{{ atlantis_v | regex_replace('^v', '') }}"
+    installed_atlantis_v: "{{ check_atlantis_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_atlantis_v if check_atlantis_v_task is success else "Not Found" }}'

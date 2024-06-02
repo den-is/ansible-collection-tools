@@ -1,0 +1,31 @@
+- name: Parse user supplied version
+  ansible.builtin.set_fact:
+    _pyenv_v: "{{ pyenv_v | regex_replace('^v', '') }}"
+
+- name: Checking if ~/.pyenv exists for current user
+  ansible.builtin.stat:
+    path: ~/.zshrc
+  register: check_pyenv_home_dir
+  ignore_errors: true
+  changed_when: false
+
+- name: Get current Pyenv version if any
+  ansible.builtin.shell: pyenv --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: check_pyenv_version
+  ignore_errors: true
+  changed_when: false
+
+- name: Setting preflight facts
+  ansible.builtin.set_fact:
+    installed_pyenv_v: "{{ check_pyenv_version.stdout | default('0.0.0', true) }}"
+
+- name: Load OS based variables
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+      - '{{ ansible_distribution | lower }}-{{ ansible_distribution_version }}.yaml'
+      - '{{ ansible_distribution | lower }}.yaml'
+      - '{{ ansible_os_family | lower }}.yaml'
+      paths:
+      - vars

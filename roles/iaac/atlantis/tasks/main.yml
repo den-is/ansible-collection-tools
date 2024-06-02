@@ -1,0 +1,20 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+- ansible.builtin.include_tasks: archive.yml
+  when:
+  - atlantis_v is version(installed_atlantis_v, 'ne')
+  - not atlantis_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - atlantis_v is version(installed_atlantis_v, 'ne')
+  - ansible_system == 'Darwin'
+  - atlantis_brew
+
+- ansible.builtin.include_tasks: config.yml
+  when: atlantis_server

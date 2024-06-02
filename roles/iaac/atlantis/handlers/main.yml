@@ -1,0 +1,9 @@
+- name: Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Restart atlantis
+  ansible.builtin.systemd_service:
+    name: "{{ atlantis_service_name }}.service"
+    state: "{{ 'restarted' if atlantis_service_state == 'started' else 'stopped' }}"
+  when: atlantis_server

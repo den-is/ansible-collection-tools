@@ -1,0 +1,9 @@
+- name: Getting bat {{ bat_v }} deb package
+  ansible.builtin.get_url:
+    url: '{{ bat_deb_release_url }}'
+    dest: '{{ bat_archive_download_dst }}/bat_{{ bat_v }}.deb'
+
+- name: Install bat {{ bat_v }} deb package
+  ansible.builtin.apt:
+    deb: '{{ bat_archive_download_dst }}/bat_{{ bat_v }}.deb'
+  become: true

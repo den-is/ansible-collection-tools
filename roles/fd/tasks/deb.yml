@@ -1,0 +1,9 @@
+- name: Getting fd {{ fd_v }} deb package
+  ansible.builtin.get_url:
+    url: '{{ fd_deb_release_url }}'
+    dest: '{{ fd_archive_download_dst }}/fd_{{ fd_v }}.deb'
+
+- name: Install fd {{ fd_v }} deb package
+  ansible.builtin.apt:
+    deb: '{{ fd_archive_download_dst }}/fd_{{ fd_v }}.deb'
+  become: true

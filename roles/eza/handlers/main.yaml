@@ -1,0 +1,9 @@
+- name: Remove eza archive
+  ansible.builtin.file:
+    path: /tmp/eza.tar.gz
+    state: absent
+
+- name: Set eza permissions and ownership
+  ansible.builtin.file:
+    path: "{{ eza_bin_dir }}/eza"
+    mode: "0755"

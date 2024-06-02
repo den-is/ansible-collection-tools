@@ -1,0 +1,29 @@
+---
+bat_v: "0.24.0"
+
+# bat GNU, otherwise MUSL
+bat_gnu: true
+# many more to options to consider there are all sorts of platforms, architectures, and OS
+
+bat_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+
+bat_install_deb: true
+bat_release_base_url: https://github.com/sharkdp/bat/releases/download
+bat_release_url: "{{ bat_release_base_url }}/v{{ bat_v }}/bat-v{{ bat_v }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-{{ 'gnu' if bat_gnu else 'musl' }}.tar.gz"
+bat_deb_release_url: "{{ bat_release_base_url }}/v{{ bat_v }}/bat{{ '-musl' if not bat_gnu }}_{{ bat_v }}_{{ bat_arch }}.deb"
+
+bat_archive_download_dst: /tmp
+bat_full_download_path: '{{ bat_archive_download_dst }}/bat_{{ bat_v }}'
+
+bat_bin_dst: /usr/local/bin
+bat_bin: bat
+
+bat_brew: false
+bat_brew_package: bat
+bat_brew_state: latest

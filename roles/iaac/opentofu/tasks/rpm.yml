@@ -1,0 +1,7 @@
+- name: Add OpenTofu repository
+  ansible.builtin.copy:
+    src: opentofu.rpm.repo
+    dest: /etc/yum.repos.d/opentofu.repo
+    owner: root
+    group: root
+    mode: '0644'

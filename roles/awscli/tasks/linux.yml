@@ -1,0 +1,40 @@
+---
+- name: Getting awscli release artifact archive
+  ansible.builtin.get_url:
+    url: '{{ awscli_release_url }}'
+    dest: '{{ awscli_archive_download_dst }}/{{ awscli_archive_name }}'
+
+- name: Creating extraction dir {{ awscli_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ awscli_extraction_dst }}'
+    state: directory
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ awscli_archive_download_dst }}/{{ awscli_archive_name }}'
+    dest: '{{ awscli_extraction_dst }}'
+    remote_src: true
+
+- name: Installing awscli
+  ansible.builtin.shell: ./install
+  args:
+    chdir: "{{ awscli_extraction_dst }}/aws"
+  when:
+  - not awscli_force_update
+
+- name: Updating awscli
+  ansible.builtin.shell: ./install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+  args:
+    chdir: "{{ awscli_extraction_dst }}/aws"
+  when:
+  - awscli_force_update
+  - awscli_bin_exists is success
+  - awscli_v is version(operator='>', version=installed_awscli_v)
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ awscli_extraction_dst }}'
+  - '{{ awscli_archive_download_dst }}/{{ awscli_archive_name }}'

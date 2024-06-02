@@ -1,0 +1,22 @@
+---
+kind_v: v0.23.0
+
+kind_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+kind_release_base_url: https://github.com/kubernetes-sigs/kind/releases/download
+kind_release_url: '{{ kind_release_base_url }}/{{ kind_v }}/kind-{{ ansible_system | lower }}-{{ kind_arch }}'
+
+kind_bin_download_dst: /tmp
+kind_full_download_path: '{{ kind_bin_download_dst }}/kind_{{ kind_v }}'
+
+kind_bin_dst: /usr/local/bin
+kind_bin: kind
+
+kind_brew: false
+kind_brew_package: kind
+kind_brew_state: latest

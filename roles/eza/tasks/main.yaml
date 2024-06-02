@@ -1,0 +1,50 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - eza_brew_install
+  - ansible_os_family == "Darwin"
+
+- name: Installation from release archive
+  block:
+  - name: Download eza archive
+    ansible.builtin.get_url:
+      url: "{{ eza_download_url }}"
+      dest: /tmp/eza.tar.gz
+
+  - name: Unarchive eza
+    ansible.builtin.unarchive:
+      src: /tmp/eza.tar.gz
+      dest: "{{ eza_bin_dir }}"
+      remote_src: true
+    notify:
+    - Remove eza archive
+    - Set eza permissions and ownership
+
+  when:
+  - not eza_brew_install
+  - eza_v is version(current_eza_v, 'ne')
+  - not eza_uninstall
+
+# completions
+# https://github.com/eza-community/eza/blob/main/INSTALL.md#completions
+- name: Add zsh completions
+  ansible.builtin.get_url:
+    url: "{{ eza_zsh_completions_url }}"
+    dest: "{{ zsh_completions_path }}/_eza"
+    mode: "0644"
+    owner: root
+    group: root
+  when:
+  - eza_zsh_completions_install
+  - not eza_brew_install
+
+- name: Uninstall eza
+  ansible.builtin.include_tasks: uninstall.yaml
+  when:
+  - eza_uninstall
+  - not eza_brew_install

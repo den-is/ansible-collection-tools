@@ -1,0 +1,37 @@
+---
+kubectl_v: v1.30.1
+kubectl_latest: false
+
+kubernetes_repo: false
+kubernetes_apt_gpg_path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+kubernetes_rpm_excludes: ""
+
+kubectl_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+kubectl_bin: |-
+  {%- if ansible_system == 'Win32NT' -%}
+  kubectl.exe
+  {%- else -%}
+  kubectl
+  {%- endif -%}
+
+kubectl_os: |-
+  {%- if ansible_system == 'Win32NT' -%}
+  windows
+  {%- else -%}
+  {{ ansible_system | lower }}
+  {%- endif -%}
+
+kubectl_release_url: https://dl.k8s.io/release/{{ kubectl_v }}/bin/{{ kubectl_os }}/{{ kubectl_arch }}/{{ kubectl_bin }}
+kubectl_release_sha256_url: "{{ kubectl_release_url }}.sha256"
+
+kubectl_bin_dst: /usr/local/bin
+
+kubectl_brew: false
+kubectl_brew_package: kubectl
+kubectl_brew_state: latest

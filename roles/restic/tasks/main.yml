@@ -1,0 +1,23 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Make sure bzip2 exists
+  ansible.builtin.package:
+    name: bzip2
+    state: present
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yml
+  when:
+  - restic_v is version(installed_restic_v, 'ne')
+  - not restic_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - restic_v is version(installed_restic_v, 'ne')
+  - restic_brew
+  - ansible_system == 'Darwin'

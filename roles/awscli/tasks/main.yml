@@ -1,0 +1,17 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Installing awscli on the Linux OS from archive
+  ansible.builtin.include_tasks: linux.yml
+  when:
+  - ansible_system == "Linux"
+  - awscli_force_update or awscli_bin_exists is not success
+  - not awscli_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - awscli_brew
+  - ansible_system == 'Darwin'

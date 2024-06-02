@@ -1,0 +1,17 @@
+---
+- name: Get SHA256 checksum for kubectl {{ kubectl_v }}
+  ansible.builtin.set_fact:
+    __kubectl_checksum: "{{ lookup('url', kubectl_release_sha256_url, headers=_github_api_headers) }}"
+  run_once: true
+  retries: 10
+
+- name: Downloading and installing kubectl {{ kubectl_v }}
+  ansible.builtin.get_url:
+    url: '{{ kubectl_release_url }}'
+    dest: '{{ kubectl_bin_dst }}/{{ kubectl_bin }}'
+    checksum: sha256:{{ __kubectl_checksum }}
+
+- name: Set correct binary permissions
+  ansible.builtin.file:
+    path: '{{ kubectl_bin_dst }}/{{ kubectl_bin }}'
+    mode: '0755'

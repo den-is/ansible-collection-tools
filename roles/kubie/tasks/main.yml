@@ -1,0 +1,18 @@
+---
+- name: Preflight preparation
+  include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Installation from release archive
+  include_tasks: archive.yml
+  when:
+  - kubie_v is version(current_kubie_v_with_v, 'ne')
+  - not kubie_brew
+
+- name: MacOS homebrew installation
+  include_tasks: brew.yml
+  when:
+  - kubie_v is version(current_kubie_v_with_v, 'ne')
+  - kubie_brew
+  - ansible_system == 'Darwin'

@@ -1,0 +1,20 @@
+---
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: 'command -v {{ restic_bin }}'
+  register: restic_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: restic version | cut -d" " -f2
+  register: check_restic_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register preflight facts
+  ansible.builtin.set_fact:
+    installed_restic_v: "{{ check_restic_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_restic_v if check_restic_v_task is success else "Not Installed" }}'

@@ -1,0 +1,27 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: archive.yml
+  when:
+  - fd_v is version(installed_fd_v, 'ne')
+  - not fd_install_deb
+  - not fd_brew
+
+- name: Deb package installation
+  ansible.builtin.include_tasks: deb.yml
+  when:
+  - ansible_os_family == "Debian"
+  - fd_install_deb
+  - fd_v is version(installed_fd_v, 'ne')
+  - not fd_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - fd_v is version(installed_fd_v, 'ne')
+  - fd_brew
+  - ansible_system == 'Darwin'

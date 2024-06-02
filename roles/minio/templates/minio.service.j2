@@ -1,0 +1,24 @@
+[Unit]
+Description=MinIO
+Documentation=https://min.io/docs/minio/linux/index.html
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+WorkingDirectory=/usr/local
+User={{ minio_user }}
+Group={{ minio_group }}
+ProtectProc=invisible
+
+EnvironmentFile=-{{ minio_server_envfile }}
+ExecStartPre=/bin/bash -c "if [ -z \"${MINIO_VOLUMES}\" ]; then echo \"Variable MINIO_VOLUMES not set in {{ minio_server_envfile }}\"; exit 1; fi"
+ExecStart=minio server $MINIO_OPTS $MINIO_VOLUMES
+
+Restart=always
+LimitNOFILE=65536
+TasksMax=infinity
+TimeoutStopSec=infinity
+SendSIGKILL=no
+
+[Install]
+WantedBy=multi-user.target

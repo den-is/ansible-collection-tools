@@ -1,0 +1,21 @@
+---
+stern_v: v1.30.0
+
+stern_nov_v: "{{ stern_v | regex_replace('^v', '') }}"
+
+stern_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+stern_base_url: https://github.com/stern/stern/releases/download
+stern_release_url: '{{ stern_base_url }}/v{{ stern_nov_v }}/stern_{{ stern_nov_v }}_{{ ansible_system | lower }}_{{ stern_arch }}.tar.gz'
+
+stern_bin: stern
+stern_bin_dst: /usr/local/bin
+
+stern_brew: false
+stern_brew_package: stern
+stern_brew_state: latest

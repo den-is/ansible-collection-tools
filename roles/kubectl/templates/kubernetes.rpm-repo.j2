@@ -1,0 +1,10 @@
+
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
+
+
+[kubernetes]
+name=Kubernetes
+baseurl={{ _kubernetes_rpm_repo_url }}
+enabled=1
+gpgcheck=1
+gpgkey={{ _kubernetes_rpm_key_url }}

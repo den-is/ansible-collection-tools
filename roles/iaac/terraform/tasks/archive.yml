@@ -1,0 +1,28 @@
+---
+- name: Install unzip
+  package:
+    name: unzip
+    state: present
+
+- name: Creating extraction dir {{ terraform_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ terraform_full_download_path }}'
+    state: directory
+
+- name: Getting terraform {{ terraform_v }} archive and extracting it to {{ terraform_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ terraform_release_url }}'
+    dest: '{{ terraform_full_download_path }}'
+    remote_src: true
+
+- name: Copying binary to {{ terraform_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ terraform_full_download_path }}/terraform'
+    dest: '{{ terraform_bin_dst }}/{{ terraform_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ terraform_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ terraform_full_download_path }}'
+    state: absent

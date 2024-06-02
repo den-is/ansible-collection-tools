@@ -1,0 +1,9 @@
+- name: Getting delta {{ delta_v }} deb package
+  ansible.builtin.get_url:
+    url: '{{ delta_deb_release_url }}'
+    dest: '{{ delta_archive_download_dst }}/delta_{{ delta_v }}.deb'
+
+- name: Install delta {{ delta_v }} deb package
+  ansible.builtin.apt:
+    deb: '{{ delta_archive_download_dst }}/delta_{{ delta_v }}.deb'
+  become: true

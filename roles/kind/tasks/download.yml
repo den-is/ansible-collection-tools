@@ -1,0 +1,8 @@
+---
+- name: Downloading kind {{ kind_v }}
+  ansible.builtin.get_url:
+    url: '{{ kind_release_url }}'
+    dest: '{{ kind_bin_dst }}/{{ kind_bin }}'
+    mode: '0755'
+    owner: root
+    group: root

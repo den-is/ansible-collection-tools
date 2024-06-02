@@ -1,0 +1,56 @@
+---
+- name: Get checksum
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      __checksums_url: "{{ restic_release_base_url }}/v{{ restic_v }}/SHA256SUMS"
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __restic_checksums: "{{ lookup('url', __checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __restic_checksums is search(restic_archive_name)
+    retries: 10
+
+  - name: Get checksum of {{ restic_archive_name }}
+    ansible.builtin.set_fact:
+      __restic_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __restic_checksums }}"
+    when:
+    - "(restic_archive_name) in item"
+  when: restic_checksum_verify
+
+- name: Getting restic release artifact archive
+  ansible.builtin.get_url:
+    url: '{{ restic_release_url }}'
+    dest: '{{ restic_archive_download_dst }}/{{ restic_archive_name }}'
+    checksum: "{{ 'sha256:'+__restic_checksum if restic_checksum_verify else ''}}"
+
+- name: Creating extraction dir {{ restic_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ restic_extraction_dst }}'
+    state: directory
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ restic_archive_download_dst }}/{{ restic_archive_name }}'
+    dest: '{{ restic_extraction_dst }}'
+    remote_src: true
+
+- name: Copying binary to {{ restic_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ restic_extraction_dst }}/{{ restic_artifact_name }}'
+    dest: '{{ restic_bin_dst }}/{{ restic_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ restic_extraction_dst }}'
+  - '{{ restic_archive_download_dst }}/{{ restic_archive_name }}'

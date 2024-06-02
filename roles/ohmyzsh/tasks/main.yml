@@ -1,0 +1,18 @@
+---
+- name: Preflight preparation
+  include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Dependencies installation
+  include_tasks: deps.yml
+
+- name: Oh-my-zsh setup on a Linux host
+  ansbile.builtin.include_tasks: ohmyzsh.yml
+  loop: "{{ omz_users }}"
+  loop_control:
+    loop_var: user
+    label: "{{ user.name }}"
+  vars:
+    omz_user: "{{ user }}"
+  when: ansible_system != 'Darwin'

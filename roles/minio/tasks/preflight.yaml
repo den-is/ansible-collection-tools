@@ -1,0 +1,17 @@
+---
+- name: Get installed Minio Client version if any
+  ansible.builtin.shell: mc --version | head -1 | cut -d " " -f 3
+  register: check_mc_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed Minio Server version if any
+  ansible.builtin.shell: minio --version  | head -1 | cut -d " " -f 3
+  register: check_minio_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register pre-flight facts
+  ansible.builtin.set_fact:
+    installed_mc_v: "{{ check_mc_v_task.stdout | default('N/A', true) }}"
+    installed_minio_v: "{{ check_minio_v_task.stdout | default('N/A', true) }}"

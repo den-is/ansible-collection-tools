@@ -1,0 +1,5 @@
+- name: Brew install yq
+  community.general.homebrew:
+    name: '{{ yq_brew_package }}'
+    state: '{{ yq_brew_state }}'
+    update_homebrew: true

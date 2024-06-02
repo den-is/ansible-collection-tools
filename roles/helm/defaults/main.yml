@@ -1,0 +1,24 @@
+---
+helm_v: v3.15.1
+
+helm_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+helm_release_url: https://get.helm.sh/helm-{{ helm_v }}-{{ ansible_system | lower }}-{{ helm_arch }}.tar.gz
+helm_download_dst: /tmp/helm_{{ helm_v }}'
+
+helm_bin: helm
+helm_bin_dst: /usr/local/bin
+
+helm_brew: false
+helm_brew_package: helm
+helm_brew_state: latest
+
+helm_plugins: []
+# helm_plugins:
+# - path: https://github.com/databus23/helm-diff
+#   state: present

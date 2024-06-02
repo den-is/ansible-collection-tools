@@ -1,0 +1,13 @@
+- name: Get currently installed version if any
+  ansible.builtin.shell: rg --version | head -n1 | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: check_installed_ripgrep_version_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Setting preflight facts
+  ansible.builtin.set_fact:
+    installed_ripgrep_v: "{{ check_installed_ripgrep_version_task.stdout | default('0.0.0', true) }}"
+
+- name: Currently installed ripgrep version
+  debug:
+    msg: "Currently installed ripgrep version: {{ installed_ripgrep_v if installed_ripgrep_v != '0.0.0' else 'Not installed'}}"

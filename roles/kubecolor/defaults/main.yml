@@ -1,0 +1,22 @@
+---
+kubecolor_v: "0.3.3"
+
+kubecolor_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+kubecolor_release_base_url: https://github.com/kubecolor/kubecolor/releases/download
+kubecolor_release_url: "{{ kubecolor_release_base_url }}/v{{ kubecolor_v }}/kubecolor_{{ kubecolor_v }}_{{ ansible_system | lower }}_{{ kubecolor_arch }}.tar.gz"
+
+kubecolor_archive_download_dst: /tmp
+kubecolor_full_download_path: '{{ kubecolor_archive_download_dst }}/kubecolor_{{ kubecolor_v }}'
+
+kubecolor_bin_dst: /usr/local/bin
+kubecolor_bin: kubecolor
+
+kubecolor_brew: false
+kubecolor_brew_package: kubecolor
+kubecolor_brew_state: latest

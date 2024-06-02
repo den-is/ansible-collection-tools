@@ -1,0 +1,12 @@
+---
+- name: Installing yq {{ yq_v }}
+  ansible.builtin.get_url:
+    url: '{{ yq_release_url }}'
+    dest: '{{ yq_bin_dst }}/{{ yq_bin }}'
+    checksum: 'sha256:{{ __yq_checksum }}'
+  retries: 3
+
+- name: Set permissions
+  ansible.builtin.file:
+    path: '{{ yq_bin_dst }}/{{ yq_bin }}'
+    mode: '0755'

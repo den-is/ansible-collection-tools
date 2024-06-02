@@ -1,0 +1,23 @@
+---
+- name: Creating kustomize extraction dir {{ kustomize_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ kustomize_full_download_path }}'
+    state: directory
+
+- name: Getting kustomize {{ kustomize_v }} archive and extracting it to {{ kustomize_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ kustomize_release_url }}'
+    dest: '{{ kustomize_full_download_path }}'
+    remote_src: true
+
+- name: Copying kustomize to {{ kustomize_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ kustomize_full_download_path }}/kustomize'
+    dest: '{{ kustomize_bin_dst }}/{{ kustomize_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ kustomize_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ kustomize_full_download_path }}'
+    state: absent

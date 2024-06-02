@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: '{{ awscli_brew_package }}'
+    state: '{{ awscli_brew_state }}'
+    update_homebrew: true

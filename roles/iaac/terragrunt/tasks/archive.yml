@@ -1,0 +1,10 @@
+---
+- name: Installing terragrunt {{ terragrunt_v }}
+  ansible.builtin.get_url:
+    url: '{{ terragrunt_release_url }}'
+    dest: '{{ terragrunt_bin_dst }}/{{ terragrunt_bin }}'
+
+- name: Set permissions
+  ansible.builtin.file:
+    path: '{{ terragrunt_bin_dst }}/{{ terragrunt_bin }}'
+    mode: '0755'

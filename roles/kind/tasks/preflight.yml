@@ -1,0 +1,20 @@
+---
+- name: Check if kind command exists
+  ansible.builtin.shell: 'command -v {{ kind_bin }}'
+  register: kind_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get current kind version if any
+  ansible.builtin.shell: '{{ kind_bin }} version --quiet'
+  register: check_kind_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Get current helmfile version components
+  ansible.builtin.set_fact:
+    current_kind_v: "{{ check_kind_v_task.stdout | default('v0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current kind version: {{ current_kind_v if check_kind_v_task is success else "Not Found" }}'

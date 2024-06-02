@@ -1,0 +1,28 @@
+---
+- name: Install unzip
+  package:
+    name: unzip
+    state: present
+
+- name: Creating extraction dir {{ packer_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ packer_full_download_path }}'
+    state: directory
+
+- name: Getting packer {{ packer_v }} archive and extracting it to {{ packer_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ packer_release_url }}'
+    dest: '{{ packer_full_download_path }}'
+    remote_src: true
+
+- name: Copying binary to {{ packer_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ packer_full_download_path }}/packer'
+    dest: '{{ packer_bin_dst }}/{{ packer_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ packer_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ packer_full_download_path }}'
+    state: absent

@@ -1,0 +1,24 @@
+---
+k9s_v: v0.32.4
+
+k9s_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  {%- if k9s_v is version('v0.26.8', '>=') -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+k9s_release_base_url: https://github.com/derailed/k9s/releases/download
+k9s_release_url: "{{ k9s_release_base_url }}/{{ k9s_v }}/k9s_{{ ansible_system }}_{{ k9s_arch }}.tar.gz"
+
+k9s_bin: k9s
+k9s_bin_dst: /usr/local/bin
+k9s_custom_config: false
+
+k9s_brew: false
+k9s_brew_package: k9s
+k9s_brew_state: latest

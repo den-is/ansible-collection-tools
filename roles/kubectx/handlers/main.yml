@@ -1,0 +1,4 @@
+- name: Clean downloaded artifacts
+  ansible.builtin.file:
+    path: "{{ kubectx_full_download_path }}"
+    state: absent

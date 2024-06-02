@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: '{{ bat_brew_package }}'
+    state: '{{ bat_brew_state }}'
+    update_homebrew: true

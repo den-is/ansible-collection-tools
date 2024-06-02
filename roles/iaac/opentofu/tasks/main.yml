@@ -1,0 +1,27 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+# TODO: define packages based on OS/distribution RHEL/Debian
+- name: Install requried packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - gpg
+  - unzip
+
+- name: Install from Archive
+  ansible.builtin.include_tasks: archive.yml
+  when:
+  - opentofu_v is version(installed_opentofu_v, 'ne')
+  - not opentofu_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - opentofu_v is version(installed_opentofu_v, 'ne')
+  - opentofu_brew
+  - ansible_system == 'Darwin'

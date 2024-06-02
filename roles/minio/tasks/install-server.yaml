@@ -1,0 +1,52 @@
+---
+- name: Get the Minio server checksum
+  ansible.builtin.set_fact:
+    _minio_server_checksum: "{{ lookup('url', minio_server_sha256_url).split(' ')[0] }}"
+
+- name: Create Minio group
+  ansible.builtin.group:
+    name: "{{ minio_group }}"
+    state: present
+    system: true
+
+- name: Create Minio user
+  ansible.builtin.user:
+    name: "{{ minio_user }}"
+    group: "{{ minio_group }}"
+    system: true
+    shell: /usr/sbin/nologin
+
+- name: Create Minio config dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ minio_user }}"
+    group: "{{ minio_group }}"
+    mode: "0750"
+  loop:
+  - "{{ minio_etc_dir }}"
+  - "{{ minio_cert_dir }}"
+  - "{{ minio_policy_dir }}"
+
+- name: Create Minio data storage dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ minio_user }}"
+    group: "{{ minio_group }}"
+    mode: "0750"
+  loop: "{{ minio_server_datadirs }}"
+
+- name: Download Minio server
+  ansible.builtin.get_url:
+    url: "{{ minio_server_url }}"
+    dest: "{{ minio_server_bin_dst }}/minio"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    checksum: "sha256:{{ _minio_server_checksum }}"
+  register: _download_server
+  until: _download_server is succeeded
+  retries: 5
+  delay: 2
+  notify: Restart minio

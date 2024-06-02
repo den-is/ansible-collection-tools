@@ -1,0 +1,47 @@
+---
+- name: Get checksum
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      __checksums_url: "{{ opentofu_release_base_url }}/v{{ opentofu_nov_v }}/tofu_{{ opentofu_nov_v }}_SHA256SUMS"
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __opentofu_checksums: "{{ lookup('url', __checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __opentofu_checksums is search('linux_' + opentofu_arch + '.zip')
+    retries: 10
+
+  - name: "Get checksum for {{ opentofu_arch }}"
+    ansible.builtin.set_fact:
+      __opentofu_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __opentofu_checksums }}"
+    when:
+    - "('linux_' + opentofu_arch + '.zip') in item"
+  # but you can't use this checksum with unarchive... you have to use it with get_url
+
+- name: Creating extraction dir {{ opentofu_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ opentofu_full_download_path }}'
+    state: directory
+
+- name: Getting opentofu {{ opentofu_v }} archive and extracting it to {{ opentofu_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ opentofu_release_url }}'
+    dest: '{{ opentofu_full_download_path }}'
+    remote_src: true
+
+- name: Copying binary to {{ opentofu_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ opentofu_full_download_path }}/tofu'
+    dest: '{{ opentofu_bin_dst }}/{{ opentofu_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ opentofu_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ opentofu_full_download_path }}'
+    state: absent

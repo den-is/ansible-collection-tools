@@ -1,0 +1,20 @@
+---
+- name: Get current kubefwd command exitsts
+  ansible.builtin.shell: 'command -v {{ kubefwd_bin }}'
+  register: kubefwd_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get current kubefwd version if any
+  ansible.builtin.shell: '{{ kubefwd_bin_dst }}/{{ kubefwd_bin }} version quiet'
+  register: check_kubefwd_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Get current kubefwd version components
+  ansible.builtin.set_fact:
+    current_kubefwd_v: "{{ check_kubefwd_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Displaying current kubefwd version
+  ansible.builtin.debug:
+    msg: 'Current kubefwd version: {{ current_kubefwd_v if check_kubefwd_v_task if success else "Not Found" }}'

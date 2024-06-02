@@ -1,0 +1,20 @@
+---
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: 'command -v {{ rclone_bin }}'
+  register: rclone_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: rclone version | head -n1 | cut -d" " -f2
+  register: check_rclone_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register preflight facts
+  ansible.builtin.set_fact:
+    installed_rclone_v: "{{ check_rclone_v_task.stdout | default('v0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_rclone_v if check_rclone_v_task is success else "Not Installed" }}'

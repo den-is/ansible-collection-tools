@@ -1,0 +1,28 @@
+---
+packer_v: "1.11.0"
+
+packer_arch_map:
+  x86_64: "amd64"
+  i386: "386"
+  aarch64: "arm64"
+
+packer_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+packer_arch: "{{ packer_arch_map[ansible_architecture] }}"
+packer_system: "{{ packer_system_map[ansible_system] }}"
+
+packer_release_base_url: https://releases.hashicorp.com/packer
+packer_release_url: '{{ packer_release_base_url }}/{{ packer_v }}/packer_{{ packer_v }}_{{ packer_system }}_{{ packer_arch }}.zip'
+
+packer_archive_download_dst: /tmp
+packer_full_download_path: '{{ packer_archive_download_dst }}/packer-{{ packer_v }}'
+
+packer_bin_dst: /usr/local/bin
+packer_bin: packer
+
+packer_brew: false
+packer_brew_package: packer
+packer_brew_state: latest

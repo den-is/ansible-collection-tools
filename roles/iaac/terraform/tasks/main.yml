@@ -1,0 +1,17 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+- ansible.builtin.include_tasks: archive.yml
+  when:
+  - terraform_v is version(installed_terraform_v, 'ne')
+  - not terraform_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - terraform_v is version(installed_terraform_v, 'ne')
+  - terraform_brew
+  - ansible_system == 'Darwin'

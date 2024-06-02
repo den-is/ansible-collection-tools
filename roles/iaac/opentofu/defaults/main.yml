@@ -1,0 +1,23 @@
+---
+opentofu_v: "v1.7.1"
+
+opentofu_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+opentofu_nov_v: "{{ opentofu_v | regex_replace('^v', '') }}"
+opentofu_release_base_url: https://github.com/opentofu/opentofu/releases/download
+opentofu_release_url: '{{ opentofu_release_base_url }}/{{ opentofu_v }}/tofu_{{ opentofu_nov_v }}_{{ ansible_system | lower }}_{{ opentofu_arch }}.zip'
+
+opentofu_archive_download_dst: /tmp
+opentofu_full_download_path: '{{ opentofu_archive_download_dst }}/opentofu-{{ opentofu_v }}'
+
+opentofu_bin_dst: /usr/local/bin
+opentofu_bin: tofu
+
+opentofu_brew: false
+opentofu_brew_package: opentofu
+opentofu_brew_state: latest

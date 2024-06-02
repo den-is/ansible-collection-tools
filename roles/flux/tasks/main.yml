@@ -1,0 +1,18 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: archive.yml
+  when:
+  - flux_nov is version(installed_flux_v, 'ne')
+  - not flux_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - flux_nov is version(installed_flux_v, 'ne')
+  - flux_brew
+  - ansible_system == 'Darwin'

@@ -1,0 +1,20 @@
+---
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: 'command -v {{ terragrunt_bin }}'
+  register: terragrunt_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: '{{ terragrunt_bin }} --version | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"'
+  register: check_terragrunt_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register installed version vars
+  ansible.builtin.set_fact:
+    installed_terragrunt_v: "{{ check_terragrunt_v_task.stdout | default('v0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_terragrunt_v if check_terragrunt_v_task is success else "Not Found" }}'

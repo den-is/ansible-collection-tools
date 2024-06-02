@@ -1,0 +1,5 @@
+- name: Brew install restic
+  community.general.homebrew:
+    name: '{{ restic_brew_package }}'
+    state: '{{ restic_brew_state }}'
+    update_homebrew: true

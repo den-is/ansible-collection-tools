@@ -1,0 +1,32 @@
+---
+rclone_v: "v1.66.0"
+
+rclone_arch_map:
+  x86_64: amd64
+  i386: "386"
+  aarch64: arm64
+
+rclone_system_map:
+  Darwin: osx
+  Linux: linux
+  Win32NT: windows
+
+rclone_arch: "{{ rclone_arch_map[ansible_architecture] }}"
+rclone_system: "{{ rclone_system_map[ansible_system] }}"
+
+rclone_release_base_url: https://github.com/rclone/rclone/releases/download
+rclone_archive_name: "rclone-{{ rclone_v }}-{{ rclone_system }}-{{ rclone_arch }}.zip"
+rclone_release_url: '{{ rclone_release_base_url }}/{{ rclone_v }}/{{ rclone_archive_name }}'
+
+rclone_checksum_verify: true
+rclone_release_sha256sums_url: "{{ rclone_release_base_url }}/{{ rclone_v }}/SHA256SUMS"
+
+rclone_archive_download_dst: /tmp
+rclone_extraction_dst: '{{ rclone_archive_download_dst }}/rclone-{{ rclone_v }}'
+
+rclone_bin_dst: /usr/local/bin
+rclone_bin: rclone
+
+rclone_brew: false
+rclone_brew_package: rclone
+rclone_brew_state: latest

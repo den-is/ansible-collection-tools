@@ -1,0 +1,20 @@
+---
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: 'command -v {{ terraform_bin }}'
+  register: terraform_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: '{{ terraform_bin }} version | head -1 | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"'
+  register: check_terraform_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register pre-flight variables
+  ansible.builtin.set_fact:
+    installed_terraform_v: "{{ check_terraform_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_terraform_v if check_terraform_v_task is success else "Not Found" }}'

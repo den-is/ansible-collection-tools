@@ -1,0 +1,15 @@
+---
+- name: Get current version if any
+  ansible.builtin.shell: kubectx --version
+  register: check_kubectx_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register preflight facts
+  ansible.builtin.set_fact:
+    __kubectx_nov_v: "{{ kubectx_v | regex_replace('^v', '') }}"
+    installed_kubectx_v: "{{ check_kubectx_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current kubectx version: {{ installed_kubectx_v if check_kubectx_v_task is success else "Not Installed" }}'

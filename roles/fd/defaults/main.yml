@@ -1,0 +1,29 @@
+---
+fd_v: "10.1.0"
+
+# fd glibc, otherwise MUSL
+fd_glibc: true
+# many more to options to consider there are all sorts of platforms, architectures, and OS
+
+fd_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+
+fd_install_deb: true
+fd_release_base_url: https://github.com/sharkdp/fd/releases/download
+fd_release_url: "{{ fd_release_base_url }}/v{{ fd_v }}/fd-v{{ fd_v }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-{{ 'gnu' if fd_gnu else 'musl' }}.tar.gz"
+fd_deb_release_url: "{{ fd_release_base_url }}/v{{ fd_v }}/fd{{ '-musl' if not fd_gnu }}_{{ fd_v }}_{{ fd_arch }}.deb"
+
+fd_archive_download_dst: /tmp
+fd_full_download_path: '{{ fd_archive_download_dst }}/fd_{{ fd_v }}'
+
+fd_bin_dst: /usr/local/bin
+fd_bin: fd
+
+fd_brew: false
+fd_brew_package: fd
+fd_brew_state: latest

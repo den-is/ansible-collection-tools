@@ -1,0 +1,32 @@
+---
+restic_v: "0.16.4"
+
+restic_arch_map:
+  x86_64: amd64
+  i386: "386"
+  aarch64: arm64
+
+restic_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+restic_arch: "{{ restic_arch_map[ansible_architecture] }}"
+restic_system: "{{ restic_system_map[ansible_system] }}"
+restic_archive_ext: "{{ 'zip' if ansible_system == 'Win32NT' else 'bz2' }}"
+
+restic_artifact_name: restic_{{ restic_v }}_{{ restic_system }}_{{ restic_arch }}
+restic_archive_name: "{{ restic_artifact_name }}.{{ restic_archive_ext }}"
+restic_release_base_url: https://github.com/restic/restic/releases/download
+restic_release_url: '{{ restic_release_base_url }}/v{{ restic_v }}/{{ restic_archive_name }}'
+restic_checksum_verify: true
+
+restic_archive_download_dst: /tmp
+restic_extraction_dst: '{{ restic_archive_download_dst }}/restic-{{ restic_v }}'
+
+restic_bin_dst: /usr/local/bin
+restic_bin: restic
+
+restic_brew: false
+restic_brew_package: restic
+restic_brew_state: latest

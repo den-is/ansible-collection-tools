@@ -1,0 +1,25 @@
+---
+- name: Creating helm extraction dir {{ helm_download_dst }}
+  ansible.builtin.file:
+    path: '{{ helm_download_dst }}'
+    state: directory
+
+- name: Getting helm {{ helm_v }} archive and extracting it to {{ helm_download_dst }}
+  ansible.builtin.unarchive:
+    src: '{{ helm_release_url }}'
+    dest: '{{ helm_download_dst }}'
+    remote_src: true
+    extra_opts:
+    - --strip-components=1
+
+- name: Copying helm to {{ helm_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ helm_download_dst }}/helm'
+    dest: '{{ helm_bin_dst }}/helm'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ helm_download_dst }} dir
+  ansible.builtin.file:
+    path: '{{ helm_download_dst }}'
+    state: absent

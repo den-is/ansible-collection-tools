@@ -1,0 +1,5 @@
+- name: Brew install rclone
+  community.general.homebrew:
+    name: '{{ rclone_brew_package }}'
+    state: '{{ rclone_brew_state }}'
+    update_homebrew: true

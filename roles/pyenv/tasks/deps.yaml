@@ -1,0 +1,13 @@
+- name: Install python compilation dependencies on a Debian based OS
+  ansible.builtin.apt:
+    name: "{{ python_build_deps }}"
+    state: present
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
+- name: Install python compilation dependencies on a RedHat based OS
+  ansible.builtin.dnf:
+    name: "{{ python_build_deps }}"
+    state: present
+    update_cache: true
+  when: ansible_os_family == "RedHat"

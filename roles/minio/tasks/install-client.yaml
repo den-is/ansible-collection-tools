@@ -1,0 +1,15 @@
+---
+- name: Get the Minio client checksum
+  ansible.builtin.set_fact:
+    _minio_client_checksum: "{{ lookup('url', minio_client_sha256_url).split(' ')[0] }}"
+
+- name: Download the Minio client
+  ansible.builtin.get_url:
+    url: "{{ minio_client_url }}"
+    dest: "{{ minio_client_bin_dst }}/mc"
+    mode: "0755"
+    checksum: "sha256:{{ _minio_client_checksum }}"
+  register: _download_client
+  until: _download_client is succeeded
+  retries: 5
+  delay: 2

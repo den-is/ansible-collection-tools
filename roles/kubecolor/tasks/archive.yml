@@ -1,0 +1,23 @@
+---
+- name: Creating kubecolor extraction dir {{ kubecolor_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ kubecolor_full_download_path }}'
+    state: directory
+
+- name: Getting kubecolor {{ kubecolor_v }} archive and extracting it to {{ kubecolor_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ kubecolor_release_url }}'
+    dest: '{{ kubecolor_full_download_path }}'
+    remote_src: true
+
+- name: Copying kubecolor to {{ kubecolor_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ kubecolor_full_download_path }}/kubecolor'
+    dest: '{{ kubecolor_bin_dst }}/{{ kubecolor_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ kubecolor_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ kubecolor_full_download_path }}'
+    state: absent

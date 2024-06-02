@@ -1,0 +1,20 @@
+---
+- name: Check if binary already exists
+  ansible.builtin.shell: 'command -v {{ kustomize_bin }}'
+  register: kustomize_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get current version if any
+  ansible.builtin.shell: '{{ kustomize_bin }} version'
+  register: check_kustomize_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register pre-flight variables
+  ansible.builtin.set_fact:
+    installed_kustomize_v: "{{ check_kustomize_v_task.stdout | default('v0.0.0', true) }}"
+
+- name: Displaying current kustomize version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_kustomize_v if check_kustomize_v_task is success else "Not Found" }}'

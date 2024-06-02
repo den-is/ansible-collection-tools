@@ -1,0 +1,51 @@
+---
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: 'command -v {{ yq_bin }}'
+  register: yq_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: '{{ yq_bin }} --version | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"'
+  register: check_yq_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register preflight fact
+  ansible.builtin.set_fact:
+    installed_yq_v: "{{ check_yq_v_task.stdout | default('v0.0.0', true) }}"
+
+- name: Report installed version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_yq_v if check_yq_v_task is success else "Not installed" }}'
+
+- name: Get checksums
+  when:
+  - yq_v is version(installed_yq_v, 'ne')
+  - not yq_brew
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      __checksums_url: "{{ yq_release_base_url }}/{{ yq_v }}/checksums"
+      __github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host may require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  # conditional statements should not include jinja2 templating
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __yq_checksums: "{{ lookup('url', __checksums_url, headers=__github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __yq_checksums is ansible.builtin.search("yq_" + ansible_system | lower + "_" + yq_arch + "\s+")
+    retries: 10
+
+  # conditional statements should not include jinja2 templating
+  - name: Get checksum for {{ yq_arch }}
+    ansible.builtin.set_fact:
+      __yq_checksum: "{{ item.split('  ')[18] }}"
+    loop: "{{ __yq_checksums }}"
+    # no_log: true
+    loop_control:
+      label: "{{ item.split('  ')[0] }}"
+    when:
+    - item is regex("^yq_" + ansible_system | lower + "_" + yq_arch + "\s+")

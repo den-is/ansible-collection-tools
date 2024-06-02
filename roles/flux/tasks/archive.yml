@@ -1,0 +1,23 @@
+---
+- name: Creating flux extraction dir {{ flux_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ flux_full_download_path }}'
+    state: directory
+
+- name: Getting flux {{ flux_v }} archive and extracting it to {{ flux_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ flux_release_url }}'
+    dest: '{{ flux_full_download_path }}'
+    remote_src: true
+
+- name: Copying flux to {{ flux_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ flux_full_download_path }}/flux'
+    dest: '{{ flux_bin_dst }}/{{ flux_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ flux_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ flux_full_download_path }}'
+    state: absent

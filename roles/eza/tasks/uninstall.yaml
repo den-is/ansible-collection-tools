@@ -1,0 +1,9 @@
+- name: Removing eza binary
+  ansible.builtin.file:
+    path: "{{ eza_bin_dir }}/eza"
+    state: absent
+
+- name: Removing eza zsh completions
+  ansible.builtin.file:
+    path: "{{ zsh_completions_path }}/_eza"
+    state: absent

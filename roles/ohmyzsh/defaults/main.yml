@@ -1,0 +1,33 @@
+---
+default_zshrc: false
+overwrite_zshrc: false
+
+omz_theme: robbyrussell
+# zsh_theme: fishy
+
+omz_plugins:
+- git
+
+omz_extra_conf:
+- export EDITOR=vim
+- export VISUAL=$EDITOR
+
+# omz_update_mode possible values: prompt, disabled, auto, reminder
+omz_update_mode: prompt
+omz_update_frequency: 13
+
+
+# list of users to install oh-my-zsh for:
+# is empty apply to current user
+# user should exist on the system. and have home directory named after its name
+#
+# omz_users:
+# - name: user1
+#   zsh_theme: robbyrussell
+#   zsh_plugins:
+#   - git
+#   zsh_extra_config:
+#   - export EDITOR=vim
+#   - export VISUAL=$EDITOR
+
+# omz_users: []

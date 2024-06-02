@@ -1,0 +1,86 @@
+---
+- name: Create system group
+  ansible.builtin.group:
+    name: "{{ atlantis_group }}"
+    system: true
+  when: atlantis_server
+
+- name: Create system user
+  ansible.builtin.user:
+    name: "{{ atlantis_user }}"
+    group: "{{ atlantis_group }}"
+    system: true
+    shell: /sbin/nologin
+    home: "{{ atlantis_data_dir }}"
+  when: atlantis_server
+
+- name: Create atlantis directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ atlantis_user }}"
+    group: "{{ atlantis_group }}"
+    mode: '0755'
+  loop:
+  - "{{ atlantis_config_dir }}"
+  - "{{ atlantis_data_dir }}"
+  when: atlantis_server
+
+- name: Adding systemd service file
+  ansible.builtin.template:
+    src: atlantis.service.j2
+    dest: /etc/systemd/system/{{ atlantis_service_name }}.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+  - Reload systemd
+  - Restart atlantis
+  when: atlantis_server
+
+- name: Copy Server-Side repositories configuration
+  ansible.builtin.copy:
+    src: "{{ atlantis_repos_config_file }}"
+    dest: "{{ atlantis_repos_config_dst }}"
+    force: true
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+  - Restart atlantis
+  when: atlantis_repos_config_file | default('', true) | trim != ''
+
+- name: Copy Atlantis server configuration YAML file
+  ansible.builtin.copy:
+    src: "{{ atlantis_server_config_file }}"
+    dest: "{{ atlantis_server_config_dst }}"
+    force: true
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+  - Restart atlantis
+  when:
+  - atlantis_server
+  - atlantis_server_config_file | default('', true) | trim != ''
+
+- name: Copy Atlantis server configuration ENV file
+  ansible.builtin.template:
+    src: atlantis.env.j2
+    dest: "{{ atlantis_env_file_path }}"
+    force: true
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+  - Restart atlantis
+  when:
+  - atlantis_server
+  - atlantis_env_extra | default({}, true) != {}
+
+- name: Enable systemd service
+  ansible.builtin.systemd_service:
+    name: "{{ atlantis_service_name }}.service"
+    state: "{{ atlantis_service_state }}"
+    enabled: "{{ atlantis_service_enabled }}"
+  when: atlantis_server

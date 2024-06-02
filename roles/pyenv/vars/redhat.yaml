@@ -1,0 +1,24 @@
+# https://devguide.python.org/getting-started/setup-building/index.html#deps-on-linux
+
+python_build_deps:
+- git
+- make
+- curl
+- ca-certificates
+- gnupg2
+- gcc
+- zlib-devel
+- bzip2
+- bzip2-devel
+- readline-devel
+- sqlite
+- sqlite-devel
+- openssl-devel
+- xz
+- xz-devel
+- libffi-devel
+
+# dnf builddep python3
+# - gdbm-devel
+# - bluez-libs-devel
+# - tix-devel

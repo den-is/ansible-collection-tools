@@ -1,0 +1,21 @@
+---
+- name: Check if command exists
+  ansible.builtin.shell: 'command -v {{ helmfile_bin }}'
+  register: helmfile_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get current version if any
+  ansible.builtin.shell: '{{ helmfile_bin }} version -o=short'
+  register: check_helmfile_v_task
+  ignore_errors: true
+  changed_when: false
+
+
+- name: Get current helmfile version components
+  ansible.builtin.set_fact:
+    current_helmfile_v: "{{ check_helmfile_v_task.stdout | default('v0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current helmfile version: {{ current_helmfile_v if check_helmfile_v_task is success else "Not Found" }}'

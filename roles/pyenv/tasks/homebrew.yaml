@@ -1,0 +1,6 @@
+- name: Install pyenv via Homebrew
+  community.general.homebrew:
+    name: "{{ pyenv_brew_name }}"
+    state: "{{ 'absent' if pyenv_uninstall else pyenv_brew_state }}"
+    update_homebrew: "{{ pyenv_brew_update if not pyenv_uninstall else false }}"
+  become: false

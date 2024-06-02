@@ -1,0 +1,20 @@
+- name: Install ripgrep from release deb package
+  ansible.builtin.apt:
+    deb: "{{ ripgrep_apt_download_url }}"
+  when:
+  - not ripgrep_apt_os_repo
+  - not ripgrep_uninstall
+
+- name: Install ripgrep from OS packages
+  ansible.builtin.apt:
+    name: ripgrep
+  when:
+  - ripgrep_apt_os_repo
+  - not ripgrep_uninstall
+
+- name: Uninstall ripgrep
+  ansible.builtin.apt:
+    name: ripgrep
+    state: absent
+  when:
+  - ripgrep_uninstall

@@ -1,0 +1,23 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Make sure unzip is installed
+  ansible.builtin.package:
+    name: unzip
+    state: present
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yml
+  when:
+  - rclone_v is version(installed_rclone_v, 'ne')
+  - not rclone_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - rclone_v is version(installed_rclone_v, 'ne')
+  - rclone_brew
+  - ansible_system == 'Darwin'

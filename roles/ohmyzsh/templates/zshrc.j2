@@ -1,0 +1,23 @@
+{% set _theme = omz_user.omz_theme | default(omz_theme) %}
+{% set _omz_update_mode = omz_user.omz_update_mode | default(omz_update_mode) %}
+{% set _omz_update_freq = omz_user.omz_update_frequency | default(omz_update_frequency) %}
+{% set _plugins = omz_user.omz_plugins | default(omz_plugins) | join(' ') %}
+{% set _extra_conf = omz_user.omz_extra_conf | default(omz_extra_conf) %}
+export ZSH=$HOME/.oh-my-zsh
+
+ZSH_THEME="{{ _theme }}"
+{# Skip default values #}
+{% if _omz_update_mode != "prompt" %}
+zstyle ':omz:update' mode {{ _omz_update_mode }}
+{% endif %}
+{% if _omz_update_freq != 13 %}
+zstyle ':omz:update' frequency {{ _omz_update_freq }}
+{% endif %}
+
+plugins=({{ _plugins }})
+
+source $ZSH/oh-my-zsh.sh
+
+{% for line in _extra_conf %}
+{{ line }}
+{% endfor %}

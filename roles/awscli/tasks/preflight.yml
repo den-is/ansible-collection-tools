@@ -1,0 +1,28 @@
+---
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: 'command -v {{ awscli_bin }}'
+  register: awscli_bin_exists
+  failed_when: awscli_bin_exists.rc not in [0,1]
+  ignore_errors: true
+  changed_when: false
+
+- name: Binary path data
+  ansible.builtin.stat:
+    path: "{{ awscli_bin_exists.stdout }}"
+  register: awscli_installed_bin_path
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: aws --version | cut -d" " -f1 | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: check_awscli_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register preflight facts
+  ansible.builtin.set_fact:
+    installed_awscli_v: "{{ check_awscli_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Displaying installed version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_awscli_v if check_awscli_v_task is success else "Not Installed" }}'

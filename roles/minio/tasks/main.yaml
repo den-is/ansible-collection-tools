@@ -1,0 +1,17 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: MinIO server installation
+  ansible.builtin.include_tasks: install-server.yaml
+  when: minio_install_server
+
+- name: MinIO server configuration
+  ansible.builtin.include_tasks: configure-server.yaml
+  when: minio_install_server
+
+- name: MinIO client installation
+  ansible.builtin.include_tasks: install-client.yaml
+  when: minio_install_client

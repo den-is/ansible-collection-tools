@@ -1,0 +1,23 @@
+---
+helmfile_v: v0.165.0
+
+helmfile_v_no_v: "{{ helmfile_v | regex_replace('^v', '') }}"
+helmfile_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+helmfile_release_base_url: https://github.com/helmfile/helmfile/releases/download
+helmfile_release_url: '{{ helmfile_release_base_url }}/{{ helmfile_v }}/helmfile_{{ helmfile_v_no_v }}_{{ ansible_system | lower }}_{{ helmfile_arch }}.tar.gz'
+
+helmfile_bin_download_dst: /tmp
+helmfile_full_download_path: '{{ helmfile_bin_download_dst }}/helmfile_{{ helmfile_v }}'
+
+helmfile_bin_dst: /usr/local/bin
+helmfile_bin: helmfile
+
+helmfile_brew: false
+helmfile_brew_package: helmfile
+helmfile_brew_state: latest

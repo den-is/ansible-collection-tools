@@ -1,0 +1,23 @@
+# Setup http://editorconfig.org/
+# VSCode EditorConfig support https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
+
+root = true
+
+[*]
+trim_trailing_whitespace = true
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+
+[*.py]
+indent_style = space
+indent_size = 4
+
+[{Makefile,go.mod,go.sum,*.go}]
+indent_style = tab
+indent_size = 4
+
+[*.{md,txt}]
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = false

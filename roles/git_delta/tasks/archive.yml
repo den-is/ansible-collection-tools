@@ -1,0 +1,23 @@
+---
+- name: Creating delta extraction dir {{ delta_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ delta_full_download_path }}'
+    state: directory
+
+- name: Getting delta {{ delta_v }} archive and extracting it to {{ delta_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ delta_release_url }}'
+    dest: '{{ delta_full_download_path }}'
+    remote_src: true
+
+- name: Copying delta to {{ delta_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ delta_full_download_path }}/delta'
+    dest: '{{ delta_bin_dst }}/{{ delta_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ delta_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ delta_full_download_path }}'
+    state: absent

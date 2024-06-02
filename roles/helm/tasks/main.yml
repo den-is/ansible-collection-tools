@@ -1,0 +1,27 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: archive.yml
+  when:
+  - helm_v is version(installed_helm_v, 'ne')
+  - not helm_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - helm_v is version(installed_helm_v, 'ne')
+  - helm_brew
+  - ansible_system == 'Darwin'
+
+- name: Helm Plugins installation
+  kubernetes.core.helm_plugin:
+    plugin_path: "{{ item.path }}"
+    state: "{{ item.state | default('present') }}"
+  loop_control:
+    label: "{{ item.path }}"
+  loop: "{{ helm_plugins }}"
+  when: helm_plugins is defined

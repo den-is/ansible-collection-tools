@@ -1,0 +1,57 @@
+---
+- name: Get checksum
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      __checksums_url: "{{ rclone_release_sha256sums_url }}"
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __rclone_checksums: "{{ lookup('url', __checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __rclone_checksums is search(rclone_archive_name)
+    retries: 10
+
+  - name: Get checksum of {{ rclone_archive_name }}
+    ansible.builtin.set_fact:
+      __rclone_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __rclone_checksums }}"
+    when:
+    - rclone_archive_name in item
+
+  when: rclone_checksum_verify
+
+- name: Getting rclone release artifact archive
+  ansible.builtin.get_url:
+    url: '{{ rclone_release_url }}'
+    dest: '{{ rclone_archive_download_dst }}/{{ rclone_archive_name }}'
+    checksum: "{{ 'sha256:'+__rclone_checksum if rclone_checksum_verify else ''}}"
+
+- name: Creating extraction dir {{ rclone_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ rclone_extraction_dst }}'
+    state: directory
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ rclone_archive_download_dst }}/{{ rclone_archive_name }}'
+    dest: '{{ rclone_extraction_dst }}'
+    remote_src: true
+
+- name: Copying binary to {{ rclone_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ rclone_extraction_dst }}/rclone'
+    dest: '{{ rclone_bin_dst }}/{{ rclone_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ rclone_extraction_dst }}'
+  - '{{ rclone_archive_download_dst }}/{{ rclone_archive_name }}'

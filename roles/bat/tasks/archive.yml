@@ -1,0 +1,23 @@
+---
+- name: Creating bat extraction dir {{ bat_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ bat_full_download_path }}'
+    state: directory
+
+- name: Getting bat {{ bat_v }} archive and extracting it to {{ bat_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ bat_release_url }}'
+    dest: '{{ bat_full_download_path }}'
+    remote_src: true
+
+- name: Copying bat to {{ bat_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ bat_full_download_path }}/bat'
+    dest: '{{ bat_bin_dst }}/{{ bat_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ bat_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ bat_full_download_path }}'
+    state: absent

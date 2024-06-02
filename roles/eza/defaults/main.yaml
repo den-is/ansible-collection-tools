@@ -1,0 +1,17 @@
+eza_v: v0.18.16
+
+eza_download_base_url: https://github.com/eza-community/eza/releases/download
+
+eza_download_url: "{{ eza_download_base_url }}/{{ eza_v }}/eza_x86_64-unknown-linux-gnu.tar.gz"
+
+eza_bin_dir: /usr/local/bin
+
+eza_brew_install: false
+eza_brew_state: latest
+eza_brew_update: true
+
+eza_zsh_completions_install: true
+eza_zsh_completions_url: https://raw.githubusercontent.com/eza-community/eza/main/completions/zsh/_eza
+zsh_completions_path: /usr/local/share/zsh/site-functions
+
+eza_uninstall: false

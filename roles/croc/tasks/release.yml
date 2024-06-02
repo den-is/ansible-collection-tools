@@ -1,0 +1,55 @@
+---
+- name: Get checksum
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      __checksums_url: "{{ croc_release_base_url }}/{{ croc_v }}/croc_{{ croc_v }}_checksums.txt"
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __croc_checksums: "{{ lookup('url', __checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __croc_checksums is search('croc_' + croc_v + '_' + croc_system + '-' + croc_arch + '.' + croc_archive_ext)
+    retries: 10
+
+  - name: "Get checksum for {{ croc_arch }}"
+    ansible.builtin.set_fact:
+      __croc_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __croc_checksums }}"
+    when:
+    - "('croc_' + croc_v + '_' + croc_system + '-' + croc_arch + '.' + croc_archive_ext) in item"
+
+- name: Getting croc {{ croc_v }} archive
+  ansible.builtin.get_url:
+    url: '{{ croc_release_url }}'
+    dest: '{{ croc_archive_download_dst }}/{{ croc_archive_name }}'
+    checksum: 'sha256:{{ __croc_checksum }}'
+
+- name: Creating extraction dir {{ croc_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ croc_extraction_dst }}'
+    state: directory
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ croc_archive_download_dst }}/{{ croc_archive_name }}'
+    dest: '{{ croc_extraction_dst }}'
+    remote_src: true
+
+- name: Copying binary to {{ croc_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ croc_extraction_dst }}/croc'
+    dest: '{{ croc_bin_dst }}/{{ croc_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ croc_extraction_dst }}'
+  - '{{ croc_archive_download_dst }}/{{ croc_archive_name }}'

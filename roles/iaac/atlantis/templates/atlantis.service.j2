@@ -1,0 +1,16 @@
+[Unit]
+Description=Atlantis Server - Terraform Pull Request Automation
+Documentation=https://www.runatlantis.io
+After=network.target
+
+[Service]
+Type=simple
+User={{ atlantis_user }}
+Group={{ atlantis_group }}
+EnvironmentFile=-{{ atlantis_env_file_path }}
+ExecStart={{ atlantis_bin_dst }}/{{ atlantis_bin }} server
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

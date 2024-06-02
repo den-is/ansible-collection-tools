@@ -1,0 +1,25 @@
+---
+- name: Creating extraction dir {{ helmfile_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ helmfile_full_download_path }}'
+    state: directory
+
+- name: Getting helmfile {{ helmfile_v }} archive and extracting it to {{ helmfile_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ helmfile_release_url }}'
+    dest: '{{ helmfile_full_download_path }}'
+    remote_src: true
+    extra_opts:
+    - --strip-components=1
+
+- name: Moving binary to {{ helmfile_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ helmfile_full_download_path }}/helmfile'
+    dest: '{{ helmfile_bin_dst }}/{{ helmfile_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ helmfile_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ helmfile_full_download_path }}'
+    state: absent

@@ -1,0 +1,54 @@
+---
+- name: Set minio URL if not defined
+  ansible.builtin.set_fact:
+    minio_url: "{{ 'https' if minio_enable_tls else 'http' }}://{{ minio_server_address | default('127.0.0.1') }}:{{ minio_server_port }}"
+  when: minio_url | length == 0
+
+- name: Generate the Minio server envfile
+  ansible.builtin.template:
+    src: minio.env.j2
+    dest: "{{ minio_server_envfile }}"
+    owner: "{{ minio_user }}"
+    group: "{{ minio_group }}"
+    mode: "0640"
+  notify: Restart minio
+
+- name: Create the Minio Server systemd service
+  ansible.builtin.template:
+    src: minio.service.j2
+    dest: "/etc/systemd/system/minio.service"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify:
+  - Reload systemd
+  - Restart minio
+
+- name: Copy SSL private key file
+  ansible.builtin.copy:
+    dest: "{{ minio_cert_dir }}/private.key"
+    content: "{{ minio_key_b64 | b64decode }}"
+    owner: "{{ minio_user }}"
+    group: "{{ minio_user }}"
+    mode: "0644"
+  become: true
+  when: minio_enable_tls
+  notify: Restart minio
+
+- name: Copy cert file
+  ansible.builtin.copy:
+    dest: "{{ minio_cert_dir }}/public.crt"
+    content: "{{ minio_cert_b64 | b64decode }}"
+    owner: "{{ minio_user }}"
+    group: "{{ minio_user }}"
+    mode: "0644"
+  become: true
+  when: minio_enable_tls
+  notify: Restart minio
+
+- name: Enable Minio Server service
+  ansible.builtin.systemd_service:
+    name: minio
+    state: "{{ minio_service_state }}"
+    enabled: "{{ minio_service_enabled }}"
+  tags: config

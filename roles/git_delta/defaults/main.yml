@@ -1,0 +1,29 @@
+---
+delta_v: "0.17.0"
+
+# delta GNU, otherwise MUSL
+delta_gnu: true
+# many more to options to consider there are all sorts of platforms, architectures, and OS
+
+delta_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+
+delta_install_deb: true
+delta_release_base_url: https://github.com/dandavison/delta/releases/download
+delta_release_url: "{{ delta_release_base_url }}/{{ delta_v }}/delta-{{ delta_v }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-{{ 'gnu' if delta_gnu else 'musl' }}.tar.gz"
+delta_deb_release_url: "{{ delta_release_base_url }}/{{ delta_v }}/git-delta{{ '-musl' if not delta_gnu }}_{{ delta_v }}_{{ delta_arch }}.deb"
+
+delta_archive_download_dst: /tmp
+delta_full_download_path: '{{ delta_archive_download_dst }}/delta_{{ delta_v }}'
+
+delta_bin_dst: /usr/local/bin
+delta_bin: delta
+
+delta_brew: false
+delta_brew_package: git-delta
+delta_brew_state: latest

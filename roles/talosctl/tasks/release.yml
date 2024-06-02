@@ -1,0 +1,34 @@
+---
+- name: Get checksum
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      __checksums_url: "{{ talosctl_release_base_url }}/{{ talosctl_v }}/sha256sum.txt"
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __talosctl_checksums: "{{ lookup('url', __checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __talosctl_checksums is search('talosctl-' + talosctl_system + '-' + talosctl_arch)
+    retries: 10
+
+  - name: "Get checksum for {{ talosctl_arch }}"
+    ansible.builtin.set_fact:
+      __talosctl_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __talosctl_checksums }}"
+    when:
+    - "('talosctl-' + talosctl_system + '-' + talosctl_arch) in item"
+
+- name: Getting talosctl {{ talosctl_v }} binary
+  ansible.builtin.get_url:
+    url: '{{ talosctl_release_url }}'
+    dest: '{{ talosctl_bin_dst }}/{{ talosctl_bin }}'
+    checksum: 'sha256:{{ __talosctl_checksum }}'
+
+- name: Set permissions
+  ansible.builtin.file:
+    path: '{{ talosctl_bin_dst }}/{{ talosctl_bin }}'
+    mode: '0755'

@@ -1,0 +1,5 @@
+- name: Brew install croc
+  community.general.homebrew:
+    name: '{{ croc_brew_package }}'
+    state: '{{ croc_brew_state }}'
+    update_homebrew: true

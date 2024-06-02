@@ -1,0 +1,5 @@
+- name: Brew install kubectx/kubens
+  community.general.homebrew:
+    name: '{{ kubectx_brew_package }}'
+    state: '{{ kubectx_brew_state }}'
+    update_homebrew: true

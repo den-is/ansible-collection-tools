@@ -1,0 +1,33 @@
+---
+croc_v: "v10.0.7"
+
+croc_arch_map:
+  x86_64: 64bit
+  i386: 32bit
+  aarch64: ARM64
+  armv7l: ARM
+  armv6l: ARM
+
+croc_system_map:
+  Darwin: macOS
+  Linux: Linux
+  Win32NT: Windows
+
+croc_arch: "{{ croc_arch_map[ansible_architecture] }}"
+croc_system: "{{ croc_system_map[ansible_system] }}"
+croc_archive_ext: "{{ 'zip' if ansible_system == 'Win32NT' else 'tar.gz' }}"
+
+croc_release_base_url: https://github.com/schollz/croc/releases/download
+croc_archive_name: croc_{{ croc_v }}_{{ croc_system }}-{{ croc_arch }}.{{ croc_archive_ext }}
+croc_release_url: '{{ croc_release_base_url }}/{{ croc_v }}/{{ croc_archive_name }}'
+
+croc_archive_download_dst: /tmp
+croc_extraction_dst: '{{ croc_archive_download_dst }}/croc-{{ croc_v }}'
+
+# TODO: add support for windows destinations
+croc_bin_dst: /usr/local/bin
+croc_bin: croc
+
+croc_brew: false
+croc_brew_package: croc
+croc_brew_state: latest

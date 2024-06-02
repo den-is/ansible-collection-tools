@@ -1,0 +1,32 @@
+---
+- name: Install unzip
+  ansible.builtin.package:
+    name: unzip
+    state: present
+
+- name: Creating extraction dir {{ atlantis_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ atlantis_full_download_path }}'
+    state: directory
+
+- name: Getting atlantis {{ atlantis_v }} archive and extracting it to {{ atlantis_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ atlantis_release_url }}'
+    dest: '{{ atlantis_full_download_path }}'
+    remote_src: true
+
+- name: Copying binary to {{ atlantis_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ atlantis_full_download_path }}/atlantis'
+    dest: '{{ atlantis_bin_dst }}/{{ atlantis_bin }}'
+    mode: '0755'
+    owner: '{{ binary_owner_user }}'
+    group: '{{ binary_owner_group }}'
+    remote_src: true
+  notify:
+  - Restart atlantis
+
+- name: Deleting {{ atlantis_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ atlantis_full_download_path }}'
+    state: absent

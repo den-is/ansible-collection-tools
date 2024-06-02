@@ -1,0 +1,39 @@
+---
+kubectx_v: v0.9.5
+
+# kubectx go-flavor, at the moment of writing does not support multiple kubeconfig files
+# https://github.com/ahmetb/kubectx/issues/211
+kubectx_go: false
+
+# force reinstall of kubectx/kubens binaries/scripts
+kubectx_force_download: false
+
+kubectx_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+kubectx_systems_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+kubectx_arch: "{{ kubectx_arch_map[ansible_architecture] }}"
+kubectx_system: "{{ kubectx_systems_map[ansible_system] }}"
+
+kubectx_release_base_url: https://github.com/ahmetb/kubectx/releases/download
+kubectx_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubectx_{{ kubectx_v }}_{{ ansible_system | lower }}_{{ kubectx_arch }}.tar.gz'
+kubens_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubens_{{ kubectx_v }}_{{ ansible_system | lower }}_{{ kubectx_arch }}.tar.gz'
+
+kubectx_bash_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubectx'
+kubens_bash_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubens'
+
+kubectx_archive_download_dst: /tmp
+kubectx_full_download_path: "{{ kubectx_archive_download_dst }}/kubectx_{{ kubectx_v }}"
+
+kubectx_bin_dst: /usr/local/bin
+kubectx_bin: kubectx
+kubens_bin: kubens
+
+kubectx_brew: false
+kubectx_brew_package: kubectx
+kubectx_brew_state: latest

@@ -1,0 +1,19 @@
+---
+kubie_v: v0.23.0
+
+kubie_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+kubie_release_base_url: https://github.com/sbstp/kubie/releases/download
+kubie_release_url: "{{ kubie_release_base_url }}/{{ kubie_v }}/kubie-{{ ansible_system | lower }}-{{ kubie_arch }}"
+
+kubie_bin_dst: /usr/local/bin
+kubie_bin: kubie
+
+kubie_brew: false
+kubie_brew_package: kubie
+kubie_brew_state: latest

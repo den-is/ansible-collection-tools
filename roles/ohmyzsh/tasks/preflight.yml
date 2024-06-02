@@ -1,0 +1,18 @@
+- name: Assert omz_update_mode value
+  ansible.builtin.assert:
+    that:
+    - omz_update_mode is defined
+    - omz_update_mode in ['prompt', 'disabled', 'auto', 'reminder']
+    fail_msg: "Invalid omz_update_mode value. Available values: prompt, disabled, auto, reminder."
+
+- name: Assert omz_update_frequency value
+  ansible.builtin.assert:
+    that:
+    - omz_update_frequency is defined
+    - omz_update_frequency is number
+    - omz_update_frequency > 0
+    fail_msg: "Invalid omz_update_frequency value. It must be a number greater than 0."
+
+- name: Set omz_users variable if empty
+  ansible.builtin.set_fact:
+    omz_users: "{{ omz_users | default( [{'name': ansible_user_id}] ) }}"

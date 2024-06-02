@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: '{{ delta_brew_package }}'
+    state: '{{ delta_brew_state }}'
+    update_homebrew: true

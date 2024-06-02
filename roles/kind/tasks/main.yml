@@ -1,0 +1,18 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yml
+  tags:
+  - always
+
+- name: Binary download and installation
+- ansible.builtin.include_tasks: download.yml
+  when:
+  - kind_v is version(current_kind_v, 'ne')
+  - not kind_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yml
+  when:
+  - kind_v is version(current_kind_v, 'ne')
+  - kind_brew
+  - ansible_system == 'Darwin'

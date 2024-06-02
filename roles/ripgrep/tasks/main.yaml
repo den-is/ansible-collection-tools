@@ -1,0 +1,22 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Install ripgrep on a Debian based OS
+  ansible.builtin.include_tasks: debian.yaml
+  when:
+  - not ripgrep_brew_install
+  - ansible_os_family == "Debian"
+
+- name: Install ripgrep on a RedHat based OS
+  ansible.builtin.include_tasks: redhat.yaml
+  when:
+  - not ripgrep_brew_install
+  - ansible_os_family == "RedHat"
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - ripgrep_brew_install
+  - ansible_os_family == "Darwin"

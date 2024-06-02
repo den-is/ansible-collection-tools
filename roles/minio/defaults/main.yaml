@@ -1,0 +1,59 @@
+---
+minio_install_latest: false
+minio_server_v: RELEASE.2024-05-10T01-41-38Z
+minio_client_v: RELEASE.2024-05-09T17-04-24Z
+
+minio_install_server: false
+minio_install_client: true
+
+minio_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+minio_server_url: https://dl.min.io/server/minio/release/{{ ansible_system | lower }}-{{ minio_arch }}/archive/minio{{ "." + minio_server_v if not minio_install_latest else "" }}
+minio_client_url: https://dl.min.io/client/mc/release/{{ ansible_system | lower }}-{{ minio_arch }}/archive/mc{{ "." + minio_client_v if not minio_install_latest else "" }}
+
+minio_server_sha256_url: "{{ minio_server_url }}.sha256sum"
+minio_client_sha256_url: "{{ minio_client_url }}.sha256sum"
+
+minio_bin_dst: /usr/local/bin
+minio_server_bin_dst: "{{ minio_bin_dst }}"
+minio_client_bin_dst: "{{ minio_bin_dst }}"
+
+minio_user: minio
+minio_group: minio
+
+minio_service_state: started
+minio_service_enabled: true
+
+minio_etc_dir: /etc/minio
+minio_cert_dir: "{{ minio_etc_dir }}/certs"
+minio_policy_dir: "{{ minio_etc_dir }}/policy"
+minio_server_datadirs:
+- /var/lib/minio
+
+minio_server_opts: ""
+minio_server_envfile: "{{ minio_etc_dir }}/minio.env"
+minio_server_env_extra: {}
+minio_site_region: ""
+
+minio_server_addr: ""
+minio_server_port: "9000"
+minio_console_port: "9001"
+
+minio_enable_tls: false
+minio_key_b64: ""
+minio_cert_b64: ""
+
+# Omit to use the default values 'minioadmin:minioadmin'
+minio_root_user: ""
+minio_root_password: ""
+
+# MINIO_SERVER_URL https://min.io/docs/minio/linux/reference/minio-server/settings/console.html#server-url
+minio_url: ""
+
+# https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-multi-node-multi-drive.html
+minio_server_cluster_nodes: []

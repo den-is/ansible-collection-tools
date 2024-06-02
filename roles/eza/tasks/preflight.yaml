@@ -1,0 +1,9 @@
+- name: Get currently installed version if any
+  ansible.builtin.shell: eza --version | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"
+  register: check_current_eza_version_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Setting version facts
+  ansible.builtin.set_fact:
+    current_eza_v: "{{ check_current_eza_version_task.stdout | default('v0.0.0', true) }}"

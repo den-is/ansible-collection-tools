@@ -1,0 +1,24 @@
+---
+flux_v: v2.3.0
+
+flux_nov: "{{ flux_v | regex_replace('^v', '') }}"
+
+flux_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+  amd64
+  {%- else -%}
+  {{ ansible_architecture }}
+  {%- endif -%}
+
+flux_release_base_url: https://github.com/fluxcd/flux2/releases/download
+flux_release_url: "{{ flux_release_base_url }}/v{{ flux_nov }}/flux_{{ flux_nov }}_{{ ansible_system | lower }}_{{ flux_arch }}.tar.gz"
+
+flux_archive_download_dst: /tmp
+flux_full_download_path: '{{ flux_archive_download_dst }}/flux_{{ flux_v }}'
+
+flux_bin_dst: /usr/local/bin
+flux_bin: flux
+
+flux_brew: false
+flux_brew_package: fluxcd/tap/flux
+flux_brew_state: latest

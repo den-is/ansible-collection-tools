@@ -1,0 +1,27 @@
+---
+- name: Get latest kubectl version
+  ansible.builtin.set_fact:
+    kubectl_v: "{{ lookup('url', 'https://dl.k8s.io/release/stable.txt') }}"
+  when: kubectl_latest
+
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: 'command -v {{ kubectl_bin }}'
+  register: kubectl_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+# Avoiding jq dependency with -o json output :)
+- name: Get installed version if any
+  ansible.builtin.shell: kubectl version --client -o json | grep -i gitversion | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"
+  register: check_kubectl_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register installed version
+  ansible.builtin.set_fact:
+    installed_kubectl_v: "{{ check_kubectl_v_task.stdout | default('v0.0.0', true) }}"
+    _kubernetes_major_minor_v: "{{ kubectl_v | regex_replace('(v[0-9]+\\.[0-9]+)\\.[0-9]+', '\\1') }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_kubectl_v if check_kubectl_v_task is success else "Not Found" }}'

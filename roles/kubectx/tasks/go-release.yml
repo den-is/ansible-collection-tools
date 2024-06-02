@@ -1,0 +1,32 @@
+---
+- name: Creating extraction dir {{ kubectx_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ kubectx_full_download_path }}'
+    state: directory
+  notify: Clean downloaded artifacts
+
+- name: Getting kubectx {{ kubectx_v }} archive and extracting it to {{ kubectx_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ kubectx_release_url }}'
+    dest: '{{ kubectx_full_download_path }}'
+    remote_src: true
+
+- name: Getting kubens {{ kubectx_v }} archive and extracting it to {{ kubectx_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ kubens_release_url }}'
+    dest: '{{ kubectx_full_download_path }}'
+    remote_src: true
+
+- name: Moving kubectx binary to {{ kubectx_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ kubectx_full_download_path }}/kubectx'
+    dest: '{{ kubectx_bin_dst }}/{{ kubectx_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Moving kubens binary to {{ kubectx_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ kubectx_full_download_path }}/kubens'
+    dest: '{{ kubectx_bin_dst }}/{{ kubens_bin }}'
+    mode: '0755'
+    remote_src: true

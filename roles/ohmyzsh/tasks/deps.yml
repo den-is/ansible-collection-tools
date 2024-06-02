@@ -1,0 +1,40 @@
+- name: Installing dependencies on Linux
+  ansible.builtin.package:
+    name: '{{ item }}'
+    state: present
+  loop:
+  - git
+  - zsh
+  when: ansible_system == 'Linux'
+
+- name: Installing dependencies on MacOS
+  community.general.homebrew:
+    name: '{{ item }}'
+    state: latest
+    update_homebrew: true
+  loop:
+  - git
+  - zsh
+  when: ansible_system == 'Darwin'
+
+- name: Create global fpath directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  become: true
+  loop:
+  - /usr/local/share/zsh
+  - /usr/local/share/zsh/site-functions
+  when: ansible_system != 'Darwin'
+
+- name: Get zsh path
+  ansible.builtin.command: command -v zsh
+  register: get_zsh_path_task
+  changed_when: false
+  failed_when: get_zsh_path_task.rc != 0
+
+- name: Set zsh path fact
+  ansible.builtin.set_fact:
+    zsh_path: '{{ get_zsh_path_task.stdout }}'
+  when: get_zsh_path_task is success

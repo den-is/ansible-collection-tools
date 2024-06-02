@@ -1,0 +1,12 @@
+ripgrep_v: 14.1.0
+
+ripgrep_apt_os_repo: true
+ripgrep_download_base_url: https://github.com/BurntSushi/ripgrep/releases/download
+ripgrep_apt_download_url: "{{ ripgrep_download_base_url }}/{{ ripgrep_v }}/ripgrep_{{ ripgrep_v }}-1_amd64.deb"
+
+ripgrep_brew_package: ripgrep
+ripgrep_brew_install: false
+ripgrep_brew_state: latest
+ripgrep_brew_update: true
+
+ripgrep_uninstall: false

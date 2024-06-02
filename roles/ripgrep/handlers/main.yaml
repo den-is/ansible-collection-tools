@@ -1,0 +1,9 @@
+- name: Remove ripgrep archive
+  ansible.builtin.file:
+    path: /tmp/ripgrep.tar.gz
+    state: absent
+
+- name: Set ripgrep permissions and ownership
+  ansible.builtin.file:
+    path: "{{ ripgrep_bin_dir }}/ripgrep"
+    mode: "0755"
