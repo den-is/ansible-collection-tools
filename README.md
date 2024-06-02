@@ -4,7 +4,7 @@ This Ansible collection automates the installation of various tools, services an
 
 - It includes tools that typically require manual installation or are outdated in OS-native package repositories.
 - This collection is particularly useful for Linux hosts, which often lack these tools or have outdated versions.
--
+
 The roles in this collection are extremely minimalistic and may lack some features compared to more comprehensive roles/collections.
 
 - Linux hosts are the primary target for this collection, followed by macOS.
