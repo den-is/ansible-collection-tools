@@ -1,11 +1,11 @@
 ---
 - name: Preflight preparation
-  include_tasks: preflight.yaml
+  ansible.builtin.include_tasks: preflight.yaml
   tags:
   - always
 
 - name: Binary installation
-  include_tasks: binary.yaml
+  ansible.builtin.include_tasks: binary.yaml
   when:
   - kubectl_v is version(installed_kubectl_v, 'ne')
   - not kubectl_brew

@@ -12,4 +12,4 @@
 
 - name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Current Helm version: {{ installed_helm_v if installed_helm_v != "v0.0.0" else "Not installed"}}'
+    msg: 'Current Helm version: {{ installed_helm_v if helm_check_version_task is success else "Not installed" }}'

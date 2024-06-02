@@ -6,7 +6,7 @@
 
 - name: Seting fact about "{{ omz_user.name }}" user existance
   ansible.builtin.set_fact:
-    target_user_exists: "{{ true if ansible_facts.getent_passwd[omz_user.name] else false}}"
+    target_user_exists: "{{ true if ansible_facts.getent_passwd[omz_user.name] else false }}"
 
 - name: Clonning oh-my-zsh repo for "{{ omz_user.name }}"
   ansible.builtin.git:

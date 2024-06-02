@@ -1,14 +1,14 @@
 ---
 - name: Preflight preparation
-  include_tasks: preflight.yaml
+  ansible.builtin.include_tasks: preflight.yaml
   tags:
   - always
 
 - name: Dependencies installation
-  include_tasks: deps.yaml
+  ansible.builtin.include_tasks: deps.yaml
 
 - name: Oh-my-zsh setup on a Linux host
-  ansbile.builtin.include_tasks: ohmyzsh.yaml
+  ansible.builtin.include_tasks: ohmyzsh.yaml
   loop: "{{ omz_users }}"
   loop_control:
     loop_var: user

@@ -10,6 +10,10 @@
   - ansible_os_family == "Darwin"
 
 - name: Installation from release archive
+  when:
+  - not eza_brew_install
+  - eza_v is version(current_eza_v, 'ne')
+  - not eza_uninstall
   block:
   - name: Download eza archive
     ansible.builtin.get_url:
@@ -24,11 +28,6 @@
     notify:
     - Remove eza archive
     - Set eza permissions and ownership
-
-  when:
-  - not eza_brew_install
-  - eza_v is version(current_eza_v, 'ne')
-  - not eza_uninstall
 
 # completions
 # https://github.com/eza-community/eza/blob/main/INSTALL.md#completions

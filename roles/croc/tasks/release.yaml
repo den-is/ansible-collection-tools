@@ -15,14 +15,14 @@
     until: __croc_checksums is search('croc_' + croc_v + '_' + croc_system + '-' + croc_arch + '.' + croc_archive_ext)
     retries: 10
 
-  - name: "Get checksum for {{ croc_arch }}"
+  - name: Getting checksum
     ansible.builtin.set_fact:
       __croc_checksum: "{{ item.split(' ')[0] }}"
     loop: "{{ __croc_checksums }}"
     when:
     - "('croc_' + croc_v + '_' + croc_system + '-' + croc_arch + '.' + croc_archive_ext) in item"
 
-- name: Getting croc {{ croc_v }} archive
+- name: Getting release archive
   ansible.builtin.get_url:
     url: '{{ croc_release_url }}'
     dest: '{{ croc_archive_download_dst }}/{{ croc_archive_name }}'

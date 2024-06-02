@@ -1,7 +1,7 @@
 ---
 - name: Get checksum
+  when: restic_checksum_verify
   block:
-
   - name: Registering checksums related vars
     ansible.builtin.set_fact:
       __checksums_url: "{{ restic_release_base_url }}/v{{ restic_v }}/SHA256SUMS"
@@ -21,13 +21,12 @@
     loop: "{{ __restic_checksums }}"
     when:
     - "(restic_archive_name) in item"
-  when: restic_checksum_verify
 
 - name: Getting restic release artifact archive
   ansible.builtin.get_url:
     url: '{{ restic_release_url }}'
     dest: '{{ restic_archive_download_dst }}/{{ restic_archive_name }}'
-    checksum: "{{ 'sha256:'+__restic_checksum if restic_checksum_verify else ''}}"
+    checksum: "{{ 'sha256:' + __restic_checksum if restic_checksum_verify else '' }}"
 
 - name: Creating extraction dir {{ restic_extraction_dst }}
   ansible.builtin.file:

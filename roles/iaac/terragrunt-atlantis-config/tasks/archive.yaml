@@ -1,6 +1,6 @@
 ---
 - name: Install unzip
-  package:
+  ansible.builtin.package:
     name: unzip
     state: present
 

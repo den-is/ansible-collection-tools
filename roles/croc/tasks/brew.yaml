@@ -1,4 +1,4 @@
-- name: Brew install croc
+- name: Brew install
   community.general.homebrew:
     name: '{{ croc_brew_package }}'
     state: '{{ croc_brew_state }}'

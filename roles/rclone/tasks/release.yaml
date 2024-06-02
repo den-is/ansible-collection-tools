@@ -1,5 +1,6 @@
 ---
 - name: Get checksum
+  when: rclone_checksum_verify
   block:
 
   - name: Registering checksums related vars
@@ -22,13 +23,11 @@
     when:
     - rclone_archive_name in item
 
-  when: rclone_checksum_verify
-
 - name: Getting rclone release artifact archive
   ansible.builtin.get_url:
     url: '{{ rclone_release_url }}'
     dest: '{{ rclone_archive_download_dst }}/{{ rclone_archive_name }}'
-    checksum: "{{ 'sha256:'+__rclone_checksum if rclone_checksum_verify else ''}}"
+    checksum: "{{ 'sha256:' + __rclone_checksum if rclone_checksum_verify else '' }}"
 
 - name: Creating extraction dir {{ rclone_extraction_dst }}
   ansible.builtin.file:

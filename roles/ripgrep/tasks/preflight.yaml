@@ -10,4 +10,4 @@
 
 - name: Currently installed ripgrep version
   ansible.builtin.debug:
-    msg: "Currently installed ripgrep version: {{ installed_ripgrep_v if installed_ripgrep_v != '0.0.0' else 'Not installed'}}"
+    msg: "Currently installed ripgrep version: {{ installed_ripgrep_v if check_installed_ripgrep_version_task is success else 'Not installed' }}"
