@@ -1,4 +1,5 @@
-# k3d - Easily and securely send things from one computer to another
+# k3d - Little helper to run CNCF's k3s in Docker
 
 ## Links
-- https://github.com/schollz/k3d
+- https://k3d.io
+- https://github.com/k3d-io/k3d
