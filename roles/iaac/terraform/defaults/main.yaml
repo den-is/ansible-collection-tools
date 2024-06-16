@@ -1,5 +1,5 @@
 ---
-terraform_v: "1.8.4"
+terraform_v: "1.8.5"
 
 terraform_arch: |-
   {%- if ansible_architecture == 'x86_64' -%}

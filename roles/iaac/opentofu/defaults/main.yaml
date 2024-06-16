@@ -1,5 +1,5 @@
 ---
-opentofu_v: "v1.7.1"
+opentofu_v: v1.7.2
 
 opentofu_arch: |-
   {%- if ansible_architecture == 'x86_64' -%}

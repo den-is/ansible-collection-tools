@@ -1,5 +1,5 @@
 ---
-helm_v: v3.15.1
+helm_v: v3.15.2
 
 helm_arch: |-
   {%- if ansible_architecture == 'x86_64' -%}

@@ -1,5 +1,5 @@
 ---
-croc_v: "v10.0.7"
+croc_v: v10.0.8
 
 croc_arch_map:
   x86_64: 64bit

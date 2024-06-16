@@ -1,5 +1,5 @@
 ---
-yq_v: "v4.44.1"
+yq_v: "v4.44.2"
 
 yq_arch: |-
   {%- if ansible_architecture == 'x86_64' -%}

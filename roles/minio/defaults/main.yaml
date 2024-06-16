@@ -1,7 +1,7 @@
 ---
 minio_install_latest: false
-minio_server_v: RELEASE.2024-05-10T01-41-38Z
-minio_client_v: RELEASE.2024-05-09T17-04-24Z
+minio_server_v: RELEASE.2024-06-13T22-53-53Z
+minio_client_v: RELEASE.2024-06-12T14-34-03Z
 
 minio_install_server: false
 minio_install_client: true
