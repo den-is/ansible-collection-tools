@@ -1,0 +1,40 @@
+---
+fzf_v: 0.53.0
+
+fzf_git_repo: https://github.com/junegunn/fzf.git
+fzf_git_ref: master # or a tag or "master" for latest
+
+fzf_install_script: true
+fzf_install_script_args: '--all --no-fish'
+fzf_force_install: false
+
+fzf_arch_map:
+  x86_64: amd64
+  i386: 32bit
+  aarch64: arm64
+  armv7l: armv7
+  armv6l: armv6
+
+fzf_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+fzf_arch: "{{ fzf_arch_map[ansible_architecture] }}"
+fzf_system: "{{ fzf_system_map[ansible_system] }}"
+fzf_archive_ext: "{{ 'zip' if fzf_system in ['windows', 'darwin' else 'tar.gz' }}"
+
+fzf_release_base_url: https://github.com/junegunn/fzf/releases/download
+fzf_archive_name: fzf-{{ fzf_v }}-{{ fzf_system }}-{{ fzf_arch }}.{{ fzf_archive_ext }}
+fzf_release_url: '{{ fzf_release_base_url }}/{{ fzf_v }}/{{ fzf_archive_name }}'
+
+fzf_archive_download_dst: /tmp
+fzf_extraction_dst: '{{ fzf_archive_download_dst }}/fzf-{{ fzf_v }}'
+
+# TODO: add support for windows destinations
+fzf_bin_dst: /usr/local/bin
+fzf_bin: fzf
+
+fzf_brew: false
+fzf_brew_package: fzf
+fzf_brew_state: latest

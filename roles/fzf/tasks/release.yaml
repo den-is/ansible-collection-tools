@@ -1,0 +1,54 @@
+---
+# on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+- name: Get checksum
+  block:
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      __checksums_url: "{{ fzf_release_base_url }}/{{ fzf_v }}/fzf_{{ fzf_v }}_checksums.txt"
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __fzf_checksums: "{{ lookup('url', __checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __fzf_checksums is search(fzf_archive_name)
+    retries: 10
+
+  - name: Getting checksum
+    ansible.builtin.set_fact:
+      __fzf_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __fzf_checksums }}"
+    when:
+    - "(fzf_archive_name) in item"
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ fzf_release_url }}'
+    dest: '{{ fzf_archive_download_dst }}/{{ fzf_archive_name }}'
+    checksum: 'sha256:{{ __fzf_checksum }}'
+
+- name: Creating extraction dir {{ fzf_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ fzf_extraction_dst }}'
+    state: directory
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ fzf_archive_download_dst }}/{{ fzf_archive_name }}'
+    dest: '{{ fzf_extraction_dst }}'
+    remote_src: true
+
+- name: Copying binary to {{ fzf_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ fzf_extraction_dst }}/fzf'
+    dest: '{{ fzf_bin_dst }}/{{ fzf_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ fzf_extraction_dst }}'
+  - '{{ fzf_archive_download_dst }}/{{ fzf_archive_name }}'
