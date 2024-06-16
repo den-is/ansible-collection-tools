@@ -1,0 +1,43 @@
+- name: Get HAProxy version if any
+  ansible.builtin.shell: haproxy -v | head -1 | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: check_installed_haproxy_v
+  ignore_errors: true
+  changed_when: false
+  check_mode: false
+
+- name: Get Lua version if any
+  ansible.builtin.shell: luac -v | grep -E -o '[0-9]+\.[0-9]+\.[0-9]+'
+  register: check_installed_lua_v
+  ignore_errors: true
+  changed_when: false
+  check_mode: false
+
+- name: Register preflight facts 1
+  ansible.builtin.set_fact:
+    installed_haproxy_v: '{{ check_installed_haproxy_v.stdout | default("0.0.0", true) }}'
+    installed_lua_v: '{{ check_installed_lua_v.stdout | default("0.0.0", true) }}'
+    haproxy_v_major: '{{ (haproxy_v | string).split(".")[0] }}'
+    haproxy_v_minor: '{{ (haproxy_v | string).split(".")[1] }}'
+
+- name: Register __haproxy_v_major_minor
+  ansible.builtin.set_fact:
+    __haproxy_v_major_minor: '{{ haproxy_v_major }}.{{ haproxy_v_minor }}'
+
+- name: Register __haproxy_src_archive_url
+  ansible.builtin.set_fact:
+    __haproxy_src_archive_url: https://www.haproxy.org/download/{{ __haproxy_v_major_minor }}/src/haproxy-{{ haproxy_v }}.tar.gz
+
+- name: Instaled HAProxy version
+  ansible.builtin.debug:
+    msg: |-
+      Installed HAProxy version: {{ installed_haproxy_v if check_installed_haproxy_v is success else "Not Installed" }}
+
+- name: Load a variable file based on the OS
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+      - "{{ ansible_distribution }}.yaml"
+      - "{{ ansible_os_family }}.yaml"
+      paths:
+      - vars

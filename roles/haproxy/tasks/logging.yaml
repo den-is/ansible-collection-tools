@@ -1,0 +1,68 @@
+- name: Disable journald ForwardToWall
+  when: haproxy_journald_forwardtowall_disabled
+  # TODO: add logic to remove rule if it exists and requested to disable it
+  block:
+  - name: Creating /etc/systemd/journald.conf.d
+    ansible.builtin.file:
+      path: /etc/systemd/journald.conf.d
+      state: directory
+      mode: '0755'
+
+  - name: Adding journald config to disable ForwardToWall
+    ansible.builtin.copy:
+      content: |
+        [Journal]
+        ForwardToWall=no
+      dest: /etc/systemd/journald.conf.d/10-forwardtowall.conf
+      mode: '0644'
+    notify: Restart systemd-journald
+
+- name: Adding rsyslog RPM repo
+  ansible.builtin.get_url:
+    url: "{{ haproxy_rsyslog_rpm_repo_url }}"
+    dest: /etc/yum.repos.d/rsyslog.repo
+    mode: "0644"
+  when:
+  - haproxy_rsyslog_rpm_repo_enabled
+  - ansible_os_family == "RedHat"
+
+- name: Installing rsyslog
+  ansible.builtin.package:
+    name: rsyslog
+    state: present
+
+- name: Managing rsyslog service
+  ansible.builtin.service:
+    name: rsyslog
+    state: "{{ haproxy_rsyslog_service_state }}"
+    enabled: "{{ haproxy_rsyslog_service_enabled }}"
+
+- name: Installing logrorate
+  ansible.builtin.package:
+    name: logrotate
+    state: present
+
+- name: Adding rsyslog config for HAProxy
+  ansible.builtin.copy:
+    src: "{{ haproxy_rsyslog_conf_file }}"
+    dest: /etc/rsyslog.d/49-haproxy.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+  - Restart Rsyslog service
+  when: haproxy_compile or haproxy_force_rsyslog_conf
+
+- name: Adding logrotate config for HAProxy
+  ansible.builtin.copy:
+    src: "{{ haproxy_logrotate_conf_file }}"
+    dest: /etc/logrotate.d/haproxy
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+  - Restart Rsyslog service
+  when: haproxy_compile or haproxy_force_logrotate_conf
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

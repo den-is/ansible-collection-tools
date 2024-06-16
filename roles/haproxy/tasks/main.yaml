@@ -1,0 +1,46 @@
+- name: Preflight preparation
+  ansible.builtin.import_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  when:
+  - ansible_os_family == 'Debian'
+
+- name: Sysctl tweaks
+  ansible.builtin.include_tasks: tweaks.yaml
+  when: haproxy_apply_sysctl_tweaks
+
+- name: Run logging related tasks
+  ansible.builtin.include_tasks: logging.yaml
+
+- name: Install HAProxy from package on Debian
+  ansible.builtin.include_tasks: debian-apt.yaml
+  when:
+  - not haproxy_compile
+  - ansible_distribution == 'Debian'
+
+- name: Install HAProxy from package on Ubuntu
+  ansible.builtin.include_tasks: ubuntu-apt.yaml
+  when:
+  - not haproxy_compile
+  - ansible_distribution == 'Ubuntu'
+
+- name: Pre-compilation tasks
+  ansible.builtin.include_tasks: pre-compile.yaml
+  when: haproxy_compile
+
+- name: Compile HAProxy
+  ansible.builtin.include_tasks: compile.yaml
+  when: haproxy_compile
+
+- name: Configure HAProxy
+  ansible.builtin.include_tasks: config.yaml
+
+- name: Manage haproxy.service
+  ansible.builtin.systemd_service:
+    name: haproxy
+    state: '{{ haproxy_service_status }}'
+    enabled: '{{ haproxy_service_enabled }}'

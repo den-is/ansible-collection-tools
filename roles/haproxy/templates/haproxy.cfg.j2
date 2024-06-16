@@ -1,0 +1,45 @@
+# {{ ansible_managed }}
+global
+  daemon
+  log /dev/log local0
+  log /dev/log local1 notice
+  chroot  {{ haproxy_chroot_dir }}
+  user    haproxy
+  group   haproxy
+  maxconn {{ maxconn }}
+  stats   timeout 30s
+{% if __haproxy_v_major_minor is version('2.5', '<') %}
+  stats   bind-process {{ ansible_processor_cores }}
+{% endif %}
+  stats   {{ haproxy_stats_socket_conf }}
+{% for global_config_line in haproxy_global_conf_extra %}
+  {{ global_config_line }}
+{% endfor %}
+
+defaults
+  log     global
+  mode    http
+  timeout connect 5000
+  timeout client 50000
+  timeout server 50000
+  option  forwardfor
+  option  http-server-close
+  option  httplog
+  option  dontlognull
+  option  redispatch
+
+{% haproxy_prometheus_metrics_enabled %}
+frontend prometheus
+  bind {{ haproxy_prometheus_metrics_address }}:{{ haproxy_prometheus_metrics_port }}
+  mode http
+  http-request use-service prometheus-exporter if { path {{ haproxy_prometheus_metrics_url_path }} }
+  no log
+{% endif %}
+
+listen stats
+  bind  *:9000
+  mode  http
+  stats enable
+  stats show-node
+  stats realm Haproxy\ Statistics
+  stats uri /

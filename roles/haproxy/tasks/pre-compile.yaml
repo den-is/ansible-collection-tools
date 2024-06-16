@@ -1,0 +1,74 @@
+- name: Add haproxy group
+  group:
+    name: haproxy
+    system: true
+
+- name: Add haproxy user
+  user:
+    name: haproxy
+    comment: HAProxy user
+    group: haproxy
+    home: "{{ haproxy_chroot_dir }}"
+    shell: /usr/sbin/nologin
+    system: true
+
+- name: Installing compilation dependencies on Debian based OS
+  ansible.builtin.package:
+    name: '{{ item }}'
+    state: latest
+  loop: '{{ __haproxy_compilation_deps }}'
+  when:
+  - ansible_os_family == "Debian"
+
+- name: Installing required packages on RedHat
+  when:
+  - ansible_os_family == 'RedHat'
+  block:
+  - name: Installing EPEL RPM repo
+    ansible.builtin.package:
+      name: "{{ item }}"
+      state: present
+    loop:
+    - epel-release
+    - epel-next-release
+
+  - name: Installing compilation dependencies on RedHat based OS
+    ansible.builtin.package:
+      name: "{{ item }}"
+      state: present
+    loop: '{{ __haproxy_compilation_deps }}'
+
+- name: Install Lua
+  ansible.builtin.import_tasks: lua.yaml
+  when:
+  - compile_lua
+  - lua_version is version(installed_lua_v, '>')
+
+- name: Ensure HAProxy dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+  - /etc/haproxy
+  - '{{ haproxy_chroot_dir }}'
+  - '{{ haproxy_chroot_dir }}/dev'
+
+- name: Ensure HAProxy runtime dir
+  ansible.builtin.file:
+    path: /run/haproxy
+    state: directory
+    owner: haproxy
+    group: haproxy
+    mode: '0755'
+
+- name: Create tmpfiles.d/haproxy.conf
+  ansible.builtin.copy:
+    content: |-
+      d /run/haproxy 2775 haproxy haproxy -
+    dest: /usr/lib/tmpfiles.d/haproxy.conf
+    owner: root
+    group: root
+    mode: '0644'

@@ -1,0 +1,60 @@
+- name: Set limits.conf
+  ansible.builtin.copy:
+    content: |
+      *               soft    nofile  {{ maxconn * ansible_processor_cores }}
+      *               hard    nofile  {{ maxconn * ansible_processor_cores }}
+      root            soft    nofile  {{ maxconn * ansible_processor_cores }}
+      root            hard    nofile  {{ maxconn * ansible_processor_cores }}
+    dest: /etc/security/limits.d/10-nofile.conf
+  notify:
+  - Restart host
+  - Wait for host after restart
+
+- name: sysctl fs.nr_open
+  ansible.posix.sysctl:
+    name: fs.nr_open
+    state: present
+    value: '{{ file_max | string }}'
+    reload: true
+
+- name: sysctl fs.file-max
+  ansible.posix.sysctl:
+    name: fs.file-max
+    state: present
+    value: '{{ file_max }}'
+    reload: true
+
+- name: sysctl net.core.somaxconn
+  ansible.posix.sysctl:
+    name: net.core.somaxconn
+    state: present
+    value: '{{ somaxconn | string }}'
+    reload: true
+
+- name: sysctl net.ipv4.ip_nonlocal_bind
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_nonlocal_bind
+    state: present
+    value: '1'
+    reload: true
+
+- name: sysctl net.ipv4.tcp_max_syn_backlog
+  ansible.posix.sysctl:
+    name: net.ipv4.tcp_max_syn_backlog
+    state: present
+    value: '{{ tcp_max_syn_backlog | string }}'
+    reload: true
+
+- name: sysctl net.core.netdev_max_backlog
+  ansible.posix.sysctl:
+    name: net.core.netdev_max_backlog
+    state: present
+    value: '{{ netdev_max_backlog | string }}'
+    reload: true
+
+- name: sysctl net.ipv4.ip_local_port_range
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_local_port_range
+    state: present
+    value: '{{ ip_local_port_range }}'
+    reload: true

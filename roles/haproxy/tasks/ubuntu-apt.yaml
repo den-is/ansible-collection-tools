@@ -1,0 +1,17 @@
+- name: Installing required packages on Ubuntu
+  ansible.builtin.package:
+    name: software-properties-common
+    state: present
+
+- name: Adding HAProxy repository for Ubuntu
+  ansible.builtin.apt_repository:
+    repo: 'ppa:vbernat/haproxy-{{ __haproxy_v_major_minor }}'
+    state: present
+    validate_certs: false
+
+- name: Installing HAProxy on Ubuntu
+  ansible.builtin.apt:
+    name: haproxy={{ haproxy_apt_package_v }}
+    state: present
+  notify:
+  - Restart HAProxy service

@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+#
+# HAProxy configuration variables
+# Add extra options to the haproxy daemon here. This can be useful for
+# specifying multiple configuration files with multiple -f options.
+# See haproxy(1) for a complete list of options.
+#
+# This is sourced by both, the initscript and the systemd unit file, so do not
+# treat it as a shell script fragment.
+
+# Change the config file location if needed
+#CONFIG="/etc/haproxy/haproxy.cfg"
+
+# Add extra flags here, see haproxy(1) for a few options
+#EXTRAOPTS="-de -m 16"
+
+# old config
+# OPTIONS=""
+# RELOADOPTS="-x {{ haproxy_stats_socket_path }}"
+
+{{ haproxy_sysconfig_content }}

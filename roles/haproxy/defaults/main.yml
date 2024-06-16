@@ -1,0 +1,61 @@
+haproxy_v: 3.0.2
+haproxy_apt_package_v: "{{ haproxy_v }}*"
+
+### HAProxy systemd service ====================================================
+haproxy_service_status: started
+haproxy_service_enabled: true
+haproxy_service_extra_args: ""
+haproxy_sysconfig_content: ""
+
+## Haproxy config template vars ================================================
+haproxy_override_default_cfg: false
+haproxy_cfg_template_file: haproxy.cfg.j2
+haproxy_stats_socket_path: /run/haproxy/admin.sock
+haproxy_stats_socket_conf: socket {{ haproxy_stats_socket_path }} mode 660 level admin
+haproxy_global_conf_extra: []
+
+### Logging related configs ====================================================
+haproxy_rsyslog_rpm_repo_enabled: true
+haproxy_rsyslog_rpm_repo_url: http://rpms.adiscon.com/v8-stable/rsyslog.repo
+haproxy_rsyslog_service_state: started
+haproxy_rsyslog_service_enabled: true
+haproxy_journald_forwardtowall_disabled: true
+haproxy_rsyslog_conf_file: rsyslog.conf
+haproxy_logrotate_conf_file: logratate.conf
+# override package provided files with config included in this role
+haproxy_force_rsyslog_conf: true
+haproxy_force_logrotate_conf: true
+
+## Prometheus metrics ==========================================================
+haproxy_prometheus_metrics_enabled: false
+haproxy_prometheus_metrics_address: "*"
+haproxy_prometheus_metrics_port: 8405
+haproxy_prometheus_metrics_url_path: "/metrics"
+
+
+### sysctl tweaks ==============================================================
+haproxy_apply_sysctl_tweaks: false
+haproxy_sysctl_tweaks_restart: true
+
+maxconn: 200000
+file_max: 9999999
+somaxconn: 65535
+tcp_max_syn_backlog: 20480
+netdev_max_backlog: 4096
+ip_local_port_range: 10000 65535
+
+### Lua compilation ============================================================
+compile_lua: false
+lua_version: 5.4.6
+lua_url: https://www.lua.org/ftp/lua-{{ lua_version }}.tar.gz
+lua_prefix: /usr/local
+lua_make_extra_opts: ''
+# lua_extra_opts: 'INSTALL_MAN=/usr/share/man/man1'
+
+### HAProxy Compilation ==================================================================
+haproxy_compile: false
+haproxy_compile_cleanup: true
+haproxy_prefix: /usr
+haproxy_chroot_dir: /var/lib/haproxy
+haproxy_compile_cmd: make -j $(nproc) TARGET=linux-glibc USE_OPENSSL=1 USE_LUA=1 USE_PCRE2_JIT=1 USE_SYSTEMD=1 USE_ZLIB=1
+haproxy_compile_cmd_extra: ''

@@ -29,7 +29,7 @@
   when: ansible_system != 'Darwin'
 
 - name: Get zsh path
-  ansible.builtin.command: command -v zsh
+  ansible.builtin.shell: command -v zsh
   register: get_zsh_path_task
   changed_when: false
   failed_when: get_zsh_path_task.rc != 0

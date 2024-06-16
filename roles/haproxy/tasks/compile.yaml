@@ -1,0 +1,31 @@
+- name: Create HAProxy temp src dir
+  ansible.builtin.file:
+    path: /tmp/haproxy-{{ haproxy_v }}
+    state: directory
+    mode: '0755'
+
+- name: Getting HAProxy source for {{ haproxy_v }}
+  ansible.builtin.unarchive:
+    src: '{{ __haproxy_src_archive_url }}'
+    dest: /tmp/haproxy-{{ haproxy_v }}
+    remote_src: true
+    extra_opts:
+    - --strip-components=1
+
+- name: Make clean
+  ansible.builtin.shell: make clean
+  args:
+    chdir: /tmp/haproxy-{{ haproxy_v }}
+
+- name: Make
+  ansible.builtin.shell: "{{ haproxy_compile_cmd }} {{ haproxy_compile_cmd_extra }}"
+  args:
+    chdir: /tmp/haproxy-{{ haproxy_v }}
+    creates: '{{ haproxy_prefix }}/sbin/haproxy'
+
+- name: Make install
+  ansible.builtin.command: make install PREFIX={{ haproxy_prefix }} DOCDIR={{ haproxy_prefix }}/share/doc/haproxy
+  args:
+    chdir: /tmp/haproxy-{{ haproxy_v }}
+    creates: '{{ haproxy_prefix }}/sbin/haproxy'
+  notify: Remove HAProxy src dir

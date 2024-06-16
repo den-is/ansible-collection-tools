@@ -1,0 +1,30 @@
+- name: Put sysconfig file
+  ansible.builtin.template:
+    src: haproxy.sysconfig.j2
+    dest: "{{ __haproxy_default_sysconfig_dir }}/haproxy"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install haproxy.service
+  ansible.builtin.template:
+    src: haproxy.service.j2
+    dest: /etc/systemd/system/haproxy.service
+    owner: root
+    group: root
+    mode: '0644'
+  register: installed_haproxy_service
+  notify:
+  - Reload systemd
+  - Restart HAProxy service
+  when: haproxy_compile
+
+- name: Put haproxy.cfg
+  ansible.builtin.template:
+    src: "{{ haproxy_cfg_template_file }}"
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart HAProxy service
+  when: haproxy_override_default_cfg or haproxy_compile

@@ -5,7 +5,7 @@ overwrite_zshrc: false
 omz_branch: master
 
 omz_theme: robbyrussell
-# zsh_theme: fishy
+# omz_theme: fishy
 
 omz_plugins:
 - git
