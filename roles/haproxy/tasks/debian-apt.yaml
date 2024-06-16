@@ -1,0 +1,25 @@
+- name: Install required packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+  loop:
+  - curl
+  - ca-certificates
+  - gnupg2
+
+- name: HAProxy GPG signing key
+  ansible.builtin.shell: curl -fsSL https://haproxy.debian.net/bernat.debian.org.gpg | gpg --dearmor -o /usr/share/keyrings/haproxy.debian.net.gpg
+  args:
+    creates: /usr/share/keyrings/haproxy.debian.net.gpg
+
+- name: Adding HAProxy repo
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/usr/share/keyrings/haproxy.debian.net.gpg] http://haproxy.debian.net {{ ansible_distribution_release | lower }}-backports-{{ __haproxy_v_major_minor }} main
+    state: present
+    filename: haproxy
+
+- name: Install HAProxy {{ haproxy_v }}
+  ansible.builtin.apt:
+    name: haproxy={{ haproxy_apt_package_v }}
+    update_cache: true
+  notify:
+  - Restart HAProxy service

@@ -1,0 +1,46 @@
+- name: Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Restart systemd-journald
+  ansible.builtin.systemd_service:
+    name: systemd-journald
+    state: restarted
+
+- name: Restart HAProxy service
+  ansible.builtin.systemd_service:
+    name: haproxy
+    state: '{{ "restarted" if haproxy_service_status in ["started", "restarted"] else haproxy_service_status }}'
+
+- name: Restart Rsyslog service
+  ansible.builtin.systemd_service:
+    name: rsyslog
+    state: '{{ "restarted" if haproxy_rsyslog_service_state in ["started", "restarted"] else haproxy_rsyslog_service_state }}'
+
+- name: Restart host
+  ansible.builtin.shell: sleep 5; reboot "Restart initiated by Ansible"
+  async: 1
+  poll: 0
+  when: haproxy_sysctl_tweaks_restart
+
+- name: Wait for host after restart
+  ansible.builtin.wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 10
+    timeout: 60
+  when: haproxy_sysctl_tweaks_restart
+
+- name: Remove Lua src dir
+  ansible.builtin.file:
+    path: /tmp/lua-{{ lua_version }}
+    state: absent
+    force: true
+  when: haproxy_compile_cleanup
+
+- name: Remove HAProxy src dir
+  ansible.builtin.file:
+    path: /tmp/haproxy-{{ haproxy_v }}
+    state: absent
+    force: true
+  when: haproxy_compile_cleanup

@@ -1,0 +1,11 @@
+__haproxy_compilation_deps:
+- gcc
+- make
+- openssl-devel
+# - pcre-devel # old ?
+- pcre2-devel # 3.0.0?
+- readline-devel
+- systemd-devel
+- zlib-devel
+
+__haproxy_default_sysconfig_dir: /etc/sysconfig

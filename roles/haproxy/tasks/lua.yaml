@@ -1,0 +1,20 @@
+- name: Create Lua src dir
+  ansible.builtin.file:
+    path: /tmp/lua-{{ lua_version }}
+    state: directory
+    mode: '0755'
+
+- name: Downloading and untaring Lua {{ lua_version }}
+  ansible.builtin.unarchive:
+    src: '{{ lua_url }}'
+    dest: /tmp/lua-{{ lua_version }}
+    remote_src: true
+    extra_opts:
+    - --strip-components=1
+
+- name: Make install Lua
+  ansible.builtin.command: make linux install INSTALL_TOP={{ lua_prefix }} {{ lua_make_extra_opts }}
+  args:
+    chdir: /tmp/lua-{{ lua_version }}
+    creates: '{{ lua_prefix }}/bin/lua'
+  notify: Remove Lua src dir

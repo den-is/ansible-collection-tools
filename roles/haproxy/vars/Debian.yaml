@@ -1,0 +1,10 @@
+__haproxy_compilation_deps:
+- gcc
+- make
+- libssl-dev
+- libpcre3-dev
+- libreadline-dev
+- lbsystemd-dev
+- zlib1g-dev
+
+__haproxy_default_sysconfig_dir: /etc/default
