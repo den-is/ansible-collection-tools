@@ -1,0 +1,29 @@
+---
+k3d_v: v5.6.3
+
+k3d_arch_map:
+  x86_64: amd64
+  i386: 386
+  aarch64: arm64
+  armv7l: arm
+  armv6l: arm
+
+k3d_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+k3d_arch: "{{ k3d_arch_map[ansible_architecture] }}"
+k3d_system: "{{ k3d_system_map[ansible_system] }}"
+
+k3d_release_base_url: https://github.com/k3d-io/k3d/releases/download
+k3d_artifact_name: k3d-{{ k3d_system }}-{{ k3d_arch }}{{ '.exe' if ansible_system == 'Win32NT' }}
+k3d_release_url: '{{ k3d_release_base_url }}/{{ k3d_v }}/{{ k3d_archive_name }}'
+
+# TODO: add support for windows destinations
+k3d_bin_dst: /usr/local/bin
+k3d_bin: k3d
+
+k3d_brew: false
+k3d_brew_package: k3d
+k3d_brew_state: latest

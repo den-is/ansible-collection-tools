@@ -1,0 +1,18 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - k3d_v is version(installed_k3d_v, 'ne')
+  - not k3d_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - k3d_v is version(installed_k3d_v, 'ne')
+  - k3d_brew
+  - ansible_system == 'Darwin'

@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: '{{ k3d_brew_package }}'
+    state: '{{ k3d_brew_state }}'
+    update_homebrew: true
