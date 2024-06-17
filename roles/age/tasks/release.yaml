@@ -24,6 +24,13 @@
     mode: '0755'
     remote_src: true
 
+- name: Copying binary to {{ age_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ age_extraction_dst }}/age-keygen'
+    dest: '{{ age_bin_dst }}/age-keygen'
+    mode: '0755'
+    remote_src: true
+
 - name: Deleting downloaded artifacts
   ansible.builtin.file:
     path: '{{ item }}'
