@@ -1,0 +1,28 @@
+---
+age_v: v1.2.0
+
+age_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+age_system_map:
+  Darwin: darwin
+  Linux: linux
+
+age_arch: "{{ age_arch_map[ansible_architecture] }}"
+age_system: "{{ age_system_map[ansible_system] }}"
+
+age_release_base_url: https://github.com/FiloSottile/age/releases/download
+age_archive_name: age-{{ age_v }}-{{ age_system }}-{{ age_arch }}.tar.gz
+age_release_url: '{{ age_release_base_url }}/{{ age_v }}/{{ age_archive_name }}'
+
+age_archive_download_dst: /tmp
+age_extraction_dst: '{{ age_archive_download_dst }}/age-{{ age_v }}'
+
+# TODO: add support for windows destinations
+age_bin_dst: /usr/local/bin
+age_bin: age
+
+age_brew: false
+age_brew_package: age
+age_brew_state: latest

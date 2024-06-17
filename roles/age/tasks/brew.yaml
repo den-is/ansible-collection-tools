@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: '{{ age_brew_package }}'
+    state: '{{ age_brew_state }}'
+    update_homebrew: true

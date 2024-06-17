@@ -1,0 +1,33 @@
+---
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ age_release_url }}'
+    dest: '{{ age_archive_download_dst }}/{{ age_archive_name }}'
+    checksum: 'sha256:{{ __age_checksum }}'
+
+- name: Creating extraction dir {{ age_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ age_extraction_dst }}'
+    state: directory
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ age_archive_download_dst }}/{{ age_archive_name }}'
+    dest: '{{ age_extraction_dst }}'
+    remote_src: true
+
+- name: Copying binary to {{ age_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ age_extraction_dst }}/age'
+    dest: '{{ age_bin_dst }}/{{ age_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ age_extraction_dst }}'
+  - '{{ age_archive_download_dst }}/{{ age_archive_name }}'
