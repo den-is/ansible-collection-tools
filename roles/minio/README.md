@@ -2,9 +2,9 @@
 
 Install MinIO server, MinIO client tool or both.
 
-"Direct binary installation" is a preffered setup method.
+⚠️"Direct binary installation" is a preffered setup method.
 
-Packages installation is not fully tested.
+⚠️ Packages installation is not fully tested.
 
 ## MinIO versioning
 At the moment of writing MinIO is using ugly and inadequeate versioning.
