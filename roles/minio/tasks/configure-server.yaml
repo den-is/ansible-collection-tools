@@ -1,8 +1,37 @@
 ---
-- name: Set minio URL if not defined
-  ansible.builtin.set_fact:
-    minio_url: "{{ 'https' if minio_enable_tls else 'http' }}://{{ minio_server_address | default('127.0.0.1') }}:{{ minio_server_port }}"
-  when: minio_url | length == 0
+- name: Create Minio group
+  ansible.builtin.group:
+    name: "{{ minio_group }}"
+    state: present
+    system: true
+
+- name: Create Minio user
+  ansible.builtin.user:
+    name: "{{ minio_user }}"
+    group: "{{ minio_group }}"
+    system: true
+    shell: /usr/sbin/nologin
+
+- name: Create Minio config dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ minio_user }}"
+    group: "{{ minio_group }}"
+    mode: "0750"
+  loop:
+  - "{{ minio_etc_dir }}"
+  - "{{ minio_cert_dir }}"
+  - "{{ minio_policy_dir }}"
+
+- name: Create Minio data storage dirs
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ minio_user }}"
+    group: "{{ minio_group }}"
+    mode: "0750"
+  loop: "{{ minio_server_datadirs }}"
 
 - name: Generate the Minio server envfile
   ansible.builtin.template:

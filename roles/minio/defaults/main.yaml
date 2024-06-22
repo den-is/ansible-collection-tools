@@ -1,21 +1,67 @@
----
-minio_install_latest: false
-minio_server_v: RELEASE.2024-06-13T22-53-53Z
-minio_client_v: RELEASE.2024-06-12T14-34-03Z
-
 minio_install_server: false
 minio_install_client: true
 
-minio_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
+minio_install_latest: false
+minio_install_packages: false
+
+## But what if we need to check versions of Minio server and client for all installation cases, binary, rpm, deb?
+## RPM and DEB filename are completely distinct from the binary filename, and RPM differs from DEB package name
+## also Client package names differ!
+minio_server_v: minio.RELEASE.2024-06-13T22-53-53Z
+minio_client_v: mc.RELEASE.2024-06-12T14-34-03Z
+
+__minio_server_artifact: >-
+  {%- if minio_install_latest -%}
+    {%- if minio_install_packages -%}
+      {%- if ansible_system == "Linux" -%}
+        {%- if ansible_os_family == "Debian" -%}
+          minio.deb
+        {%- elif ansible_os_family == "RedHat" -%}
+          minio.rpm
+        {%- endif -%}
+      {%- endif -%}
+    {%- else -%}
+      minio
+    {%- endif -%}
   {%- else -%}
-  {{ ansible_architecture }}
+    {{ minio_server_v }}
   {%- endif -%}
 
-minio_server_url: https://dl.min.io/server/minio/release/{{ ansible_system | lower }}-{{ minio_arch }}/archive/minio{{ "." + minio_server_v if not minio_install_latest else "" }}
-minio_client_url: https://dl.min.io/client/mc/release/{{ ansible_system | lower }}-{{ minio_arch }}/archive/mc{{ "." + minio_client_v if not minio_install_latest else "" }}
+__minio_client_artifact: >-
+  {%- if minio_install_latest -%}
+    {%- if minio_install_packages -%}
+      {%- if ansible_system == "Linux" -%}
+        {%- if ansible_os_family == "Debian" -%}
+          mc.deb
+        {%- elif ansible_os_family == "RedHat" -%}
+          mc.rpm
+        {%- endif -%}
+      {%- endif -%}
+    {%- else -%}
+      mc
+    {%- endif -%}
+  {%- else -%}
+    {{ minio_client_v }}
+  {%- endif -%}
 
+minio_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+  armv7l: arm
+  armv6l: arm
+
+minio_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+minio_arch: "{{ minio_arch_map[ansible_architecture] }}"
+minio_system: "{{ minio_system_map[ansible_system] }}"
+
+minio_server_url: https://dl.min.io/server/minio/release/{{ minio_system }}-{{ minio_arch }}/archive/{{ __minio_client_artifact }}
+minio_client_url: https://dl.min.io/client/mc/release/{{ minio_system }}-{{ minio_arch }}/archive/{{ __minio_client_artifact }}
+
+minio_validate_checksum: true
 minio_server_sha256_url: "{{ minio_server_url }}.sha256sum"
 minio_client_sha256_url: "{{ minio_client_url }}.sha256sum"
 
@@ -51,9 +97,6 @@ minio_cert_b64: ""
 # Omit to use the default values 'minioadmin:minioadmin'
 minio_root_user: ""
 minio_root_password: ""
-
-# MINIO_SERVER_URL https://min.io/docs/minio/linux/reference/minio-server/settings/console.html#server-url
-minio_url: ""
 
 # https://min.io/docs/minio/linux/operations/install-deploy-manage/deploy-minio-multi-node-multi-drive.html
 minio_server_cluster_nodes: []

@@ -1,7 +1,66 @@
 ---
-- name: Get installed Minio Client version if any
-  ansible.builtin.shell: mc --version | head -1 | cut -d " " -f 3
+- name: Check if Minio Server command exists
+  ansible.builtin.shell: 'command -v minio'
+  register: check_cmd_minio
+  ignore_errors: true
+  changed_when: false
+
+- name: Check if Minio Client command "mc" exists
+  ansible.builtin.shell: command -v mc
+  register: check_cmd_mc
+  ignore_errors: true
+  changed_when: false
+
+- name: Check if Minio Client command "mcli" exists
+  ansible.builtin.shell: command -v mcli
+  register: check_cmd_mcli
+  ignore_errors: true
+  changed_when: false
+
+- name: Set Minio Client command (mc or mcli)
+  ansible.builtin.set_fact:
+    __minio_client_installed_cmd: |-
+      {%- if check_cmd_mcli.rc == 0 -%}
+        {{ check_cmd_mcli.stdout }}
+      {%- elif check_cmd_mc.rc == 0 -%}
+        {{ check_cmd_mc.stdout }}
+      {%- else -%}
+        mc
+      {%- endif -%}
+
+- name: Query RPM for Minio Client package
+  ansible.builtin.shell: rpm -q mcli
+  register: check_rpm_mcli_v_task
+  ignore_errors: true
+  changed_when: false
+  when:
+  - minio_install_packages
+  - ansible_os_family == "RedHat"
+
+- name: Query DEB for Minio Client package
+  ansible.builtin.shell: dpkg-query --showformat='${Version}' --show mcli
+  register: check_deb_mcli_v_task
+  ignore_errors: true
+  changed_when: false
+  when:
+  - minio_install_packages
+  - ansible_os_family == "Debian"
+
+- name: Get installed Minio Client version if any (either mc or mcli)
+  ansible.builtin.shell: '{{ __minio_client_installed_cmd }} --version | head -1 | cut -d " " -f 3'
   register: check_mc_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Get numerical Minio Client version
+  ansible.builtin.shell: "{{ __minio_client_installed_cmd }} --version | head -1 | cut -d ' ' -f 3 | sed 's/[^0-9]*//g'"
+  register: check_mc_num_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Get numerical Minio Server version
+  ansible.builtin.shell: minio --version | head -1 | cut -d " " -f 3 | sed 's/[^0-9]*//g'
+  register: check_minio_num_v_task
   ignore_errors: true
   changed_when: false
 
