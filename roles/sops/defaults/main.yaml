@@ -1,0 +1,28 @@
+---
+sops_v: v3.8.1
+
+sops_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+sops_system_map:
+  Darwin: darwin
+  Linux: linux
+
+sops_install_from_package: true
+# deb or rpm
+
+sops_arch: "{{ sops_arch_map[ansible_architecture] }}"
+sops_system: "{{ sops_system_map[ansible_system] }}"
+
+sops_release_base_url: https://github.com/getsops/sops/releases/download
+
+sops_binary_artifact_name: sops-{{ sops_v }}.{{ sops_system }}.{{ sops_arch }}
+sops_release_url: '{{ sops_release_base_url }}/{{ sops_v }}/{{ sops_binary_artifact_name }}'
+
+sops_bin_dst: /usr/local/bin
+sops_bin: sops
+
+sops_brew: false
+sops_brew_package: sops
+sops_brew_state: latest
