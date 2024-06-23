@@ -1,14 +1,17 @@
----
-- name: Release artifact installation
-  ansible.builtin.include_tasks: release.yaml
+- name: Installing kube-ps1 from GitHub
+  ansible.builtin.get_url:
+    url: '{{ kubeps1_release_url }}'
+    dest: '{{ kubeps1_bin_dst }}/{{ kubeps1_bin }}'
+    force: '{{ kubeps1_force_reinstall }}'
   when:
-  - kubeps1_v is version(installed_kubeps1_v, 'ne')
   - not kubeps1_brew
 
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
+- name: Brew install kube-ps1
+  community.general.homebrew:
+    name: '{{ kubeps1_brew_package }}'
+    state: '{{ kubeps1_brew_state }}'
+    update_homebrew: true
   when:
-  - kubeps1_v is version(installed_kubeps1_v, 'ne')
   - kubeps1_brew
   - ansible_system == 'Darwin'
 

@@ -1,5 +1,0 @@
-- name: Brew install kube-ps1
-  community.general.homebrew:
-    name: '{{ kubeps1_brew_package }}'
-    state: '{{ kubeps1_brew_state }}'
-    update_homebrew: true
