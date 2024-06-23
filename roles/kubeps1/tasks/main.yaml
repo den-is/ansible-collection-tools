@@ -1,0 +1,28 @@
+---
+- name: Release artifact installation
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - kubeps1_v is version(installed_kubeps1_v, 'ne')
+  - not kubeps1_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - kubeps1_v is version(installed_kubeps1_v, 'ne')
+  - kubeps1_brew
+  - ansible_system == 'Darwin'
+
+- name: Instructions
+  ansible.builtin.debug:
+    msg: |
+      To activate kube-ps1.sh
+
+      Zsh:
+          source /path/to/kube-ps1.sh
+          PROMPT='$(kube_ps1)'$PROMPT # or RPROMPT='$(kube_ps1)'
+
+      Bash:
+          source /path/to/kube-ps1.sh
+          PS1='[\u@\h \W $(kube_ps1)]\$ '
+
+      For more information, visit https://github.com/jonmosco/kube-ps1

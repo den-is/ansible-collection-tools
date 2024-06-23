@@ -1,0 +1,12 @@
+---
+kubeps1_v: master
+kubeps1_force_reinstall: false
+
+kubeps1_release_url: https://github.com/jonmosco/kube-ps1/raw/{{ kubeps1_v }}/kube-ps1.sh
+
+kubeps1_bin_dst: /usr/local/bin
+kubeps1_bin: kube-ps1.sh
+
+kubeps1_brew: false
+kubeps1_brew_package: kube-ps1
+kubeps1_brew_state: latest
