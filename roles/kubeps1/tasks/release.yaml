@@ -1,5 +1,5 @@
 ---
-- name: Installing kubeps1
+- name: Installing kube-ps1
   ansible.builtin.get_url:
     url: '{{ kubeps1_release_url }}'
     dest: '{{ kubeps1_bin_dst }}/{{ kubeps1_bin }}'
