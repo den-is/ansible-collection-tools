@@ -1,14 +1,10 @@
----
-yq_v: "v4.44.2"
+yq_v: v4.44.2
 
-yq_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- elif ansible_architecture == 'aarch64' -%}
-  arm64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+yq_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+yq_arch: "{{ yq_arch_map[ansible_architecture] }}"
 
 yq_release_base_url: https://github.com/mikefarah/yq/releases/download
 yq_release_url: '{{ yq_release_base_url }}/{{ yq_v }}/yq_{{ ansible_system | lower }}_{{ yq_arch }}'

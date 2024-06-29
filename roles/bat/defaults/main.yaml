@@ -1,17 +1,14 @@
----
 bat_v: "0.24.0"
 
 # bat GNU, otherwise MUSL
 bat_gnu: true
 # many more to options to consider there are all sorts of platforms, architectures, and OS
 
-bat_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+bat_arch_map:
+  x86_64: amd64
+  aarch64: arm64
 
+bat_arch: "{{ bat_arch_map[ansible_architecture] }}"
 
 bat_install_deb: true
 bat_release_base_url: https://github.com/sharkdp/bat/releases/download

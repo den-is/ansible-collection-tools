@@ -1,13 +1,11 @@
----
-terragrunt_atlantis_config_v: "v1.18.0"
+terragrunt_atlantis_config_v: v1.18.0
 terragrunt_atlantis_config_without_v: "{{ terragrunt_atlantis_config_v | regex_replace('^v', '') }}"
 
-terragrunt_atlantis_config_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+terragrunt_atlantis_config_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+terragrunt_atlantis_config_arch: "{{ terragrunt_atlantis_config_arch_map[ansible_architecture] }}"
 
 terragrunt_atlantis_config_archive_ext: |-
   {%- if ansible_system == 'Linux' -%}

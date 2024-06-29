@@ -1,12 +1,10 @@
----
 opentofu_v: v1.7.2
 
-opentofu_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+opentofu_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+opentofu_arch: "{{ opentofu_arch_map[ansible_architecture] }}"
 
 opentofu_nov_v: "{{ opentofu_v | regex_replace('^v', '') }}"
 opentofu_release_base_url: https://github.com/opentofu/opentofu/releases/download

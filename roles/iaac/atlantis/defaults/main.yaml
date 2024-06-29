@@ -1,12 +1,10 @@
----
-atlantis_v: "v0.28.1"
+atlantis_v: v0.28.3
 
-atlantis_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+atlantis_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+atlantis_arch: "{{ atlantis_arch_map[ansible_architecture] }}"
 
 atlantis_release_base_url: https://github.com/runatlantis/atlantis/releases/download
 atlantis_release_url: '{{ atlantis_release_base_url }}/{{ atlantis_v }}/atlantis_{{ ansible_system | lower }}_{{ atlantis_arch }}.zip'

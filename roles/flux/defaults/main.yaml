@@ -1,14 +1,12 @@
----
 flux_v: v2.3.0
 
 flux_nov: "{{ flux_v | regex_replace('^v', '') }}"
 
-flux_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+flux_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+flux_arch: "{{ flux_arch_map[ansible_architecture] }}"
 
 flux_release_base_url: https://github.com/fluxcd/flux2/releases/download
 flux_release_url: "{{ flux_release_base_url }}/v{{ flux_nov }}/flux_{{ flux_nov }}_{{ ansible_system | lower }}_{{ flux_arch }}.tar.gz"

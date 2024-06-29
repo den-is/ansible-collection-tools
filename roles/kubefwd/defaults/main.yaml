@@ -1,15 +1,14 @@
----
 kubefwd_v: 1.22.5
 
-helm_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+kubefwd_arch_map:
+  x86_64: x86_64
+  i386: i386
+  aarch64: arm64
+
+kubefwd_arch: "{{ kubefwd_arch_map[ansible_architecture] }}"
 
 kubefwd_release_base_url: https://github.com/txn2/kubefwd/releases/download
-kubefwd_archive_url: "{{ kubefwd_release_base_url }}/{{ kubefwd_v }}/kubefwd_{{ ansible_system }}_amd64.tar.gz"
+kubefwd_archive_url: "{{ kubefwd_release_base_url }}/{{ kubefwd_v }}/kubefwd_{{ ansible_system }}_{{ kubefwd_arch }}.tar.gz"
 
 kubefwd_full_download_path: /tmp/kubefwd_{{ kubefwd_v }}
 

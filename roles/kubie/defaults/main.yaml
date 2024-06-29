@@ -1,12 +1,10 @@
----
 kubie_v: v0.23.0
 
-kubie_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+kubie_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+kubie_arch: "{{ kubie_arch_map[ansible_architecture] }}"
 
 kubie_release_base_url: https://github.com/sbstp/kubie/releases/download
 kubie_release_url: "{{ kubie_release_base_url }}/{{ kubie_v }}/kubie-{{ ansible_system | lower }}-{{ kubie_arch }}"

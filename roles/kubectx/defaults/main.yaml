@@ -1,4 +1,3 @@
----
 kubectx_v: v0.9.5
 
 # kubectx go-flavor, at the moment of writing does not support multiple kubeconfig files

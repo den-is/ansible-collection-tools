@@ -5,13 +5,11 @@ fd_v: "10.1.0"
 fd_glibc: true
 # many more to options to consider there are all sorts of platforms, architectures, and OS
 
-fd_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+fd_arch_map:
+  x86_64: amd64
+  aarch64: arm64
 
+fd_arch: "{{ fd_arch_map[ansible_architecture] }}"
 
 fd_install_deb: true
 fd_release_base_url: https://github.com/sharkdp/fd/releases/download

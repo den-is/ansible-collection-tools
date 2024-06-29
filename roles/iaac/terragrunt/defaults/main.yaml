@@ -1,15 +1,20 @@
----
-terragrunt_v: "v0.59.3"
+terragrunt_v: v0.59.6
 
-terragrunt_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+terragrunt_arch_map:
+  x86_64: "amd64"
+  i386: "386"
+  aarch64: "arm64"
+
+terragrunt_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+terragrunt_arch: "{{ terragrunt_arch_map[ansible_architecture] }}"
+terragrunt_system: "{{ terragrunt_system_map[ansible_system] }}"
 
 terragrunt_release_base_url: https://github.com/gruntwork-io/terragrunt/releases/download
-terragrunt_release_url: '{{ terragrunt_release_base_url }}/{{ terragrunt_v }}/terragrunt_{{ ansible_system | lower }}_{{ terragrunt_arch }}'
+terragrunt_release_url: '{{ terragrunt_release_base_url }}/{{ terragrunt_v }}/terragrunt_{{ terragrunt_system }}_{{ terragrunt_arch }}'
 
 terragrunt_bin_dst: /usr/local/bin
 terragrunt_bin: terragrunt

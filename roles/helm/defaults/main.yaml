@@ -1,12 +1,10 @@
----
 helm_v: v3.15.2
 
-helm_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+helm_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+helm_arch: "{{ helm_arch_map[ansible_architecture] }}"
 
 helm_release_url: https://get.helm.sh/helm-{{ helm_v }}-{{ ansible_system | lower }}-{{ helm_arch }}.tar.gz
 helm_download_dst: /tmp/helm_{{ helm_v }}'
