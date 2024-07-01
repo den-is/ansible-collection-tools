@@ -11,4 +11,4 @@
 
 - name: Displaying current kubie version
   ansible.builtin.debug:
-    msg: 'Current kubie version: {{ current_kubie_v_with_v if kubie_check_version_task is success else "Not Found" }}'
+    msg: 'Installed version: {{ current_kubie_v_with_v if kubie_check_version_task is success else "Not Found" }}'

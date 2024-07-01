@@ -4,8 +4,8 @@
   tags:
   - always
 
-- name: Installation from release archive
-  ansible.builtin.include_tasks: archive.yaml
+- name: Installation from github release
+  ansible.builtin.include_tasks: release.yaml
   when:
   - kubie_v is version(current_kubie_v_with_v, 'ne')
   - not kubie_brew
