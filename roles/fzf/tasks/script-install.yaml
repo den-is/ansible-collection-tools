@@ -10,8 +10,3 @@
   ansible.builtin.shell: ~/.fzf/install {{ fzf_install_script_args }}
   register: fzf_installation_output
   when: fzf_v is version(installed_fzf_v, 'ne') or fzf_force_install
-
-- name: Deleting ~/.fzf directory
-  ansible.builtin.file:
-    path: ~/.fzf
-    state: absent
