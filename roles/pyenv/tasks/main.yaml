@@ -19,10 +19,10 @@
   - pyenv_brew_install
   - ansible_os_family == "Darwin"
 
-
-- name: Enable pyenv instructions
+# enable yaml strout callback plugin for better output
+- name: Pyenv post-installation instructions
   ansible.builtin.debug:
-    msg: |
+    msg: |-
       Docs https://github.com/pyenv/pyenv?tab=readme-ov-file#installation
 
       Preffered method: Add the following to your shell profile file (e.g. ~/.bashrc, ~/.zshrc, ~/.profile, or ~/.bash_profile):

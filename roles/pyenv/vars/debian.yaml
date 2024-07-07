@@ -28,4 +28,5 @@ python_build_deps:
 - lzma
 - liblzma-dev
 - uuid-dev
-- libmpdec-dev
+# not available on bookworm
+# - libmpdec-dev
