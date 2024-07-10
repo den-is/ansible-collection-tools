@@ -1,14 +1,19 @@
 # den_is.tools - Ansible collection
 
+Minimalistic  ansbile collection.
+
 This Ansible collection automates the installation of various tools, services and environments.
 
-- It includes tools that typically require manual installation or are outdated in OS-native package repositories.
+- It includes tools that typically require manual installation or OS-native package repositories have outdated versions.
 - This collection is particularly useful for Linux hosts, which often lack these tools or have outdated versions.
 
-The roles in this collection are extremely minimalistic and may lack some features compared to more comprehensive roles/collections.
+Roles in this collection are extremely minimalistic and at some places ugly.
+It may lack some features compared to more comprehensive roles/collections.
 
 - Linux hosts are the primary target for this collection, followed by macOS.
 - Windows is mostly unsupported.
+
+Contributions are welcome.
 
 ## Available tools
 ```sh
@@ -103,7 +108,7 @@ ansible-galaxy collection install git+https://github.com/den-is/ansible-collecti
 
     - name: Install helm globally using role defaults
       ansible.builtin.import_role:
-        name: den_is.tools.helm
+        name: den_is.tools.k8s.helm
       become: true
       tags: helm
   ```
