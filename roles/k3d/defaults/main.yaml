@@ -1,5 +1,5 @@
 ---
-k3d_v: v5.6.3
+k3d_v: v5.7.1
 
 k3d_arch_map:
   x86_64: amd64
