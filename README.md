@@ -16,6 +16,7 @@ The roles in this collection are extremely minimalistic and may lack some featur
 ├── awscli
 ├── bat
 ├── croc
+├── direnv
 ├── eza
 ├── fd
 ├── fzf
