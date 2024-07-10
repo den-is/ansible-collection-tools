@@ -10,6 +10,51 @@ The roles in this collection are extremely minimalistic and may lack some featur
 - Linux hosts are the primary target for this collection, followed by macOS.
 - Windows is mostly unsupported.
 
+## Available tools
+```sh
+├── age
+├── awscli
+├── bat
+├── croc
+├── eza
+├── fd
+├── fzf
+├── git_delta
+├── haproxy
+├── iaac
+│   ├── atlantis
+│   ├── opentofu
+│   ├── packer
+│   ├── terraform
+│   ├── terragrunt
+│   └── terragrunt-atlantis-config
+├── k8s
+│   ├── flux
+│   ├── helm
+│   ├── helmfile
+│   ├── k3d
+│   ├── k9s
+│   ├── kind
+│   ├── kubecolor
+│   ├── kubectl
+│   ├── kubectx
+│   ├── kubefwd
+│   ├── kubeps1
+│   ├── kubie
+│   ├── kustomize
+│   ├── stern
+│   └── talosctl
+├── minio
+├── ohmyzsh
+├── pyenv
+├── rclone
+├── restic
+├── ripgrep
+├── sops
+├── yq
+└── zoxide
+```
+
 ## Installation
 
 ```sh
