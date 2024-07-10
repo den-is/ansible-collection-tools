@@ -1,4 +1,4 @@
-packer_v: "1.11.0"
+packer_v: "1.11.1"
 
 packer_arch_map:
   x86_64: "amd64"

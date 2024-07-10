@@ -1,4 +1,4 @@
-terraform_v: 1.9.0
+terraform_v: 1.9.1
 
 terraform_arch_map:
   x86_64: "amd64"
