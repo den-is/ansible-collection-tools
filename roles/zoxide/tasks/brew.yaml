@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: '{{ zoxide_brew_package }}'
+    state: '{{ zoxide_brew_state }}'
+    update_homebrew: true

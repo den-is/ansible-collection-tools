@@ -1,0 +1,36 @@
+---
+zoxide_v: 0.9.4
+
+zoxide_arch_map:
+  x86_64: x86_64
+  aarch64: aarch64
+
+zoxide_system_map:
+  Darwin: apple-darwin
+  Linux: unknown-linux
+
+zoxide_clib_map:
+  Linux: musl
+
+zoxide_arch: "{{ zoxide_arch_map[ansible_architecture] }}"
+zoxide_system: "{{ zoxide_system_map[ansible_system] }}"
+
+zoxide_release_base_url: https://github.com/ajeetdsouza/zoxide/releases/download
+zoxide_archive_name: zoxide-{{ zoxide_v }}-{{ zoxide_arch }}-{{ zoxide_system }}{{ "-musl" if ansible_system == "Linux" }}.tar.gz
+zoxide_release_url: '{{ zoxide_release_base_url }}/v{{ zoxide_v }}/{{ zoxide_archive_name }}'
+
+zoxide_archive_download_dst: /tmp
+zoxide_extraction_dst: '{{ zoxide_archive_download_dst }}/zoxide-{{ zoxide_v }}'
+
+
+zoxide_prefix: /usr/local
+zoxide_bin_dst: "{{ zoxide_prefix }}/bin"
+zoxide_man_prefix: "{{ zoxide_prefix }}/share"
+zoxide_bin: zoxide
+
+zoxide_zsh_completions_install: false
+zsh_completions_path: /usr/local/share/zsh/site-functions
+
+zoxide_brew: false
+zoxide_brew_package: zoxide
+zoxide_brew_state: latest

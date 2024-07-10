@@ -1,0 +1,46 @@
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ zoxide_release_url }}'
+    dest: '{{ zoxide_archive_download_dst }}/{{ zoxide_archive_name }}'
+    checksum: 'sha256:{{ __zoxide_checksum }}'
+
+- name: Creating extraction dir {{ zoxide_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ zoxide_extraction_dst }}'
+    state: directory
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ zoxide_archive_download_dst }}/{{ zoxide_archive_name }}'
+    dest: '{{ zoxide_extraction_dst }}'
+    remote_src: true
+
+- name: Deploying binary to {{ zoxide_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ zoxide_extraction_dst }}/zoxide'
+    dest: '{{ zoxide_bin_dst }}/{{ zoxide_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deploying man pages
+  ansible.builtin.copy:
+    src: '{{ zoxide_extraction_dst }}/man'
+    dest: '{{ zoxide_man_prefix }}'
+    mode: '0644'
+    remote_src: true
+
+- name: Deploying zsh completions
+  ansible.builtin.copy:
+    src: '{{ zoxide_extraction_dst }}/completions/_zoxide'
+    dest: '{{ zsh_completions_path }}/_zoxide'
+    mode: '0644'
+    remote_src: true
+  when: zoxide_zsh_completions_install
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ zoxide_extraction_dst }}'
+  - '{{ zoxide_archive_download_dst }}/{{ zoxide_archive_name }}'
