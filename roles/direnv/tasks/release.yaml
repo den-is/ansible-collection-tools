@@ -1,0 +1,10 @@
+---
+- name: Deploying direnv {{ direnv_v }}
+  ansible.builtin.get_url:
+    url: '{{ direnv_release_url }}'
+    dest: '{{ direnv_bin_dst }}/{{ direnv_bin }}'
+
+- name: Set permissions
+  ansible.builtin.file:
+    path: '{{ direnv_bin_dst }}/{{ direnv_bin }}'
+    mode: '0755'

@@ -1,0 +1,26 @@
+direnv_v: v2.34.0
+
+_direnv_nov: "{{ direnv_v | regex_replace('^v', '') }}"
+
+direnv_arch_map:
+  x86_64: "amd64"
+  i386: "386"
+  aarch64: "arm64"
+
+direnv_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+direnv_arch: "{{ direnv_arch_map[ansible_architecture] }}"
+direnv_system: "{{ direnv_system_map[ansible_system] }}"
+
+direnv_release_base_url: https://github.com/direnv/direnv/releases/download
+direnv_release_url: '{{ direnv_release_base_url }}/v{{ _direnv_nov }}/direnv.{{ direnv_system }}-{{ direnv_arch }}'
+
+direnv_bin_dst: /usr/local/bin
+direnv_bin: direnv
+
+direnv_brew: false
+direnv_brew_package: direnv
+direnv_brew_state: latest
