@@ -64,6 +64,9 @@ Contributions are welcome.
 ## Installation
 
 ```sh
+# Installing from galaxy
+ansible-galaxy collection install den_is.tools
+
 # Local dev installation
 # By default installs into ~/.ansible/collections/ansible_collections/den_is/tools
 ansible-galaxy collection install ~/projects/ansible_collections/den_is/tools
