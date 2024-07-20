@@ -2,7 +2,6 @@
   ansible.builtin.get_url:
     url: '{{ zoxide_release_url }}'
     dest: '{{ zoxide_archive_download_dst }}/{{ zoxide_archive_name }}'
-    checksum: 'sha256:{{ __zoxide_checksum }}'
 
 - name: Creating extraction dir {{ zoxide_extraction_dst }}
   ansible.builtin.file:
