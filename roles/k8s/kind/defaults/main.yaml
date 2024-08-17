@@ -1,5 +1,4 @@
----
-kind_v: v0.23.0
+kind_v: v0.24.0
 
 kind_arch: |-
   {%- if ansible_architecture == 'x86_64' -%}

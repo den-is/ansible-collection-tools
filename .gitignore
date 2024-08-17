@@ -2,3 +2,4 @@
 roles/**/.linted
 .DS_Store
 __pycache__
+ansible.cfg

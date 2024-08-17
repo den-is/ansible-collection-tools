@@ -1,4 +1,4 @@
-helm_v: v3.15.3
+helm_v: v3.15.4
 
 helm_arch_map:
   x86_64: amd64

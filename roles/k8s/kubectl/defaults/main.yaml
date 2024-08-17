@@ -1,4 +1,4 @@
-kubectl_v: v1.30.2
+kubectl_v: v1.30.4
 kubectl_latest: false
 
 kubernetes_repo: false

@@ -1,4 +1,4 @@
-pyenv_v: v2.4.8
+pyenv_v: v2.4.10
 
 pyenv_git_repo: https://github.com/pyenv/pyenv.git
 # always pull pyenv updates if installing from git
