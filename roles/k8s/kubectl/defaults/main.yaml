@@ -1,6 +1,11 @@
 kubectl_v: v1.30.4
 kubectl_latest: false
 
+# Upload kubectl binary from ansible host
+kubectl_upload: false
+kubectl_upload_host_path: ""
+
+# Manage kubernetes repository
 kubernetes_repo: false
 kubernetes_apt_gpg_path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 kubernetes_rpm_excludes: ""
@@ -27,6 +32,7 @@ kubectl_os: |-
   {%- endif -%}
 
 kubectl_release_url: https://dl.k8s.io/release/{{ kubectl_v }}/bin/{{ kubectl_os }}/{{ kubectl_arch }}/{{ kubectl_bin }}
+kubectl_verify_checksum256: false
 kubectl_release_sha256_url: "{{ kubectl_release_url }}.sha256"
 
 kubectl_bin_dst: /usr/local/bin

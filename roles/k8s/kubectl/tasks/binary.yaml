@@ -4,12 +4,25 @@
     __kubectl_checksum: "{{ lookup('url', kubectl_release_sha256_url, headers=_github_api_headers) }}"
   run_once: true
   retries: 10
+  when:
+  - not kubectl_upload
+  - kubectl_verify_checksum256
 
 - name: Downloading and installing kubectl {{ kubectl_v }}
   ansible.builtin.get_url:
     url: '{{ kubectl_release_url }}'
     dest: '{{ kubectl_bin_dst }}/{{ kubectl_bin }}'
-    checksum: sha256:{{ __kubectl_checksum }}
+    checksum: '{{ "sha256:" + __kubectl_checksum if kubectl_verify_checksum256 else "" }}'
+  when:
+  - not kubectl_upload
+
+- name: Upload kubectl binary from control host
+  ansible.builtin.copy:
+    src: '{{ kubectl_upload_host_path }}'
+    dest: '{{ kubectl_bin_dst }}/{{ kubectl_bin }}'
+    mode: '0755'
+  when:
+  - kubectl_upload
 
 - name: Set correct binary permissions
   ansible.builtin.file:
