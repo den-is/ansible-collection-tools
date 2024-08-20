@@ -1,4 +1,3 @@
----
 - name: Check if binary already exists in $PATH
   ansible.builtin.shell: 'command -v {{ sops_bin }}'
   register: sops_bin_exists

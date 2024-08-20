@@ -1,4 +1,3 @@
----
 - name: Check if kind command exists
   ansible.builtin.shell: 'command -v {{ kind_bin }}'
   register: kind_bin_exists

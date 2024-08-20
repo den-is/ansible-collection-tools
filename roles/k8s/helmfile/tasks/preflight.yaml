@@ -1,4 +1,3 @@
----
 - name: Check if command exists
   ansible.builtin.shell: 'command -v {{ helmfile_bin }}'
   register: helmfile_bin_exists

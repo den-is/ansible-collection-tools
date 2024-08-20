@@ -1,4 +1,3 @@
----
 - name: Check if binary already exists
   ansible.builtin.shell: 'command -v {{ bat_bin }}'
   register: bat_bin_exists

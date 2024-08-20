@@ -1,4 +1,3 @@
----
 - name: Creating kubecolor extraction dir {{ kubecolor_full_download_path }}
   ansible.builtin.file:
     path: '{{ kubecolor_full_download_path }}'

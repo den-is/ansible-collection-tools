@@ -1,4 +1,3 @@
----
 - name: Check if binary already exists in $PATH
   ansible.builtin.shell: 'command -v {{ terraform_bin }}'
   register: terraform_bin_exists

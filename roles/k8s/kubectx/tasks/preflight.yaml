@@ -1,4 +1,3 @@
----
 - name: Get current version if any
   ansible.builtin.shell: kubectx --version
   register: check_kubectx_v_task

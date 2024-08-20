@@ -1,4 +1,3 @@
----
 - name: Get current kubefwd command exitsts
   ansible.builtin.shell: 'command -v {{ kubefwd_bin }}'
   register: kubefwd_bin_exists

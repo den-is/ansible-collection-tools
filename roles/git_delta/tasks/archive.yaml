@@ -1,4 +1,3 @@
----
 - name: Creating delta extraction dir {{ delta_full_download_path }}
   ansible.builtin.file:
     path: '{{ delta_full_download_path }}'

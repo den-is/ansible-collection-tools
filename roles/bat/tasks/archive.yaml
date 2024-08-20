@@ -1,4 +1,3 @@
----
 - name: Creating bat extraction dir {{ bat_full_download_path }}
   ansible.builtin.file:
     path: '{{ bat_full_download_path }}'

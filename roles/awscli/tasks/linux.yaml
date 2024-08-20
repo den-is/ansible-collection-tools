@@ -1,4 +1,3 @@
----
 - name: Getting awscli release artifact archive
   ansible.builtin.get_url:
     url: '{{ awscli_release_url }}'

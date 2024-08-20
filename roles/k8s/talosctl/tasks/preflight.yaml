@@ -1,4 +1,3 @@
----
 - name: Check if binary already exists in $PATH
   ansible.builtin.shell: 'command -v {{ talosctl_bin }}'
   register: talosctl_bin_exists

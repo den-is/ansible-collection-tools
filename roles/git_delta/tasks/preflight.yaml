@@ -1,4 +1,3 @@
----
 - name: Check if binary already exists
   ansible.builtin.shell: 'command -v {{ delta_bin }}'
   register: delta_bin_exists

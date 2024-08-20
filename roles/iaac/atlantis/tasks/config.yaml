@@ -1,4 +1,3 @@
----
 - name: Create system group
   ansible.builtin.group:
     name: "{{ atlantis_group }}"

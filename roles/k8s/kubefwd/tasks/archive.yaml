@@ -1,4 +1,3 @@
----
 - name: Creating kubefwd extraction dir {{ kubefwd_full_download_path }}
   ansible.builtin.file:
     path: '{{ kubefwd_full_download_path }}'

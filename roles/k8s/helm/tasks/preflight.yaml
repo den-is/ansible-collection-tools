@@ -1,4 +1,3 @@
----
 - name: Get current Helm version if any
   # shell: '{{ helm_bin_dst }}/{{ helm_bin }} version -c --short | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"'
   ansible.builtin.shell: "{{ helm_bin_dst }}/{{ helm_bin }} version --template='{{ '{{' }}.Version{{ '}}' }}'"

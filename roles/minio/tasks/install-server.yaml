@@ -1,4 +1,3 @@
----
 - name: Get the Minio server checksum
   ansible.builtin.set_fact:
     _minio_server_checksum: "{{ lookup('url', minio_server_sha256_url).split(' ')[0] }}"

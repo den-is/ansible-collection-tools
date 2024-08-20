@@ -1,4 +1,3 @@
----
 - name: Get current kubie version if any
   ansible.builtin.shell: '{{ kubie_bin_dst }}/{{ kubie_bin }} --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"'
   register: kubie_check_version_task

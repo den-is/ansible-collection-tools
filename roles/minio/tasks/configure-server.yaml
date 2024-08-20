@@ -1,4 +1,3 @@
----
 - name: Create Minio group
   ansible.builtin.group:
     name: "{{ minio_group }}"

@@ -1,4 +1,3 @@
----
 - name: Creating helm extraction dir {{ helm_download_dst }}
   ansible.builtin.file:
     path: '{{ helm_download_dst }}'

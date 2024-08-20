@@ -1,4 +1,3 @@
----
 - name: Check if binary already exists in $PATH
   ansible.builtin.shell: 'command -v {{ fzf_bin }}'
   register: fzf_bin_exists

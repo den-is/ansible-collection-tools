@@ -1,4 +1,3 @@
----
 - name: Installing yq {{ yq_v }}
   ansible.builtin.get_url:
     url: '{{ yq_release_url }}'

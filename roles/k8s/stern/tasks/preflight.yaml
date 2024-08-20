@@ -1,4 +1,3 @@
----
 - name: Get current Stern version if any
   ansible.builtin.shell: '{{ stern_bin_dst }}/{{ stern_bin }} --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"'
   register: stern_check_version_task

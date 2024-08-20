@@ -1,4 +1,3 @@
----
 - name: Preflight preparation
   ansible.builtin.include_tasks: preflight.yaml
   tags:

@@ -1,4 +1,3 @@
----
 - name: Installing terragrunt {{ terragrunt_v }}
   ansible.builtin.get_url:
     url: '{{ terragrunt_release_url }}'

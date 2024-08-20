@@ -1,4 +1,3 @@
----
 - name: Get checksum
   when: restic_checksum_verify
   block:

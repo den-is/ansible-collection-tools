@@ -1,4 +1,3 @@
----
 - name: Downloading kind {{ kind_v }}
   ansible.builtin.get_url:
     url: '{{ kind_release_url }}'

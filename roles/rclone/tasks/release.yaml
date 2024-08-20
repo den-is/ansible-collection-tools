@@ -1,4 +1,3 @@
----
 - name: Get checksum
   when: rclone_checksum_verify
   block:

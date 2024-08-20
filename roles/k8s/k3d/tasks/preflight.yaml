@@ -1,4 +1,3 @@
----
 - name: Check if binary already exists in $PATH
   ansible.builtin.shell: 'command -v {{ k3d_bin }}'
   register: k3d_bin_exists

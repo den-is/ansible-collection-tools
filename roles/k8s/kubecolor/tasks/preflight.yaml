@@ -1,4 +1,3 @@
----
 - name: Check if binary already exists
   ansible.builtin.shell: 'command -v {{ kubecolor_bin }}'
   register: kubecolor_bin_exists

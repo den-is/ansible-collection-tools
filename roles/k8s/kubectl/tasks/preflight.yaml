@@ -1,4 +1,3 @@
----
 - name: Get latest kubectl version
   ansible.builtin.set_fact:
     kubectl_v: "{{ lookup('url', 'https://dl.k8s.io/release/stable.txt') }}"

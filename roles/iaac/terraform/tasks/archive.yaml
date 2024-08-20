@@ -1,4 +1,3 @@
----
 - name: Install unzip
   ansible.builtin.package:
     name: unzip

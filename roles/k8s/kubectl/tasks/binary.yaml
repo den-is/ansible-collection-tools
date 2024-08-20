@@ -1,4 +1,3 @@
----
 - name: Get SHA256 checksum for kubectl {{ kubectl_v }}
   ansible.builtin.set_fact:
     __kubectl_checksum: "{{ lookup('url', kubectl_release_sha256_url, headers=_github_api_headers) }}"

@@ -1,4 +1,3 @@
----
 # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
 - name: Get checksum
   block:

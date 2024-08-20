@@ -1,4 +1,3 @@
----
 - name: Check if binary already exists
   ansible.builtin.shell: 'command -v {{ kustomize_bin }}'
   register: kustomize_bin_exists
