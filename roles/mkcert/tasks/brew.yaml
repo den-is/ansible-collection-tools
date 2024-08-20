@@ -1,0 +1,5 @@
+- name: Brew install mkcert
+  community.general.homebrew:
+    name: '{{ mkcert_brew_package }}'
+    state: '{{ mkcert_brew_state }}'
+    update_homebrew: true

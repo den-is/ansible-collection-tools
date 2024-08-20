@@ -1,0 +1,17 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Binary download and installation
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - mkcert_v is version(installed_mkcert_v, 'ne')
+  - not mkcert_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - mkcert_v is version(installed_mkcert_v, 'ne')
+  - mkcert_brew
+  - ansible_system == 'Darwin'

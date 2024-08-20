@@ -1,0 +1,23 @@
+mkcert_v: v1.4.4
+
+mkcert_arch_map:
+  x86_64: "amd64"
+  aarch64: "arm64"
+
+mkcert_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+mkcert_arch: "{{ mkcert_arch_map[ansible_architecture] }}"
+mkcert_system: "{{ mkcert_system_map[ansible_system] }}"
+
+mkcert_release_base_url: https://github.com/FiloSottile/mkcert/releases/download/{{ mkcert_v }}
+mkcert_release_url: '{{ mkcert_release_base_url }}/mkcert-{{ mkcert_v }}-{{ mkcert_system }}-{{ mkcert_arch }}'
+
+mkcert_bin_dst: /usr/local/bin
+mkcert_bin: mkcert
+
+mkcert_brew: false
+mkcert_brew_package: mkcert
+mkcert_brew_state: latest
