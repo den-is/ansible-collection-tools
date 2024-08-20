@@ -13,7 +13,7 @@
 
 - name: Register installed version vars
   ansible.builtin.set_fact:
-    installed_opentofu_v: "{{ check_opentofu_v_task.stdout | default('0.0.0', true) }}"
+    installed_opentofu_v: "{{ check_opentofu_v_task.stdout | default('v0.0.0', true) }}"
 
 - name: Displaying current version
   ansible.builtin.debug:
