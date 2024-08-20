@@ -1,0 +1,77 @@
+- name: Registering checksums related vars
+  ansible.builtin.set_fact:
+    _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+# on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+- name: Get checksums list
+  ansible.builtin.set_fact:
+    __cfssl_checksums: "{{ lookup('url', __checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+  run_once: true
+  until: __cfssl_checksums is search(cfssl_release_artifact_name)
+  retries: 10
+
+### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- name: Get cfssl checksum
+  ansible.builtin.set_fact:
+    __cfssl_checksum: "{{ item.split(' ')[0] }}"
+  loop: "{{ __cfssl_checksums }}"
+  when:
+  - "(cfssl_release_artifact_name) in item"
+  - cfssl_install
+
+- name: Get cfssljson checksum
+  ansible.builtin.set_fact:
+    __cfssljson_checksum: "{{ item.split(' ')[0] }}"
+  loop: "{{ __cfssl_checksums }}"
+  when:
+  - "(cfssljson_release_artifact_name) in item"
+  - cfssljson_install
+
+- name: Get cfssl-bundle checksum
+  ansible.builtin.set_fact:
+    __cfssl_bundle_checksum: "{{ item.split(' ')[0] }}"
+  loop: "{{ __cfssl_checksums }}"
+  when:
+  - "(cfssl_bundle_release_artifact_name) in item"
+  - cfssl_bundle_install
+
+- name: Get cfssl-newkey checksum
+  ansible.builtin.set_fact:
+    __cfssl_newkey_checksum: "{{ item.split(' ')[0] }}"
+  loop: "{{ __cfssl_checksums }}"
+  when:
+  - "(cfssl_newkey_release_artifact_name) in item"
+  - cfssl_newkey_install
+
+- name: Get mkbundle checksum
+  ansible.builtin.set_fact:
+    __mkbundle_checksum: "{{ item.split(' ')[0] }}"
+  loop: "{{ __cfssl_checksums }}"
+  when:
+  - "(mkbundle_release_artifact_name) in item"
+  - mkbundle_install
+
+- name: Get multirootca checksum
+  ansible.builtin.set_fact:
+    __multirootca_checksum: "{{ item.split(' ')[0] }}"
+  loop: "{{ __cfssl_checksums }}"
+  when:
+  - "(multirootca_release_artifact_name) in item"
+  - multirootca_install
+
+- name: Get cfssl-scan checksum
+  ansible.builtin.set_fact:
+    __cfssl_scan_checksum: "{{ item.split(' ')[0] }}"
+  loop: "{{ __cfssl_checksums }}"
+  when:
+  - "(cfssl_scan_release_artifact_name) in item"
+  - cfssl_scan_install
+
+- name: Get cfssl-certinfo checksum
+  ansible.builtin.set_fact:
+    __cfssl_certinfo_checksum: "{{ item.split(' ')[0] }}"
+  loop: "{{ __cfssl_checksums }}"
+  when:
+  - "(cfssl_certinfo_release_artifact_name) in item"
+  - cfssl_certinfo_install

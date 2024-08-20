@@ -1,0 +1,111 @@
+- name: Installing cfssl
+  when: cfssl_install
+  block:
+  - name: Deploying cfssl
+    ansible.builtin.get_url:
+      url: '{{ cfssl_release_url }}'
+      dest: '{{ cfssl_bin_dst }}/{{ cfssl_bin }}'
+      checksum: '{{ "" if not cfssl_release_verify_checksums else __cfssl_checksum }}'
+
+  - name: Set cfssl permissions
+    ansible.builtin.file:
+      path: '{{ cfssl_bin_dst }}/{{ cfssl_bin }}'
+      mode: '0755'
+
+- name: Installing cfssljson
+  when: cfssljson_install
+  block:
+  - name: Deploying cfssljson
+    ansible.builtin.get_url:
+      url: '{{ cfssljson_release_url }}'
+      dest: '{{ cfssljson_bin_dst }}/{{ cfssljson_bin }}'
+      checksum: '{{ "" if not cfssl_release_verify_checksums else __cfssljson_checksum }}'
+
+  - name: Set cfssljson permissions
+    ansible.builtin.file:
+      path: '{{ cfssljson_bin_dst }}/{{ cfssljson_bin }}'
+      mode: '0755'
+
+- name: Installing cfssl-bundle
+  when: cfssl_bundle_install
+  block:
+  - name: Deploying cfssl-bundle
+    ansible.builtin.get_url:
+      url: '{{ cfssl_bundle_release_url }}'
+      dest: '{{ cfssl_bundle_bin_dst }}/{{ cfssl_bundle_bin }}'
+      checksum: '{{ "" if not cfssl_release_verify_checksums else __cfssl_bundle_checksum }}'
+
+  - name: Set cfssl-bundle permissions
+    ansible.builtin.file:
+      path: '{{ cfssl_bundle_bin_dst }}/{{ cfssl_bundle_bin }}'
+      mode: '0755'
+
+- name: Installing cfssl-newkey
+  when: cfssl_newkey_install
+  block:
+  - name: Deploying cfssl-newkey
+    ansible.builtin.get_url:
+      url: '{{ cfssl_newkey_release_url }}'
+      dest: '{{ cfssl_newkey_bin_dst }}/{{ cfssl_newkey_bin }}'
+      checksum: '{{ "" if not cfssl_release_verify_checksums else __cfssl_newkey_checksum }}'
+
+  - name: Set cfssl-newkey permissions
+    ansible.builtin.file:
+      path: '{{ cfssl_newkey_bin_dst }}/{{ cfssl_newkey_bin }}'
+      mode: '0755'
+
+- name: Installing mkbundle
+  when: mkbundle_install
+  block:
+  - name: Deploying mkbundle
+    ansible.builtin.get_url:
+      url: '{{ mkbundle_release_url }}'
+      dest: '{{ mkbundle_bin_dst }}/{{ mkbundle_bin }}'
+      checksum: '{{ "" if not cfssl_release_verify_checksums else __mkbundle_checksum }}'
+
+  - name: Set mkbundle permissions
+    ansible.builtin.file:
+      path: '{{ mkbundle_bin_dst }}/{{ mkbundle_bin }}'
+      mode: '0755'
+
+- name: Installing multirootca
+  when: multirootca_install
+  block:
+  - name: Deploying multirootca
+    ansible.builtin.get_url:
+      url: '{{ multirootca_release_url }}'
+      dest: '{{ multirootca_bin_dst }}/{{ multirootca_bin }}'
+      checksum: '{{ "" if not cfssl_release_verify_checksums else __multirootca_checksum }}'
+
+  - name: Set multirootca permissions
+    ansible.builtin.file:
+      path: '{{ multirootca_bin_dst }}/{{ multirootca_bin }}'
+      mode: '0755'
+
+- name: Installing cfssl-scan
+  when: cfssl_scan_install
+  block:
+  - name: Deploying cfssl-scan
+    ansible.builtin.get_url:
+      url: '{{ cfssl_scan_release_url }}'
+      dest: '{{ cfssl_scan_bin_dst }}/{{ cfssl_scan_bin }}'
+      checksum: '{{ "" if not cfssl_release_verify_checksums else __cfssl_scan_checksum }}'
+
+  - name: Set cfssl-scan permissions
+    ansible.builtin.file:
+      path: '{{ cfssl_scan_bin_dst }}/{{ cfssl_scan_bin }}'
+      mode: '0755'
+
+- name: Installing cfssl-certinfo
+  when: cfssl_certinfo_install
+  block:
+  - name: Deploying cfssl-certinfo
+    ansible.builtin.get_url:
+      url: '{{ cfssl_certinfo_release_url }}'
+      dest: '{{ cfssl_certinfo_bin_dst }}/{{ cfssl_certinfo_bin }}'
+      checksum: '{{ "" if not cfssl_release_verify_checksums else __cfssl_certinfo_checksum }}'
+
+  - name: Set cfssl-certinfo permissions
+    ansible.builtin.file:
+      path: '{{ cfssl_certinfo_bin_dst }}/{{ cfssl_certinfo_bin }}'
+      mode: '0755'

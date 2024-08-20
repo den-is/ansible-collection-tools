@@ -1,0 +1,72 @@
+cfssl_v: v1.6.5
+
+_cfssl_nov: "{{ cfssl_v | regex_replace('^v', '') }}"
+
+cfssl_arch_map:
+  x86_64: "amd64"
+  aarch64: "arm64"
+
+cfssl_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+cfssl_arch: "{{ cfssl_arch_map[ansible_architecture] }}"
+cfssl_system: "{{ cfssl_system_map[ansible_system] }}"
+
+cfssl_release_base_url: https://github.com/cloudflare/cfssl/releases/download/v{{ _cfssl_nov }}
+
+cfssl_release_checksums_url: '{{ cfssl_release_base_url }}/cfssl_{{ _cfssl_nov }}_checksums.txt'
+cfssl_release_verify_checksums: false
+
+cfssl_release_artifact_name: cfssl_{{ _cfssl_nov }}_{{ cfssl_system }}_{{ cfssl_arch }}
+cfssl_release_url: '{{ cfssl_release_base_url }}/{{ cfssl_release_artifact_name }}'
+cfssl_bin_dst: /usr/local/bin
+cfssl_bin: cfssl
+cfssl_install: true
+
+cfssljson_release_artifact_name: cfssljson_{{ _cfssl_nov }}_{{ cfssl_system }}_{{ cfssl_arch }}
+cfssljson_release_url: '{{ cfssl_release_base_url }}/{{ cfssljson_release_artifact_name }}'
+cfssljson_bin_dst: '{{ cfssl_bin_dst }}'
+cfssljson_bin: cfssljson
+cfssljson_install: true
+
+cfssl_bundle_release_artifact_name: cfssl-bundle_{{ _cfssl_nov }}_{{ cfssl_system }}_{{ cfssl_arch }}
+cfssl_bundle_release_url: '{{ cfssl_release_base_url }}/{{ cfssl_bundle_release_artifact_name }}'
+cfssl_bundle_bin_dst: '{{ cfssl_bin_dst }}'
+cfssl_bundle_bin: cfssl-bundle
+cfssl_bundle_install: false
+
+cfssl_newkey_release_artifact_name: cfssl-newkey_{{ _cfssl_nov }}_{{ cfssl_system }}_{{ cfssl_arch }}
+cfssl_newkey_release_url: '{{ cfssl_release_base_url }}/{{ cfssl_newkey_release_artifact_name }}'
+cfssl_newkey_bin_dst: '{{ cfssl_bin_dst }}'
+cfssl_newkey_bin: cfssl-newkey
+cfssl_newkey_install: false
+
+mkbundle_release_artifact_name: mkbundle_{{ _cfssl_nov }}_{{ cfssl_system }}_{{ cfssl_arch }}
+mkbundle_release_url: '{{ cfssl_release_base_url }}/{{ mkbundle_release_artifact_name }}'
+mkbundle_bin_dst: '{{ cfssl_bin_dst }}'
+mkbundle_bin: mkbundle
+mkbundle_install: false
+
+multirootca_release_artifact_name: multirootca_{{ _cfssl_nov }}_{{ cfssl_system }}_{{ cfssl_arch }}
+multirootca_release_url: '{{ cfssl_release_base_url }}/{{ multirootca_release_artifact_name }}'
+multirootca_bin_dst: '{{ cfssl_bin_dst }}'
+multirootca_bin: multirootca
+multirootca_install: false
+
+cfssl_scan_release_artifact_name: cfssl-scan_{{ _cfssl_nov }}_{{ cfssl_system }}_{{ cfssl_arch }}
+cfssl_scan_release_url: '{{ cfssl_release_base_url }}/{{ cfssl_scan_release_artifact_name }}'
+cfssl_scan_bin_dst: '{{ cfssl_bin_dst }}'
+cfssl_scan_bin: cfssl-scan
+cfssl_scan_install: false
+
+cfssl_certinfo_release_artifact_name: cfssl-certinfo_{{ _cfssl_nov }}_{{ cfssl_system }}_{{ cfssl_arch }}
+cfssl_certinfo_release_url: '{{ cfssl_release_base_url }}/{{ cfssl_certinfo_release_artifact_name }}'
+cfssl_certinfo_bin_dst: '{{ cfssl_bin_dst }}'
+cfssl_certinfo_bin: cfssl-certinfo
+cfssl_certinfo_install: false
+
+cfssl_brew: false
+cfssl_brew_package: cfssl
+cfssl_brew_state: latest

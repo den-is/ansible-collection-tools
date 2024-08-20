@@ -1,0 +1,24 @@
+---
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Get checksums
+  ansible.builtin.include_tasks: checksums.yaml
+  when:
+  - cfssl_release_verify_checksums
+  - not cfssl_brew
+
+- name: Binary download and installation
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - _cfssl_nov is version(installed_cfssl_v, 'ne')
+  - not cfssl_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - _cfssl_nov is version(installed_cfssl_v, 'ne')
+  - cfssl_brew
+  - ansible_system == 'Darwin'
