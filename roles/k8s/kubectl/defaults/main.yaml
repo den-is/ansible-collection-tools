@@ -3,7 +3,7 @@ kubectl_latest: false
 
 # Upload kubectl binary from ansible host
 kubectl_upload: false
-kubectl_upload_host_path: ""
+kubectl_bin_path_on_control_host: ""
 
 # Manage kubernetes repository
 kubernetes_repo: false

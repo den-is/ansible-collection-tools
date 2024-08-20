@@ -18,7 +18,7 @@
 
 - name: Upload kubectl binary from control host
   ansible.builtin.copy:
-    src: '{{ kubectl_upload_host_path }}'
+    src: '{{ kubectl_bin_path_on_control_host }}'
     dest: '{{ kubectl_bin_dst }}/{{ kubectl_bin }}'
     mode: '0755'
   when:
