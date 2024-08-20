@@ -3,6 +3,23 @@
     name: unzip
     state: present
 
+- name: Install fuse devel libs on Debian based OS
+  ansible.builtin.package:
+    name: libfuse2
+    state: present
+  when:
+  - ansible_os_family == 'Debian'
+
+- name: Install fuse devel libs on RedHat based OS
+  ansible.builtin.package:
+    name: '{{ item }}'
+    state: present
+  loop:
+  - fuse
+  - fuse-devel
+  when:
+  - ansible_os_family == 'RedHat'
+
 - name: Creating extraction dir {{ vagrant_full_download_path }}
   ansible.builtin.file:
     path: '{{ vagrant_full_download_path }}'
