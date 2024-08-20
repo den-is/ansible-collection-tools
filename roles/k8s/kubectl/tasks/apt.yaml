@@ -29,10 +29,13 @@
   ansible.builtin.apt:
     name: kubectl
     update_cache: true
+  when: check_kubectl_v_task is failed
 
 - name: Update kubectl to the latest/new version
   ansible.builtin.apt:
     name: kubectl
-    state: present
-    update_cache: yes
-  when: kubectl_v is version(installed_kubectl_v, 'ne')
+    state: latest
+    update_cache: true
+  when:
+  - kubectl_v is version(installed_kubectl_v, 'ne')
+  - check_kubectl_v_task is success

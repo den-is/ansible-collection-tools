@@ -10,32 +10,25 @@ kubernetes_repo: false
 kubernetes_apt_gpg_path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 kubernetes_rpm_excludes: ""
 
-kubectl_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+kubectl_arch_map:
+  x86_64: "amd64"
+  aarch64: "arm64"
 
-kubectl_bin: |-
-  {%- if ansible_system == 'Win32NT' -%}
-  kubectl.exe
-  {%- else -%}
-  kubectl
-  {%- endif -%}
+kubectl_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
 
-kubectl_os: |-
-  {%- if ansible_system == 'Win32NT' -%}
-  windows
-  {%- else -%}
-  {{ ansible_system | lower }}
-  {%- endif -%}
+kubectl_arch: "{{ direnv_arch_map[ansible_architecture] }}"
+kubectl_system: "{{ direnv_system_map[ansible_system] }}"
 
-kubectl_release_url: https://dl.k8s.io/release/{{ kubectl_v }}/bin/{{ kubectl_os }}/{{ kubectl_arch }}/{{ kubectl_bin }}
+kubectl_release_artifact_name: kubectl{{ '.exe' if ansible_system == 'Win32NT' }}
+kubectl_release_url: https://dl.k8s.io/release/{{ kubectl_v }}/bin/{{ kubectl_system }}/{{ kubectl_arch }}/{{ kubectl_release_artifact_name }}
 kubectl_verify_checksum256: false
 kubectl_release_sha256_url: "{{ kubectl_release_url }}.sha256"
 
 kubectl_bin_dst: /usr/local/bin
+kubectl_bin: kubectl
 
 kubectl_brew: false
 kubectl_brew_package: kubectl
