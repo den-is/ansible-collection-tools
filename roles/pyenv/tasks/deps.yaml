@@ -3,6 +3,7 @@
     name: "{{ python_build_deps }}"
     state: present
     update_cache: true
+  become: true
   when: ansible_os_family == "Debian"
 
 - name: Install python compilation dependencies on a RedHat based OS
@@ -10,4 +11,5 @@
     name: "{{ python_build_deps }}"
     state: present
     update_cache: true
+  become: true
   when: ansible_os_family == "RedHat"
