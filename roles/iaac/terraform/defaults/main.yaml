@@ -17,5 +17,5 @@ terraform_bin_dst: /usr/local/bin
 terraform_bin: terraform
 
 terraform_brew: false
-terraform_brew_package: terraform
+terraform_brew_package: hashicorp/tap/terraform
 terraform_brew_state: latest

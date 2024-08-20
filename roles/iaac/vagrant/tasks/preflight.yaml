@@ -1,0 +1,19 @@
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: 'command -v {{ vagrant_bin }}'
+  register: vagrant_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: '{{ vagrant_bin }} --version | head -1 | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"'
+  register: check_vagrant_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register pre-flight variables
+  ansible.builtin.set_fact:
+    installed_vagrant_v: "{{ check_vagrant_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_vagrant_v if check_vagrant_v_task is success else "Not Found" }}'

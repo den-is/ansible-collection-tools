@@ -3,8 +3,8 @@
     name: hashicorp/tap
     state: present
 
-- name: Brew install packer
+- name: Brew install vagrant
   community.general.homebrew:
-    name: '{{ packer_brew_package }}'
-    state: '{{ packer_brew_state }}'
+    name: '{{ vagrant_brew_package }}'
+    state: '{{ vagrant_brew_state }}'
     update_homebrew: true

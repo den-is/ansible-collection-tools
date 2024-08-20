@@ -1,3 +1,8 @@
+- name: Tap hashicorp brew repository
+  community.general.homebrew_tap:
+    name: hashicorp/tap
+    state: present
+
 - name: Brew install terraform
   community.general.homebrew:
     name: '{{ terraform_brew_package }}'

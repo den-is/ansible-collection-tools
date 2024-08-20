@@ -1,0 +1,27 @@
+- name: Install unzip
+  ansible.builtin.package:
+    name: unzip
+    state: present
+
+- name: Creating extraction dir {{ vagrant_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ vagrant_full_download_path }}'
+    state: directory
+
+- name: Getting vagrant {{ vagrant_v }} archive and extracting it to {{ vagrant_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ vagrant_release_url }}'
+    dest: '{{ vagrant_full_download_path }}'
+    remote_src: true
+
+- name: Copying binary to {{ vagrant_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ vagrant_full_download_path }}/vagrant'
+    dest: '{{ vagrant_bin_dst }}/{{ vagrant_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ vagrant_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ vagrant_full_download_path }}'
+    state: absent

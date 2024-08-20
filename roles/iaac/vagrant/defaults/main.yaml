@@ -1,0 +1,22 @@
+vagrant_v: 2.4.1
+
+vagrant_arch_map:
+  x86_64: "amd64"
+  i386: "386"
+  aarch64: "arm64"
+
+vagrant_arch: "{{ vagrant_arch_map[ansible_architecture] }}"
+
+vagrant_release_base_url: https://releases.hashicorp.com/vagrant
+vagrant_release_artifact_name: vagrant_{{ vagrant_v }}_{{ ansible_system | lower }}_{{ vagrant_arch }}.zip
+vagrant_release_url: '{{ vagrant_release_base_url }}/{{ vagrant_v }}/{{ vagrant_release_artifact_name }}'
+
+vagrant_archive_download_dst: /tmp
+vagrant_full_download_path: '{{ vagrant_archive_download_dst }}/vagrant-{{ vagrant_v }}'
+
+vagrant_bin_dst: /usr/local/bin
+vagrant_bin: vagrant
+
+vagrant_brew: false
+vagrant_brew_package: hashicorp/tap/hashicorp-vagrant
+vagrant_brew_state: latest
