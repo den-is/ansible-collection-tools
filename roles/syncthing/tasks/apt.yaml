@@ -1,0 +1,36 @@
+- name: Install APT related packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - apt-transport-https
+  - apt-utils
+  - software-properties-common
+  - gnupg2
+
+- name: Download and install APT GPG key
+  ansible.builtin.get_url:
+    url: https://syncthing.net/release-key.gpg
+    dest: /usr/share/keyrings/syncthing-archive-keyring.gpg
+    mode: '0644'
+
+- name: Add APT repo
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable
+    state: present
+    filename: syncthing
+
+- name: Install via APT
+  ansible.builtin.apt:
+    name: syncthing
+    update_cache: true
+  when: check_syncthing_v_task is failed
+
+- name: Update to the latest version
+  ansible.builtin.apt:
+    name: syncthing
+    state: latest
+    update_cache: true
+  when:
+  - syncthing_v is version(installed_syncthing_v, 'ne')
+  - check_syncthing_v_task is success

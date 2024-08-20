@@ -1,0 +1,5 @@
+- name: Brew install syncthing
+  community.general.homebrew:
+    name: '{{ syncthing_brew_package }}'
+    state: '{{ syncthing_brew_state }}'
+    update_homebrew: true

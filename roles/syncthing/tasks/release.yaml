@@ -1,0 +1,27 @@
+- name: Creating extraction dir {{ syncthing_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ syncthing_full_download_path }}'
+    state: directory
+
+# Linux release artifact tarball extraction
+- name: Getting synthing release tar artifact archive contents
+  ansible.builtin.unarchive:
+    src: '{{ syncthing_release_url }}'
+    dest: '{{ syncthing_full_download_path }}'
+    remote_src: true
+    extra_opts:
+    - --strip-components=1
+  when: syncthing_system not in ['windows', 'darwin']
+
+- name: Copying syncthing to {{ syncthing_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ syncthing_full_download_path }}/kubefwd'
+    dest: '{{ syncthing_bin_dst }}/{{ syncthing_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting {{ syncthing_full_download_path }} dir
+  ansible.builtin.file:
+    path: '{{ syncthing_full_download_path }}'
+    state: absent
+  when: postinstall_cleanup

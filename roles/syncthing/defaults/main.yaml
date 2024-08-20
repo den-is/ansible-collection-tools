@@ -1,0 +1,29 @@
+syncthing_v: v1.27.10
+syncthing_repo: true
+
+syncthing_arch_map:
+  x86_64: "amd64"
+  i386: "386"
+  aarch64: "arm64"
+
+syncthing_system_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+syncthing_arch: "{{ syncthing_arch_map[ansible_architecture] }}"
+syncthing_system: "{{ syncthing_system_map[ansible_system] }}"
+
+syncthing_release_base_url: https://github.com/syncthing/syncthing/releases/download
+syncthing_release_artifact_name: syncthing-{{ syncthing_system }}-{{ syncthing_arch }}-{{ syncthing_v }}{{ '.zip' if syncthing_system in ['windows', 'darwin'] else '.tar.gz'}}
+syncthing_release_url: '{{ syncthing_release_base_url }}/{{ syncthing_v }}/{{ syncthing_release_artifact_name }}'
+
+syncthing_full_download_path: /tmp/syncthing_{{ syncthing_v }}
+postinstall_cleanup: true
+
+syncthing_bin_dst: /usr/local/bin
+syncthing_bin: syncthing
+
+syncthing_brew: false
+syncthing_brew_package: syncthing
+syncthing_brew_state: latest
