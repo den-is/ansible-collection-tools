@@ -1,4 +1,4 @@
-haproxy_v: 3.0.3
+haproxy_v: 3.0.4
 haproxy_apt_package_v: "{{ haproxy_v }}*"
 
 ### HAProxy systemd service ====================================================
@@ -46,7 +46,7 @@ ip_local_port_range: 10000 65535
 
 ### Lua compilation ============================================================
 compile_lua: false
-lua_version: 5.4.6
+lua_version: 5.4.7
 lua_url: https://www.lua.org/ftp/lua-{{ lua_version }}.tar.gz
 lua_prefix: /usr/local
 lua_make_extra_opts: ''
