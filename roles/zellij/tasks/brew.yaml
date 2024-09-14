@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: '{{ zellij_brew_package }}'
+    state: '{{ zellij_brew_state }}'
+    update_homebrew: true

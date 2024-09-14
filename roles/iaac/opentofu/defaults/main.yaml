@@ -1,4 +1,4 @@
-opentofu_v: v1.8.1
+opentofu_v: v1.8.2
 
 opentofu_arch_map:
   x86_64: amd64

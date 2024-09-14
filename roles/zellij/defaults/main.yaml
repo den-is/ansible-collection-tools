@@ -1,0 +1,29 @@
+zellij_v: v0.40.1
+
+zellij_nov: "{{ zellij_v | regex_replace('^v', '') }}"
+
+zellij_arch_map:
+  x86_64: x86_64
+  aarch64: aarch64
+
+zellij_system_map:
+  Darwin: apple-darwin
+  Linux: unknown-linux
+
+zellij_arch: "{{ zellij_arch_map[ansible_architecture] }}"
+zellij_system: "{{ zellij_system_map[ansible_system] }}"
+
+zellij_release_base_url: https://github.com/zellij-org/zellij/releases/download
+zellij_archive_name: zellij-{{ zellij_arch }}-{{ zellij_system }}{{ '-musl' if ansible_system == 'Linux' }}.tar.gz
+
+zellij_release_url: '{{ zellij_release_base_url }}/{{ zellij_v }}/{{ zellij_archive_name }}'
+
+zellij_archive_download_dst: /tmp
+zellij_extraction_dst: '{{ zellij_archive_download_dst }}/zellij-{{ zellij_v }}'
+
+zellij_bin_dst: /usr/local/bin
+zellij_bin: zellij
+
+zellij_brew: false
+zellij_brew_package: zellij
+zellij_brew_state: latest

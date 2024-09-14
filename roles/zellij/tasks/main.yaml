@@ -1,0 +1,17 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - zellij_nov is version(installed_zellij_v, 'ne')
+  - not zellij_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - zellij_nov is version(installed_zellij_v, 'ne')
+  - zellij_brew
+  - ansible_system == 'Darwin'
