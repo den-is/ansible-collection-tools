@@ -1,0 +1,24 @@
+- name: Preparation steps
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Download and extract nerdctl {{ nerdctl_nov }} to {{ nerdctl_bin_dst }}
+  ansible.builtin.unarchive:
+    src: "{{ nerdctl_download_url }}"
+    dest: "{{ nerdctl_bin_dst }}"
+    remote_src: true
+  register: unarchive_notfull_nerdctl_bin
+  when:
+  - not nerdctl_full
+  - nerdctl_nov is version(nerdctl_installed_v, 'ne')
+
+- name: Add zsh completions
+  ansible.builtin.shell: |-
+    {{ nerdctl_bin_dst }}/nerdctl completion zsh > {{ nerdctl_zsh_completions_dst }}/_nerdctl
+  args:
+    creates: "{{ nerdctl_zsh_completions_dst }}/_nerdctl"
+  when:
+  - nerdctl_zsh_completions_enabled
+  - check_zsh_completions_dir.stat.exists
+  - unarchive_notfull_nerdctl_bin is success
