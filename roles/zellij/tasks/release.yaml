@@ -1,16 +1,12 @@
-- name: Getting release archive
-  ansible.builtin.get_url:
-    url: '{{ zellij_release_url }}'
-    dest: '{{ zellij_archive_download_dst }}/{{ zellij_archive_name }}'
-
 - name: Creating extraction dir {{ zellij_extraction_dst }}
   ansible.builtin.file:
     path: '{{ zellij_extraction_dst }}'
     state: directory
+    mode: '0755'
 
 - name: Extracting archive
   ansible.builtin.unarchive:
-    src: '{{ zellij_archive_download_dst }}/{{ zellij_archive_name }}'
+    src: '{{ zellij_release_url }}'
     dest: '{{ zellij_extraction_dst }}'
     remote_src: true
 
@@ -23,8 +19,5 @@
 
 - name: Deleting downloaded artifacts
   ansible.builtin.file:
-    path: '{{ item }}'
+    path: '{{ zellij_extraction_dst }}'
     state: absent
-  loop:
-  - '{{ zellij_extraction_dst }}'
-  - '{{ zellij_archive_download_dst }}/{{ zellij_archive_name }}'

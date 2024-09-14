@@ -1,5 +1,7 @@
 awscli_v: latest
-# awscli_v: 2.15.58
+
+# tags can be found at https://github.com/aws/aws-cli/tags
+# awscli_v: 2.17.51
 
 awscli_arch: "{{ ansible_architecture }}"
 awscli_system: "{{ ansible_system | lower }}"
