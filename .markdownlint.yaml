@@ -1,0 +1,18 @@
+default: true
+# Multiple consecutive blank lines
+MD012:
+  maximum: 2
+# Line length
+MD013: false
+# Headers should be surrounded by blank lines
+MD022:
+  lines_above: 1
+  lines_below: 0
+# Fenced code blocks should be surrounded by blank lines
+MD031: false
+# Lists should be surrounded by blank lines
+MD032: false
+# Bare URL used
+MD034: false
+# Tables should be surrounded by blank lines
+MD058: false
