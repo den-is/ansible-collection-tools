@@ -2,6 +2,7 @@
   ansible.builtin.file:
     path: '{{ kubectx_full_download_path }}'
     state: directory
+    mode: '0755'
   notify: Clean downloaded artifacts
 
 - name: Getting kubectx release archive
