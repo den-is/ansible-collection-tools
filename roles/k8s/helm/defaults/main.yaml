@@ -7,7 +7,7 @@ helm_arch_map:
 helm_arch: "{{ helm_arch_map[ansible_architecture] }}"
 
 helm_release_url: https://get.helm.sh/helm-{{ helm_v }}-{{ ansible_system | lower }}-{{ helm_arch }}.tar.gz
-helm_download_dst: /tmp/helm_{{ helm_v }}'
+helm_download_dst: /tmp/helm_{{ helm_v }}
 
 helm_bin: helm
 helm_bin_dst: /usr/local/bin
