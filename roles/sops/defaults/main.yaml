@@ -1,4 +1,4 @@
-sops_v: v3.9.0
+sops_v: v3.9.1
 
 sops_arch_map:
   x86_64: amd64

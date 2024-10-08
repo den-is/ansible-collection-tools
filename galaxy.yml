@@ -1,6 +1,6 @@
 namespace: den_is
 name: tools
-version: 0.4.1
+version: 0.4.3
 readme: README.md
 authors:
 - Denis Iskandarov <denis@cloudboom.io>

@@ -1,4 +1,4 @@
-terragrunt_atlantis_config_v: v1.18.0
+terragrunt_atlantis_config_v: v1.19.0
 terragrunt_atlantis_config_without_v: "{{ terragrunt_atlantis_config_v | regex_replace('^v', '') }}"
 
 terragrunt_atlantis_config_arch_map:
