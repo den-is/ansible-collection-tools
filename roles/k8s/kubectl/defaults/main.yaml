@@ -19,8 +19,8 @@ kubectl_system_map:
   Linux: linux
   Win32NT: windows
 
-kubectl_arch: "{{ direnv_arch_map[ansible_architecture] }}"
-kubectl_system: "{{ direnv_system_map[ansible_system] }}"
+kubectl_arch: "{{ kubectl_arch_map[ansible_architecture] }}"
+kubectl_system: "{{ kubectl_system_map[ansible_system] }}"
 
 kubectl_release_artifact_name: kubectl{{ '.exe' if ansible_system == 'Win32NT' }}
 kubectl_release_url: https://dl.k8s.io/release/{{ kubectl_v }}/bin/{{ kubectl_system }}/{{ kubectl_arch }}/{{ kubectl_release_artifact_name }}
