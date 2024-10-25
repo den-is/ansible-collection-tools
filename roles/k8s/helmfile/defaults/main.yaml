@@ -1,12 +1,12 @@
-helmfile_v: v0.168.0
+helmfile_v: v0.169.1
 
 helmfile_v_no_v: "{{ helmfile_v | regex_replace('^v', '') }}"
-helmfile_arch: |-
-  {%- if ansible_architecture == 'x86_64' -%}
-  amd64
-  {%- else -%}
-  {{ ansible_architecture }}
-  {%- endif -%}
+
+_helmfile_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+helmfile_arch: "{{ _helmfile_arch_map[ansible_architecture] }}"
 
 helmfile_release_base_url: https://github.com/helmfile/helmfile/releases/download
 helmfile_release_url: '{{ helmfile_release_base_url }}/{{ helmfile_v }}/helmfile_{{ helmfile_v_no_v }}_{{ ansible_system | lower }}_{{ helmfile_arch }}.tar.gz'
