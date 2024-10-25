@@ -29,6 +29,7 @@
 - name: Creating extraction dir {{ fzf_extraction_dst }}
   ansible.builtin.file:
     path: '{{ fzf_extraction_dst }}'
+    mode: '0755'
     state: directory
 
 - name: Extracting archive
