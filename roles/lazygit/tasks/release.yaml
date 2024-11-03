@@ -1,0 +1,56 @@
+- name: Get checksum
+  when: lazygit_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __lazygit_checksums: "{{ lookup('url', lazygit_release_sha256sums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __lazygit_checksums is search(lazygit_archive_name)
+    retries: 10
+
+  - name: Get checksum of {{ lazygit_archive_name }}
+    ansible.builtin.set_fact:
+      __lazygit_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __lazygit_checksums }}"
+    when:
+    - lazygit_archive_name in item
+
+- name: Getting lazygit release artifact archive
+  ansible.builtin.get_url:
+    url: '{{ lazygit_release_url }}'
+    dest: '{{ lazygit_archive_download_dst }}/{{ lazygit_archive_name }}'
+    checksum: "{{ 'sha256:' + __lazygit_checksum if lazygit_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Creating extraction dir {{ lazygit_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ lazygit_extraction_dst }}'
+    state: directory
+    mode: '0755'
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ lazygit_archive_download_dst }}/{{ lazygit_archive_name }}'
+    dest: '{{ lazygit_extraction_dst }}'
+    remote_src: true
+
+- name: Copying binary to {{ lazygit_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ lazygit_extraction_dst }}/lazygit'
+    dest: '{{ lazygit_bin_dst }}/{{ lazygit_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ lazygit_extraction_dst }}'
+  - '{{ lazygit_archive_download_dst }}/{{ lazygit_archive_name }}'

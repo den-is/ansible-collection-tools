@@ -1,0 +1,33 @@
+lazygit_v: v0.44.1
+
+_lazygit_nov: "{{ lazygit_v | regex_replace('^v', '') }}"
+
+_lazygit_arch_map:
+  x86_64: x86_64
+  i386: 32-bit
+  aarch64: arm64
+
+_lazygit_system_map:
+  Darwin: Darwin
+  Linux: Linux
+  Win32NT: Windows
+
+lazygit_arch: "{{ _lazygit_arch_map[ansible_architecture] }}"
+lazygit_sys: "{{ _lazygit_system_map[ansible_system] }}"
+
+lazygit_release_base_url: https://github.com/jesseduffield/lazygit/releases/download
+lazygit_archive_name: lazygit_{{ _lazygit_nov }}_{{ lazygit_sys }}_{{ lazygit_arch }}.{{ 'tar.gz' if not lazygit_sys == 'Windows' else 'zip' }}
+lazygit_release_url: '{{ lazygit_release_base_url }}/v{{ _lazygit_nov }}/{{ lazygit_archive_name }}'
+
+lazygit_checksum_verify: false
+lazygit_release_sha256sums_url: '{{ lazygit_release_base_url }}/v{{ _lazygit_nov }}/checksums.txt'
+
+lazygit_archive_download_dst: /tmp
+lazygit_extraction_dst: '{{ lazygit_archive_download_dst }}/lazygit-{{ lazygit_v }}'
+
+lazygit_bin_dst: /usr/local/bin
+lazygit_bin: lazygit
+
+lazygit_brew: false
+lazygit_brew_package: lazygit
+lazygit_brew_state: latest
