@@ -1,0 +1,31 @@
+#-------------------------------------------------------------------------------
+- name: Get installed neovim version if any
+  ansible.builtin.shell: nvim --version | head -1 | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_neovim_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register neovim version fact
+  ansible.builtin.set_fact:
+    _installed_neovim_v: "{{ _check_neovim_v_task.stdout | default('v0.0.0', true) }}"
+
+- name: Displaying installed version
+  ansible.builtin.debug:
+    msg: |-
+      Installed Neovim version: {{ _installed_neovim_v if _check_neovim_v_task is succeeded else "Not Installed" }}
+
+#-------------------------------------------------------------------------------
+- name: Get installed Bob version if any
+  ansible.builtin.shell: bob --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_neovim_bob_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register bob version fact
+  ansible.builtin.set_fact:
+    _installed_neovim_bob_v: "{{ _check_neovim_bob_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Displaying installed Bob version
+  ansible.builtin.debug:
+    msg: |-
+      Installed Bob version: {{ _installed_neovim_bob_v if _check_neovim_bob_v_task is succeeded else "Not Installed" }}

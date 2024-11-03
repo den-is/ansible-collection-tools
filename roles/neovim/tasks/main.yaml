@@ -1,0 +1,21 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Install Bob from release archive
+  ansible.builtin.include_tasks: bob.yaml
+  when:
+  - not neovim_bob_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - neovim_brew or neovim_bob_brew
+  - not neovim_compile
+  - ansible_system == 'Darwin'
+
+- name: Neovim configuration deploy from git repo
+  ansible.builtin.include_tasks: config.yaml
+  when:
+  - neovim_config

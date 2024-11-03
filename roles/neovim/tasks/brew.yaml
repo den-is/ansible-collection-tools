@@ -1,0 +1,17 @@
+- name: Brew install neovim
+  community.general.homebrew:
+    name: '{{ neovim_brew_package }}'
+    state: '{{ neovim_brew_state }}'
+    update_homebrew: true
+  when:
+  - neovim_brew
+  - not neovim_bob_brew
+
+- name: Brew install bob
+  community.general.homebrew:
+    name: '{{ neovim_bob_brew_package }}'
+    state: '{{ neovim_bob_brew_state }}'
+    update_homebrew: true
+  when:
+  - not neovim_brew
+  - neovim_bob_brew
