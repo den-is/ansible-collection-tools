@@ -1,4 +1,4 @@
-talosctl_v: v1.8.1
+talosctl_v: v1.8.2
 
 talosctl_arch_map:
   x86_64: amd64
