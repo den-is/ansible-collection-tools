@@ -1,0 +1,22 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Make sure unzip is installed
+  ansible.builtin.package:
+    name: unzip
+    state: present
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - _lazydocker_nov is version(installed_lazydocker_v, 'ne')
+  - not lazydocker_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - _lazydocker_nov is version(installed_lazydocker_v, 'ne')
+  - lazydocker_brew
+  - ansible_system == 'Darwin'

@@ -1,0 +1,56 @@
+- name: Get checksum
+  when: lazydocker_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __lazydocker_checksums: "{{ lookup('url', lazydocker_release_sha256sums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __lazydocker_checksums is search(lazydocker_archive_name)
+    retries: 10
+
+  - name: Get checksum of {{ lazydocker_archive_name }}
+    ansible.builtin.set_fact:
+      __lazydocker_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __lazydocker_checksums }}"
+    when:
+    - lazydocker_archive_name in item
+
+- name: Getting lazydocker release artifact archive
+  ansible.builtin.get_url:
+    url: '{{ lazydocker_release_url }}'
+    dest: '{{ lazydocker_archive_download_dst }}/{{ lazydocker_archive_name }}'
+    checksum: "{{ 'sha256:' + __lazydocker_checksum if lazydocker_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Creating extraction dir {{ lazydocker_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ lazydocker_extraction_dst }}'
+    state: directory
+    mode: '0755'
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ lazydocker_archive_download_dst }}/{{ lazydocker_archive_name }}'
+    dest: '{{ lazydocker_extraction_dst }}'
+    remote_src: true
+
+- name: Copying binary to {{ lazydocker_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ lazydocker_extraction_dst }}/lazydocker'
+    dest: '{{ lazydocker_bin_dst }}/{{ lazydocker_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ lazydocker_extraction_dst }}'
+  - '{{ lazydocker_archive_download_dst }}/{{ lazydocker_archive_name }}'

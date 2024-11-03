@@ -1,0 +1,19 @@
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: 'command -v {{ lazydocker_bin }}'
+  register: lazydocker_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: lazydocker --version | head -n1 | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_lazydocker_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register preflight facts
+  ansible.builtin.set_fact:
+    installed_lazydocker_v: "{{ _check_lazydocker_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Current version: {{ installed_lazydocker_v if _check_lazydocker_v_task is success else "Not Installed" }}'

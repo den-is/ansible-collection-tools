@@ -1,0 +1,33 @@
+lazydocker_v: v0.23.3
+
+_lazydocker_nov: "{{ lazydocker_v | regex_replace('^v', '') }}"
+
+_lazydocker_arch_map:
+  x86_64: x86_64
+  i386: 32-bit
+  aarch64: arm64
+
+_lazydocker_system_map:
+  Darwin: Darwin
+  Linux: Linux
+  Win32NT: Windows
+
+lazydocker_arch: "{{ _lazydocker_arch_map[ansible_architecture] }}"
+lazydocker_sys: "{{ _lazydocker_system_map[ansible_system] }}"
+
+lazydocker_release_base_url: https://github.com/jesseduffield/lazydocker/releases/download
+lazydocker_archive_name: lazydocker_{{ _lazydocker_nov }}_{{ lazydocker_sys }}_{{ lazydocker_arch }}.{{ 'tar.gz' if not lazydocker_sys == 'Windows' else 'zip' }}
+lazydocker_release_url: '{{ lazydocker_release_base_url }}/v{{ _lazydocker_nov }}/{{ lazydocker_archive_name }}'
+
+lazydocker_checksum_verify: false
+lazydocker_release_sha256sums_url: '{{ lazydocker_release_base_url }}/v{{ _lazydocker_nov }}/checksums.txt'
+
+lazydocker_archive_download_dst: /tmp
+lazydocker_extraction_dst: '{{ lazydocker_archive_download_dst }}/lazydocker-{{ lazydocker_v }}'
+
+lazydocker_bin_dst: /usr/local/bin
+lazydocker_bin: lazydocker
+
+lazydocker_brew: false
+lazydocker_brew_package: lazydocker
+lazydocker_brew_state: latest
