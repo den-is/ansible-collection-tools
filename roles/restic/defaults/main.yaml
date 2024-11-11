@@ -1,4 +1,4 @@
-restic_v: 0.17.1
+restic_v: 0.17.3
 
 restic_arch_map:
   x86_64: amd64
