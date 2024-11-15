@@ -20,6 +20,7 @@ Contributions are welcome.
 ├── age
 ├── awscli
 ├── bat
+├── cfssl
 ├── croc
 ├── direnv
 ├── eza
@@ -28,36 +29,43 @@ Contributions are welcome.
 ├── git_delta
 ├── haproxy
 ├── iaac
-│   ├── atlantis
-│   ├── opentofu
-│   ├── packer
-│   ├── terraform
-│   ├── terragrunt
-│   └── terragrunt-atlantis-config
+│   ├── atlantis
+│   ├── opentofu
+│   ├── packer
+│   ├── terraform
+│   ├── terragrunt
+│   ├── terragrunt_atlantis_config
+│   └── vagrant
 ├── k8s
-│   ├── flux
-│   ├── helm
-│   ├── helmfile
-│   ├── k3d
-│   ├── k9s
-│   ├── kind
-│   ├── kubecolor
-│   ├── kubectl
-│   ├── kubectx
-│   ├── kubefwd
-│   ├── kubeps1
-│   ├── kubie
-│   ├── kustomize
-│   ├── stern
-│   └── talosctl
+│   ├── flux
+│   ├── helm
+│   ├── helmfile
+│   ├── k3d
+│   ├── k9s
+│   ├── kind
+│   ├── kubecolor
+│   ├── kubectl
+│   ├── kubectx
+│   ├── kubefwd
+│   ├── kubeps1
+│   ├── kubie
+│   ├── kustomize
+│   ├── stern
+│   └── talosctl
+├── lazydocker
+├── lazygit
 ├── minio
+├── mkcert
+├── neovim
 ├── ohmyzsh
 ├── pyenv
 ├── rclone
 ├── restic
 ├── ripgrep
 ├── sops
+├── syncthing
 ├── yq
+├── zellij
 └── zoxide
 ```
 
