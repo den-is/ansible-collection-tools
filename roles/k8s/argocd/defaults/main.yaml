@@ -1,0 +1,27 @@
+argocd_v: v2.13.0
+
+argocd_sys_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+argocd_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+argocd_sys: "{{ argocd_sys_map[ansible_system] }}"
+argocd_arch: "{{ argocd_arch_map[ansible_architecture] }}"
+
+argocd_release_base_url: https://github.com/argoproj/argo-cd/releases/download
+argocd_release_binary_name: argocd-{{ argocd_sys }}-{{ argocd_arch }}{{ '.exe' if argocd_sys == 'windows' }}
+argocd_release_url: "{{ argocd_release_base_url }}/{{ argocd_v }}/{{ argocd_release_binary_name }}"
+
+argocd_checksum_verify: false
+argocd_checksum_url: "{{ argocd_release_base_url }}/{{ argocd_v }}/cli_checksums.txt"
+
+argocd_bin_dst: /usr/local/bin
+argocd_bin: argocd
+
+argocd_brew: false
+argocd_brew_package: argocd
+argocd_brew_state: latest

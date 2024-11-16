@@ -1,0 +1,17 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation release binary
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - argocd_v is version(installed_argocd_v, 'ne')
+  - not argocd_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - argocd_v is version(installed_argocd_v, 'ne')
+  - argocd_brew
+  - ansible_system == 'Darwin'
