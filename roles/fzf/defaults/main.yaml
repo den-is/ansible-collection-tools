@@ -27,6 +27,9 @@ fzf_release_base_url: https://github.com/junegunn/fzf/releases/download
 fzf_archive_name: fzf-{{ fzf_v }}-{{ fzf_system }}-{{ fzf_arch }}.{{ fzf_archive_ext }}
 fzf_release_url: '{{ fzf_release_base_url }}/{{ fzf_v }}/{{ fzf_archive_name }}'
 
+fzf_checksum_verify: false
+fzf_checksum_url: '{{ fzf_release_base_url }}/{{ fzf_v }}/fzf_{{ fzf_v }}_checksums.txt'
+
 fzf_archive_download_dst: /tmp
 fzf_extraction_dst: '{{ fzf_archive_download_dst }}/fzf-{{ fzf_v }}'
 

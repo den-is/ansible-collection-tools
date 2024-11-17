@@ -1,14 +1,14 @@
 # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
 - name: Get checksum
+  when: fzf_checksum_verify
   block:
   - name: Registering checksums related vars
     ansible.builtin.set_fact:
-      __checksums_url: "{{ fzf_release_base_url }}/{{ fzf_v }}/fzf_{{ fzf_v }}_checksums.txt"
       _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
 
   - name: Get checksums list
     ansible.builtin.set_fact:
-      __fzf_checksums: "{{ lookup('url', __checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+      __fzf_checksums: "{{ lookup('url', fzf_checksum_url, headers=_github_api_headers, wantlist=True) | list }}"
     run_once: true
     until: __fzf_checksums is search(fzf_archive_name)
     retries: 10
@@ -24,7 +24,7 @@
   ansible.builtin.get_url:
     url: '{{ fzf_release_url }}'
     dest: '{{ fzf_archive_download_dst }}/{{ fzf_archive_name }}'
-    checksum: 'sha256:{{ __fzf_checksum }}'
+    checksum: "{{ 'sha256:' + __fzf_checksum if fzf_checksum_verify else '' }}"
 
 - name: Creating extraction dir {{ fzf_extraction_dst }}
   ansible.builtin.file:
