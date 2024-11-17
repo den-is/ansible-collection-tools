@@ -49,6 +49,7 @@ Contributions are welcome.
 │   ├── kubectx
 │   ├── kubefwd
 │   ├── kubeps1
+│   ├── kubeseal
 │   ├── kubie
 │   ├── kustomize
 │   ├── stern
