@@ -1,0 +1,19 @@
+- name: Check if binary already exists
+  ansible.builtin.shell: 'command -v {{ kubeseal_bin }}'
+  register: check_kubeseal_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: kubeseal --version | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"
+  register: check_kubeseal_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Registering pre-flight vars
+  ansible.builtin.set_fact:
+    installed_kubeseal_v: "{{ check_kubeseal_v_task.stdout | default('v0.0.0', true) }}"
+
+- name: Reporting installed version
+  ansible.builtin.debug:
+    msg: 'Installed version: {{ installed_kubeseal_v if check_kubeseal_v_task is success else "Not Found" }}'

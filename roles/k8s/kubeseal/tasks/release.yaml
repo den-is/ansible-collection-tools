@@ -1,0 +1,54 @@
+- name: Get checksum
+  when: kubeseal_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __kubeseal_checksums: "{{ lookup('url', kubeseal_checksum_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __kubeseal_checksums is search(kubeseal_release_file_name)
+    retries: 10
+
+  - name: Get checksum for {{ kubeseal_release_file_name }}
+    ansible.builtin.set_fact:
+      __kubeseal_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __kubeseal_checksums }}"
+    when:
+    - kubeseal_release_file_name in item
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ kubeseal_release_url }}'
+    dest: '{{ kubeseal_archive_download_dst }}/{{ kubeseal_release_file_name }}'
+    checksum: "{{'sha256:' + __kubeseal_checksum if kubeseal_checksum_verify else ''}}"
+
+- name: Creating kubeseal extraction dir {{ kubeseal_extraction_path }}
+  ansible.builtin.file:
+    path: '{{ kubeseal_extraction_path }}'
+    state: directory
+
+- name: Extracting kubeseal archive
+  ansible.builtin.unarchive:
+    src: '{{ kubeseal_archive_download_dst }}/{{ kubeseal_release_file_name }}'
+    dest: '{{ kubeseal_extraction_path }}'
+    remote_src: true
+
+- name: Copying kubeseal to {{ kubeseal_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ kubeseal_extraction_path }}/kubeseal'
+    dest: '{{ kubeseal_bin_dst }}/{{ kubeseal_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ kubeseal_extraction_path }}'
+  - '{{ kubeseal_archive_download_dst }}/{{ kubeseal_release_file_name }}'

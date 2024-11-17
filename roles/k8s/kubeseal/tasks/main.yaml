@@ -1,0 +1,17 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation release binary
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - kubeseal_v is version(installed_kubeseal_v, 'ne')
+  - not kubeseal_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - kubeseal_v is version(installed_kubeseal_v, 'ne')
+  - kubeseal_brew
+  - ansible_system == 'Darwin'

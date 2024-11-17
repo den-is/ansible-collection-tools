@@ -1,0 +1,32 @@
+kubeseal_v: v0.27.2
+
+__kubeseal_nov: '{{ kubeseal_v | regex_replace("^v", "") }}'
+
+kubeseal_sys_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+kubeseal_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+kubeseal_sys: "{{ kubeseal_sys_map[ansible_system] }}"
+kubeseal_arch: "{{ kubeseal_arch_map[ansible_architecture] }}"
+
+kubeseal_release_base_url: https://github.com/bitnami-labs/sealed-secrets/releases/download
+kubeseal_release_file_name: kubeseal-{{ __kubeseal_nov }}-{{ kubeseal_sys }}-{{ kubeseal_arch }}.tar.gz
+kubeseal_release_url: "{{ kubeseal_release_base_url }}/{{ kubeseal_v }}/{{ kubeseal_release_file_name }}"
+
+kubeseal_checksum_verify: false
+kubeseal_checksum_url: "{{ kubeseal_release_base_url }}/{{ kubeseal_v }}/sealed-secrets_{{ __kubeseal_nov }}_checksums.txt"
+
+kubeseal_archive_download_dst: /tmp
+kubeseal_extraction_path: '{{ kubeseal_archive_download_dst }}/kubeseal_{{ kubeseal_v }}'
+
+kubeseal_bin_dst: /usr/local/bin
+kubeseal_bin: kubeseal
+
+kubeseal_brew: false
+kubeseal_brew_package: kubeseal
+kubeseal_brew_state: latest
