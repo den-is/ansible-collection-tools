@@ -3,14 +3,46 @@
     name: unzip
     state: present
 
+- name: Get checksum
+  when: terraform_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __terraform_checksums: "{{ lookup('url', terraform_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __terraform_checksums is search(terraform_release_archive_name)
+    retries: 10
+
+  - name: Get checksum for {{ terraform_release_archive_name }}
+    ansible.builtin.set_fact:
+      __terraform_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __terraform_checksums }}"
+    when:
+    - terraform_release_archive_name in item
+
+
 - name: Creating extraction dir {{ terraform_full_download_path }}
   ansible.builtin.file:
     path: '{{ terraform_full_download_path }}'
     state: directory
+    mode: '0755'
 
-- name: Getting terraform {{ terraform_v }} archive and extracting it to {{ terraform_full_download_path }}
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ terraform_release_url }}'
+    dest: '{{ terraform_archive_download_dst }}/{{ terraform_release_archive_name }}'
+    checksum: "{{'sha256:' + __terraform_checksum if terraform_checksum_verify else ''}}"
+    mode: '0644'
+
+- name: Extracting archive to {{ terraform_full_download_path }}
   ansible.builtin.unarchive:
-    src: '{{ terraform_release_url }}'
+    src: '{{ terraform_archive_download_dst }}/{{ terraform_release_archive_name }}'
     dest: '{{ terraform_full_download_path }}'
     remote_src: true
 
@@ -21,7 +53,10 @@
     mode: '0755'
     remote_src: true
 
-- name: Deleting {{ terraform_full_download_path }} dir
+- name: Deleting release artifacts
   ansible.builtin.file:
-    path: '{{ terraform_full_download_path }}'
+    path: '{{ item }}'
     state: absent
+  loop:
+  - '{{ terraform_archive_download_dst }}/{{ terraform_release_archive_name }}'
+  - '{{ terraform_full_download_path }}'

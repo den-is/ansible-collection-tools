@@ -26,11 +26,13 @@
     url: '{{ kubeseal_release_url }}'
     dest: '{{ kubeseal_archive_download_dst }}/{{ kubeseal_release_file_name }}'
     checksum: "{{'sha256:' + __kubeseal_checksum if kubeseal_checksum_verify else ''}}"
+    mode: '0644'
 
 - name: Creating kubeseal extraction dir {{ kubeseal_extraction_path }}
   ansible.builtin.file:
     path: '{{ kubeseal_extraction_path }}'
     state: directory
+    mode: '0755'
 
 - name: Extracting kubeseal archive
   ansible.builtin.unarchive:

@@ -1,14 +1,24 @@
-opentofu_v: v1.8.5
+opentofu_v: v1.8.6
 
-opentofu_arch_map:
+_opentofu_sys_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+_opentofu_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-opentofu_arch: "{{ opentofu_arch_map[ansible_architecture] }}"
+_opentofu_sys: "{{ _opentofu_sys_map[ansible_system] }}"
+_opentofu_arch: "{{ _opentofu_arch_map[ansible_architecture] }}"
 
-opentofu_nov_v: "{{ opentofu_v | regex_replace('^v', '') }}"
+_opentofu_nov_v: "{{ opentofu_v | regex_replace('^v', '') }}"
 opentofu_release_base_url: https://github.com/opentofu/opentofu/releases/download
-opentofu_release_url: '{{ opentofu_release_base_url }}/{{ opentofu_v }}/tofu_{{ opentofu_nov_v }}_{{ ansible_system | lower }}_{{ opentofu_arch }}.zip'
+opentofu_release_archive_name: tofu_{{ _opentofu_nov_v }}_{{ _opentofu_sys }}_{{ _opentofu_arch }}.zip
+opentofu_release_url: '{{ opentofu_release_base_url }}/{{ opentofu_v }}/{{ opentofu_release_archive_name }}'
+
+opentofu_checksums_verify: false
+opentofu_checksums_url: '{{ opentofu_release_base_url }}/{{ opentofu_v }}/tofu_{{ _opentofu_nov_v }}_SHA256SUMS'
 
 opentofu_archive_download_dst: /tmp
 opentofu_full_download_path: '{{ opentofu_archive_download_dst }}/opentofu-{{ opentofu_v }}'

@@ -1,13 +1,19 @@
-atlantis_v: v0.30.0
+atlantis_v: v0.31.0
 
-atlantis_arch_map:
+_atlantis_sys_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+_atlantis_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-atlantis_arch: "{{ atlantis_arch_map[ansible_architecture] }}"
+_atlantis_sys: "{{ _atlantis_sys_map[ansible_system] }}"
+_atlantis_arch: "{{ _atlantis_arch_map[ansible_architecture] }}"
 
 atlantis_release_base_url: https://github.com/runatlantis/atlantis/releases/download
-atlantis_release_url: '{{ atlantis_release_base_url }}/{{ atlantis_v }}/atlantis_{{ ansible_system | lower }}_{{ atlantis_arch }}.zip'
+atlantis_release_url: '{{ atlantis_release_base_url }}/{{ atlantis_v }}/atlantis_{{ _atlantis_sys }}_{{ _atlantis_arch }}.zip'
 
 atlantis_archive_download_dst: /tmp
 atlantis_full_download_path: '{{ atlantis_archive_download_dst }}/atlantis-{{ atlantis_v }}'

@@ -1,35 +1,42 @@
 - name: Get checksum
+  when: opentofu_checksums_verify
   block:
 
   - name: Registering checksums related vars
     ansible.builtin.set_fact:
-      __checksums_url: "{{ opentofu_release_base_url }}/v{{ opentofu_nov_v }}/tofu_{{ opentofu_nov_v }}_SHA256SUMS"
       _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
 
   # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
   - name: Get checksums list
     ansible.builtin.set_fact:
-      __opentofu_checksums: "{{ lookup('url', __checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+      __opentofu_checksums: "{{ lookup('url', opentofu_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
     run_once: true
-    until: __opentofu_checksums is search('linux_' + opentofu_arch + '.zip')
+    until: __opentofu_checksums is search(opentofu_release_archive_name)
     retries: 10
 
-  - name: "Get checksum for {{ opentofu_arch }}"
+  - name: Get checksum for {{ opentofu_release_archive_name }}
     ansible.builtin.set_fact:
       __opentofu_checksum: "{{ item.split(' ')[0] }}"
     loop: "{{ __opentofu_checksums }}"
     when:
-    - "('linux_' + opentofu_arch + '.zip') in item"
-  # but you can't use this checksum with unarchive... you have to use it with get_url
+    - opentofu_release_archive_name in item
 
 - name: Creating extraction dir {{ opentofu_full_download_path }}
   ansible.builtin.file:
     path: '{{ opentofu_full_download_path }}'
     state: directory
+    mode: '0755'
 
-- name: Getting opentofu {{ opentofu_v }} archive and extracting it to {{ opentofu_full_download_path }}
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ opentofu_release_url }}'
+    dest: '{{ opentofu_archive_download_dst }}/{{ opentofu_release_archive_name }}'
+    checksum: "{{'sha256:' + __opentofu_checksum if opentofu_checksums_verify else ''}}"
+    mode: '0644'
+
+- name: Extracting archive to {{ opentofu_full_download_path }}
   ansible.builtin.unarchive:
-    src: '{{ opentofu_release_url }}'
+    src: '{{ opentofu_archive_download_dst }}/{{ opentofu_release_archive_name }}'
     dest: '{{ opentofu_full_download_path }}'
     remote_src: true
 
@@ -40,7 +47,10 @@
     mode: '0755'
     remote_src: true
 
-- name: Deleting {{ opentofu_full_download_path }} dir
+- name: Deleting release artifacts
   ansible.builtin.file:
-    path: '{{ opentofu_full_download_path }}'
+    path: '{{ item }}'
     state: absent
+  loop:
+  - '{{ opentofu_archive_download_dst }}/{{ opentofu_release_archive_name }}'
+  - '{{ opentofu_full_download_path }}'

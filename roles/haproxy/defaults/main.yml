@@ -1,4 +1,4 @@
-haproxy_v: 3.0.4
+haproxy_v: 3.0.6
 haproxy_apt_package_v: "{{ haproxy_v }}*"
 
 ### HAProxy systemd service ====================================================

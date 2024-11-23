@@ -1,14 +1,24 @@
 terraform_v: 1.9.8
 
-terraform_arch_map:
+_terraform_sys_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+_terraform_arch_map:
   x86_64: "amd64"
   i386: "386"
   aarch64: "arm64"
 
-terraform_arch: "{{ terraform_arch_map[ansible_architecture] }}"
+_terraform_sys: "{{ _terraform_sys_map[ansible_system] }}"
+_terraform_arch: "{{ _terraform_arch_map[ansible_architecture] }}"
 
 terraform_release_base_url: https://releases.hashicorp.com/terraform
-terraform_release_url: '{{ terraform_release_base_url }}/{{ terraform_v }}/terraform_{{ terraform_v }}_{{ ansible_system | lower }}_{{ terraform_arch }}.zip'
+terraform_release_archive_name: terraform_{{ terraform_v }}_{{ _terraform_sys }}_{{ _terraform_arch }}.zip
+terraform_release_url: '{{ terraform_release_base_url }}/{{ terraform_v }}/{{ terraform_release_archive_name }}'
+
+terraform_checksums_verify: false
+terraform_checksums_url: '{{ terraform_release_base_url }}/{{ terraform_v }}/terraform_{{ terraform_v }}_SHA256SUMS'
 
 terraform_archive_download_dst: /tmp
 terraform_full_download_path: '{{ terraform_archive_download_dst }}/terraform-{{ terraform_v }}'
