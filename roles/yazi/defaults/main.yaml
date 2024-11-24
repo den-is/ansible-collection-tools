@@ -1,0 +1,31 @@
+yazi_v: v0.3.3
+
+yazi_nov: '{{ yazi_v | regex_replace("^v", "") }}'
+
+yazi_musl: false
+
+_yazi_sys_map:
+  Darwin: apple-darwin
+  Linux: unknown-linux{{  '-gnu' if not yazi_musl else '-musl' }}
+  Win32NT: pc-windows-msvc
+
+_yazi_arch_map:
+  x86_64: "amd64"
+  aarch64: "aarch64"
+
+_yazi_sys: "{{ _yazi_sys_map[ansible_system] }}"
+_yazi_arch: "{{ _yazi_arch_map[ansible_architecture] }}"
+
+yazi_release_base_url: https://github.com/sxyazi/yazi/releases/download
+yazi_release_archive_name: yazi-{{ _yazi_arch }}-{{ _yazi_sys }}.zip
+yazi_release_url: '{{ yazi_release_base_url }}/{{ yazi_v }}/{{ yazi_release_archive_name }}'
+
+yazi_archive_download_dst: /tmp
+yazi_full_download_path: '{{ yazi_archive_download_dst }}/yazi-{{ yazi_v }}'
+
+yazi_bin_dst: /usr/local/bin
+yazi_bin: yazi
+
+yazi_brew: false
+yazi_brew_package: yazi
+yazi_brew_state: latest

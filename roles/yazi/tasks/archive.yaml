@@ -1,0 +1,44 @@
+- name: Install unzip
+  ansible.builtin.package:
+    name: unzip
+    state: present
+
+- name: Creating extraction dir {{ yazi_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ yazi_full_download_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ yazi_release_url }}'
+    dest: '{{ yazi_archive_download_dst }}/{{ yazi_release_archive_name }}'
+    mode: '0644'
+
+- name: Extracting archive to {{ yazi_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ yazi_archive_download_dst }}/{{ yazi_release_archive_name }}'
+    dest: '{{ yazi_full_download_path }}'
+    remote_src: true
+
+- name: Copying yazi binary to {{ yazi_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ yazi_full_download_path }}/yazi-{{ _yazi_arch }}-{{ _yazi_sys }}/yazi'
+    dest: '{{ yazi_bin_dst }}/{{ yazi_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Copying ya binary to {{ yazi_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ yazi_full_download_path }}/yazi-{{ _yazi_arch }}-{{ _yazi_sys }}/ya'
+    dest: '{{ yazi_bin_dst }}/ya'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ yazi_archive_download_dst }}/{{ yazi_release_archive_name }}'
+  - '{{ yazi_full_download_path }}'

@@ -1,0 +1,17 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: archive.yaml
+  when:
+  - yazi_nov is version(installed_yazi_v, 'ne')
+  - not yazi_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - yazi_nov is version(installed_yazi_v, 'ne')
+  - yazi_brew
+  - ansible_system == 'Darwin'
