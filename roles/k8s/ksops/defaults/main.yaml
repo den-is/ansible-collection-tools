@@ -1,0 +1,35 @@
+ksops_v: v4.3.2
+
+ksops_force_install: true
+
+ksops_nov: '{{ ksops_v | regex_replace("^v", "") }}'
+
+_ksops_sys_map:
+  Darwin: Darwin
+  Linux: Linux
+  Win32NT: Windows
+
+_ksops_arch_map:
+  x86_64: "x86_64"
+  i386: "i386"
+  aarch64: "arm64"
+
+_ksops_sys: "{{ _ksops_sys_map[ansible_system] }}"
+_ksops_arch: "{{ _ksops_arch_map[ansible_architecture] }}"
+
+ksops_release_base_url: https://github.com/viaduct-ai/kustomize-sops/releases/download/v4.3.2/
+ksops_release_archive_name: ksops_{{ ksops_nov }}_{{ _ksops_sys }}_{{ _ksops_arch }}.tar.gz
+ksops_release_url: '{{ ksops_release_base_url }}/{{ ksops_v }}/{{ ksops_release_archive_name }}'
+
+ksops_checksums_verify: false
+ksops_checksums_url: '{{ ksops_release_base_url }}/{{ ksops_v }}/checksums.txt'
+
+ksops_archive_download_dst: /tmp
+ksops_full_download_path: '{{ ksops_archive_download_dst }}/ksops-{{ ksops_v }}'
+
+ksops_bin_dst: /usr/local/bin
+ksops_bin: ksops
+
+ksops_brew: false
+ksops_brew_package: ksops
+ksops_brew_state: latest
