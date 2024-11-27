@@ -37,7 +37,7 @@
   ansible.builtin.get_url:
     url: '{{ terraform_release_url }}'
     dest: '{{ terraform_archive_download_dst }}/{{ terraform_release_archive_name }}'
-    checksum: "{{'sha256:' + __terraform_checksum if terraform_checksum_verify else ''}}"
+    checksum: "{{ 'sha256:' + __terraform_checksum if terraform_checksum_verify else '' }}"
     mode: '0644'
 
 - name: Extracting archive to {{ terraform_full_download_path }}
