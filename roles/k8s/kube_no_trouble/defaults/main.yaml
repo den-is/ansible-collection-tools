@@ -1,0 +1,27 @@
+kubent_v: 0.7.3
+
+_kubent_sys_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+_kubent_arch_map:
+  x86_64: "amd64"
+  aarch64: "arm64"
+
+_kubent_sys: "{{ _kubent_sys_map[ansible_system] }}"
+_kubent_arch: "{{ _kubent_arch_map[ansible_architecture] }}"
+
+kubent_release_base_url: https://github.com/doitintl/kube-no-trouble/releases/download
+kubent_release_archive_name: kubent-{{ kubent_v }}-{{ _kubent_sys }}-{{ _kubent_arch }}.tar.gz
+kubent_release_url: '{{ kubent_release_base_url }}/{{ kubent_v }}/{{ kubent_release_archive_name }}'
+
+kubent_archive_download_dst: /tmp
+kubent_full_download_path: '{{ kubent_archive_download_dst }}/kubent-{{ kubent_v }}'
+
+kubent_bin_dst: /usr/local/bin
+kubent_bin: kubent
+
+kubent_brew: false
+kubent_brew_package: kubent
+kubent_brew_state: latest

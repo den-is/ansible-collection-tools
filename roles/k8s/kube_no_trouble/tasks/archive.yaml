@@ -1,0 +1,32 @@
+- name: Creating extraction dir {{ kubent_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ kubent_full_download_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ kubent_release_url }}'
+    dest: '{{ kubent_archive_download_dst }}/{{ kubent_release_archive_name }}'
+    mode: '0644'
+
+- name: Extracting archive to {{ kubent_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ kubent_archive_download_dst }}/{{ kubent_release_archive_name }}'
+    dest: '{{ kubent_full_download_path }}'
+    remote_src: true
+
+- name: Copying binary to {{ kubent_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ kubent_full_download_path }}/kubent'
+    dest: '{{ kubent_bin_dst }}/{{ kubent_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ kubent_archive_download_dst }}/{{ kubent_release_archive_name }}'
+  - '{{ kubent_full_download_path }}'

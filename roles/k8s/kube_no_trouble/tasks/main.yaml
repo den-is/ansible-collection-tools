@@ -1,0 +1,17 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: archive.yaml
+  when:
+  - kubent_v is version(installed_kubent_v, 'ne')
+  - not kubent_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - kubent_v is version(installed_kubent_v, 'ne')
+  - kubent_brew
+  - ansible_system == 'Darwin'
