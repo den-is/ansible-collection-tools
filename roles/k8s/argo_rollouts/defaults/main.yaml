@@ -1,0 +1,27 @@
+argo_rollouts_v: v1.7.2
+
+argo_rollouts_sys_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+argo_rollouts_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+argo_rollouts_sys: "{{ argo_rollouts_sys_map[ansible_system] }}"
+argo_rollouts_arch: "{{ argo_rollouts_arch_map[ansible_architecture] }}"
+
+argo_rollouts_release_base_url: https://github.com/argoproj/argo-rollouts/releases/download
+argo_rollouts_release_binary_name: kubectl-argo-rollouts-{{ argo_rollouts_sys }}-{{ argo_rollouts_arch }}
+argo_rollouts_release_url: "{{ argo_rollouts_release_base_url }}/{{ argo_rollouts_v }}/{{ argo_rollouts_release_binary_name }}"
+
+argo_rollouts_checksum_verify: false
+argo_rollouts_checksum_url: "{{ argo_rollouts_release_base_url }}/{{ argo_rollouts_v }}/argo-rollouts-checksums.txt"
+
+argo_rollouts_bin_dst: /usr/local/bin
+argo_rollouts_bin: kubectl-argo-rollouts
+
+argo_rollouts_brew: false
+argo_rollouts_brew_package: argoproj/tap/kubectl-argo-rollouts
+argo_rollouts_brew_state: latest

@@ -1,0 +1,29 @@
+- name: Get checksum
+  when: argo_rollouts_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __argo_rollouts_checksums: "{{ lookup('url', argo_rollouts_checksum_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __argo_rollouts_checksums is search(argo_rollouts_release_binary_name)
+    retries: 10
+
+  - name: Get checksum for {{ argo_rollouts_release_binary_name }}
+    ansible.builtin.set_fact:
+      __argo_rollouts_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __argo_rollouts_checksums }}"
+    when:
+    - argo_rollouts_release_binary_name in item
+
+- name: Installing Argo Rollouts CLI binary (kubectl plugin)
+  ansible.builtin.get_url:
+    url: '{{ argo_rollouts_release_url }}'
+    dest: '{{ argo_rollouts_bin_dst }}/{{ argo_rollouts_bin }}'
+    checksum: "{{ 'sha256:' + __argo_rollouts_checksum if argo_rollouts_checksum_verify else '' }}"
+    mode: '0755'

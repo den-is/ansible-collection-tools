@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: '{{ argo_rollouts_brew_package }}'
+    state: '{{ argo_rollouts_brew_state }}'
+    update_homebrew: true
