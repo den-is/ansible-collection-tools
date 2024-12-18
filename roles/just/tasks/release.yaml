@@ -1,0 +1,59 @@
+- name: Get checksum
+  when: just_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __just_checksums: "{{ lookup('url', just_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __just_checksums is search(just_release_archive_name)
+    retries: 10
+
+  - name: Get checksum for {{ just_release_archive_name }}
+    ansible.builtin.set_fact:
+      __just_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __just_checksums }}"
+    when:
+    - just_release_archive_name in item
+
+
+- name: Creating extraction dir {{ just_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ just_full_download_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ just_release_url }}'
+    dest: '{{ just_archive_download_dst }}/{{ just_release_archive_name }}'
+    checksum: "{{ 'sha256:' + __just_checksum if just_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ just_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ just_archive_download_dst }}/{{ just_release_archive_name }}'
+    dest: '{{ just_full_download_path }}'
+    remote_src: true
+
+- name: Copying binary to {{ just_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ just_full_download_path }}/just'
+    dest: '{{ just_bin_dst }}/{{ just_bin }}'
+    mode: '0755'
+    remote_src: true
+
+## TODO: add tasks for man pages and completions installation
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ just_archive_download_dst }}/{{ just_release_archive_name }}'
+  - '{{ just_full_download_path }}'

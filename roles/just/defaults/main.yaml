@@ -1,0 +1,44 @@
+just_v: "1.38.0"
+
+_just_sys_map:
+  Linux: unknown-linux
+  Darwin: apple-darwin
+  Win32NT: pc-windows
+
+_just_arch_map:
+  x86_64: "x86_64"
+  aarch64: "aarch64"
+
+_just_compiler_map:
+  Linux:
+    x86_64: "-musl"
+    aarch64: "-musl"
+  Darwin:
+    x86_64: ""
+    aarch64: ""
+  Win32NT:
+    x86_64: "-msvc"
+    aarch64: "-msvc"
+
+
+_just_sys: "{{ _just_sys_map[ansible_system] }}"
+_just_arch: "{{ _just_arch_map[ansible_architecture] }}"
+_just_compiler: "{{ _just_compiler[ansible_system][ansible_architecture] }}"
+
+just_release_base_url: https://github.com/casey/just/releases/download
+
+just_release_archive_name: just-{{ just_v }}-{{ _just_arch }}-{{ _just_sys }}{{ _just_compiler }}.{{ 'zip' if ansible_system == 'Win32NT' else 'tar.gz' }}
+just_release_url: '{{ just_release_base_url }}/{{ just_v }}/{{ just_release_archive_name }}'
+
+just_checksums_verify: false
+just_checksums_url: '{{ just_release_base_url }}/{{ just_v }}/SHA256SUMS'
+
+just_archive_download_dst: /tmp
+just_full_download_path: '{{ just_archive_download_dst }}/just-{{ just_v }}'
+
+just_bin_dst: /usr/local/bin
+just_bin: just
+
+just_brew: false
+just_brew_package: just
+just_brew_state: latest
