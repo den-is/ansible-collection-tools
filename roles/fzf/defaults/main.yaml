@@ -1,4 +1,4 @@
-fzf_v: 0.56.3
+fzf_v: 0.57.0
 
 fzf_git_repo: https://github.com/junegunn/fzf.git
 fzf_git_ref: master # or a tag or "master" for latest
