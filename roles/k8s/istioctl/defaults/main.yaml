@@ -1,0 +1,33 @@
+istioctl_v: 1.24.2
+
+istioctl_force_install: true
+
+_istioctl_sys_map:
+  Darwin: osx
+  Linux: linux
+  Win32NT: win
+
+_istioctl_arch_map:
+  x86_64: -amd64
+  i386: ""
+  aarch64: "-arm64"
+
+_istioctl_sys: "{{ _istioctl_sys_map[ansible_system] }}"
+_istioctl_arch: "{{ _istioctl_arch_map[ansible_architecture] }}"
+
+istioctl_release_base_url: https://github.com/istio/istio/releases/download
+istioctl_release_archive_name: istioctl-{{ istioctl_v }}-{{ _istioctl_sys }}{{ _istioctl_arch }}.{{ 'zip' if ansible_system == 'Win32NT' else 'tar.gz' }}
+istioctl_release_url: '{{ istioctl_release_base_url }}/{{ istioctl_v }}/{{ istioctl_release_archive_name }}'
+
+istioctl_checksum_verify: false
+istioctl_checksums_url: '{{ istioctl_release_base_url }}/{{ istioctl_v }}/{{ istioctl_release_archive_name }}.sha256'
+
+istioctl_archive_download_dst: /tmp
+istioctl_full_download_path: '{{ istioctl_archive_download_dst }}/istioctl-{{ istioctl_v }}'
+
+istioctl_bin_dst: /usr/local/bin
+istioctl_bin: istioctl
+
+istioctl_brew: false
+istioctl_brew_package: istioctl
+istioctl_brew_state: latest

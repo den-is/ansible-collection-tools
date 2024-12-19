@@ -1,0 +1,72 @@
+- name: Get checksum
+  when: istioctl_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __istioctl_checksums: "{{ lookup('url', istioctl_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __istioctl_checksums is search(istioctl_release_archive_name)
+    retries: 10
+
+  - name: Get checksum for {{ istioctl_release_archive_name }}
+    ansible.builtin.set_fact:
+      __istioctl_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __istioctl_checksums }}"
+    when:
+    - istioctl_release_archive_name in item
+
+
+- name: Creating extraction dir {{ istioctl_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ istioctl_full_download_path }}'
+    state: directory
+    mode: '0755'
+  when:
+  - _istioctl_bin_exists is failed or istioctl_force_install
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ istioctl_release_url }}'
+    dest: '{{ istioctl_archive_download_dst }}/{{ istioctl_release_archive_name }}'
+    checksum: "{{ 'sha256:' + __istioctl_checksum if istioctl_checksum_verify else '' }}"
+    mode: '0644'
+    register: _istioctl_archive_download_status
+    retries: 3
+    delay: 10
+    until: _istioctl_archive_download_status is succeeded
+  when:
+  - _istioctl_bin_exists is failed or istioctl_force_install
+
+- name: Extracting archive to {{ istioctl_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ istioctl_archive_download_dst }}/{{ istioctl_release_archive_name }}'
+    dest: '{{ istioctl_full_download_path }}'
+    remote_src: true
+  when:
+  - _istioctl_archive_download_status is succeeded
+
+- name: Copying binary to {{ istioctl_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ istioctl_full_download_path }}/istioctl'
+    dest: '{{ istioctl_bin_dst }}/{{ istioctl_bin }}'
+    mode: '0755'
+    remote_src: true
+    force: '{{ istioctl_force_install }}'
+  when:
+  - _istioctl_archive_download_status is succeeded
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ istioctl_archive_download_dst }}/{{ istioctl_release_archive_name }}'
+  - '{{ istioctl_full_download_path }}'
+  when:
+  - _istioctl_archive_download_status is succeeded

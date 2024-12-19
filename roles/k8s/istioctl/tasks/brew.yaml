@@ -1,0 +1,5 @@
+- name: Brew install istioctl
+  community.general.homebrew:
+    name: '{{ istioctl_brew_package }}'
+    state: '{{ istioctl_brew_state }}'
+    update_homebrew: true
