@@ -16,4 +16,4 @@
 
 - name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Installed version: {{ installed_just_v if _check_just_v_task is success else "Not Found" }}'
+    msg: 'Installed version: {{ _installed_just_v if _check_just_v_task is success else "Not Found" }}'
