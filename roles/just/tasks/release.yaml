@@ -48,7 +48,21 @@
     mode: '0755'
     remote_src: true
 
-## TODO: add tasks for man pages and completions installation
+- name: Installing man pages
+  ansible.builtin.copy:
+    src: '{{ just_full_download_path }}/just.1'
+    dest: '{{ just_man_path }}/man1/just.1'
+    mode: '0644'
+    remote_src: true
+  when: just_man_install
+
+- name: Installing zsh completions
+  ansible.builtin.copy:
+    src: "{{ just_full_download_path }}/completions/just.zsh"
+    dest: "{{ zsh_completions_path }}/_just"
+    mode: "0644"
+  when:
+  - just_zsh_completions_install
 
 - name: Deleting release artifacts
   ansible.builtin.file:
