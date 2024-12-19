@@ -1,4 +1,4 @@
-terraform_v: 1.10.2
+terraform_v: 1.10.3
 
 _terraform_sys_map:
   Darwin: darwin
@@ -17,7 +17,7 @@ terraform_release_base_url: https://releases.hashicorp.com/terraform
 terraform_release_archive_name: terraform_{{ terraform_v }}_{{ _terraform_sys }}_{{ _terraform_arch }}.zip
 terraform_release_url: '{{ terraform_release_base_url }}/{{ terraform_v }}/{{ terraform_release_archive_name }}'
 
-terraform_checksums_verify: false
+terraform_checksum_verify: false
 terraform_checksums_url: '{{ terraform_release_base_url }}/{{ terraform_v }}/terraform_{{ terraform_v }}_SHA256SUMS'
 
 terraform_archive_download_dst: /tmp

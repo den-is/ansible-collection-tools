@@ -1,8 +1,37 @@
+- name: Get checksums
+  when:
+  - yq_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      __github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host may require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  # conditional statements should not include jinja2 templating
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __yq_checksums: "{{ lookup('url', yq_checksums_url, headers=__github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __yq_checksums is ansible.builtin.search("yq_" + ansible_system | lower + "_" + yq_arch + "\s+")
+    retries: 10
+
+  # conditional statements should not include jinja2 templating
+  - name: Get checksum for {{ yq_arch }}
+    ansible.builtin.set_fact:
+      __yq_checksum: "{{ item.split('  ')[18] }}"
+    loop: "{{ __yq_checksums }}"
+    # no_log: true
+    loop_control:
+      label: "{{ item.split('  ')[0] }}"
+    when:
+    - item is regex("^yq_" + ansible_system | lower + "_" + yq_arch + "\s+")
+
 - name: Installing yq {{ yq_v }}
   ansible.builtin.get_url:
     url: '{{ yq_release_url }}'
     dest: '{{ yq_bin_dst }}/{{ yq_bin }}'
-    checksum: 'sha256:{{ __yq_checksum }}'
+    checksum: '{{ "sha256:" + __yq_checksum if yq_checksum_verify else "" }}'
   retries: 3
 
 - name: Set permissions

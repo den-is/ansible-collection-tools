@@ -8,7 +8,11 @@ talosctl_arch: "{{ talosctl_arch_map[ansible_architecture] }}"
 talosctl_system: "{{ ansible_system | lower }}"
 
 talosctl_release_base_url: https://github.com/siderolabs/talos/releases/download
-talosctl_release_url: '{{ talosctl_release_base_url }}/{{ talosctl_v }}/talosctl-{{ talosctl_system }}-{{ talosctl_arch }}'
+talosctl_binary_artifact_name: talosctl-{{ talosctl_system }}-{{ talosctl_arch }}
+talosctl_release_url: '{{ talosctl_release_base_url }}/{{ talosctl_v }}/{{ talosctl_binary_artifact_name }}'
+
+talosctl_checksum_verify: false
+talosctl_checksums_url: "{{ talosctl_release_base_url }}/{{ talosctl_v }}/sha256sum.txt"
 
 talosctl_bin_dst: /usr/local/bin
 talosctl_bin: talosctl

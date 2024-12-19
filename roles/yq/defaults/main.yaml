@@ -10,6 +10,9 @@ yq_release_base_url: https://github.com/mikefarah/yq/releases/download
 yq_release_url: '{{ yq_release_base_url }}/{{ yq_v }}/yq_{{ ansible_system | lower }}_{{ yq_arch }}'
 # maybe support install from archive too? .tar.gz
 
+yq_checksum_verify: false
+yq_checksums_url: "{{ yq_release_base_url }}/{{ yq_v }}/checksums"
+
 yq_bin_dst: /usr/local/bin
 yq_bin: yq
 
