@@ -12,7 +12,7 @@
 - name: Displaying installed version
   ansible.builtin.debug:
     msg: |-
-      Installed Neovim version: {{ _installed_neovim_v if _check_neovim_v_task is succeeded else "Not Installed" }}
+      Installed Neovim version: {{ _installed_neovim_v if _check_neovim_v_task is succeeded else "Not Found" }}
 
 #-------------------------------------------------------------------------------
 - name: Get installed Bob version if any
@@ -28,4 +28,4 @@
 - name: Displaying installed Bob version
   ansible.builtin.debug:
     msg: |-
-      Installed Bob version: {{ _installed_neovim_bob_v if _check_neovim_bob_v_task is succeeded else "Not Installed" }}
+      Installed Bob version: {{ _installed_neovim_bob_v if _check_neovim_bob_v_task is succeeded else "Not Found" }}

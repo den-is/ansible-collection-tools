@@ -17,6 +17,7 @@ naovim_archive_deploy: false
 neovim_appimage: false
 neovim_msi: false
 neovim_compile: false
+neovim_brew: false
 
 _neovim_archive_name: >-
   {%- if neovim_appimage -%}
@@ -34,6 +35,9 @@ neovim_verify_checksum: false
 neovim_release_checksums_url: "{{ neovim_release_url }}.sha256sum"
 
 ### Bob - neovim versions and installations manager
+
+_neovim_bob_nov: "{{ neovim_bob_v | regex_replace('^v', '') }}"
+
 _neovim_bob_arch_map:
   aarch64: aarch64
   x86_64: x86_64
@@ -55,13 +59,13 @@ neovim_bob_brew: false
 neovim_bob_brew_package: bob
 neovim_bob_brew_state: latest
 
-neovim_bob_archive_name: bob-{{ _neovim_bob_system }}-{{ _neovim_arch }}{{ "-openssl" if neovim_bob_openssl }}.zip
+neovim_bob_archive_name: bob-{{ _neovim_bob_system }}-{{ _neovim_bob_arch }}{{ "-openssl" if neovim_bob_openssl }}.zip
 neovim_bob_release_url: "{{ neovim_bob_release_base_url }}/{{ neovim_bob_v }}/{{ neovim_bob_archive_name }}"
 
 # neovim compiled artifact installation
 # downloading and extracting compiled neovim release archive
 
-neovim_config: false
+neovim_config_deploy: false
 neovim_config_repo: https://github.com/den-is/nvim
 neovim_config_ref: master
 neovim_config_dst: ~/.config/nvim
