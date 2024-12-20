@@ -1,0 +1,64 @@
+- name: Get checksum
+  when: uv_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __uv_checksums: "{{ lookup('url', uv_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __uv_checksums is search(uv_release_archive_name)
+    retries: 10
+
+  - name: Get checksum for {{ uv_release_archive_name }}
+    ansible.builtin.set_fact:
+      __uv_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __uv_checksums }}"
+    when:
+    - uv_release_archive_name in item
+
+
+- name: Creating extraction dir {{ uv_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ uv_full_download_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ uv_release_url }}'
+    dest: '{{ uv_archive_download_dst }}/{{ uv_release_archive_name }}'
+    checksum: "{{ 'sha256:' + __uv_checksum if uv_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ uv_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ uv_archive_download_dst }}/{{ uv_release_archive_name }}'
+    dest: '{{ uv_full_download_path }}'
+    remote_src: true
+
+- name: Installing uv
+  ansible.builtin.copy:
+    src: '{{ uv_full_download_path }}/uv'
+    dest: '{{ uv_bin_dst }}/{{ uv_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Installing uvx
+  ansible.builtin.copy:
+    src: '{{ uv_full_download_path }}/uvx'
+    dest: '{{ uv_bin_dst }}/{{ uvx_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ uv_archive_download_dst }}/{{ uv_release_archive_name }}'
+  - '{{ uv_full_download_path }}'

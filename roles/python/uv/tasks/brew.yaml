@@ -1,0 +1,10 @@
+- name: Tap hashicorp brew repository
+  community.general.homebrew_tap:
+    name: hashicorp/tap
+    state: present
+
+- name: Brew install uv
+  community.general.homebrew:
+    name: '{{ uv_brew_package }}'
+    state: '{{ uv_brew_state }}'
+    update_homebrew: true

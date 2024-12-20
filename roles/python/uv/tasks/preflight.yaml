@@ -1,0 +1,19 @@
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: 'command -v {{ uv_bin }}'
+  register: uv_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: uv --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_uv_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register pre-flight variables
+  ansible.builtin.set_fact:
+    _installed_uv_v: "{{ _check_uv_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Reporting installed version
+  ansible.builtin.debug:
+    msg: 'Installed version: {{ _installed_uv_v if _check_uv_v_task is success else "Not Found" }}'

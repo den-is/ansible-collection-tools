@@ -1,0 +1,45 @@
+uv_v: 0.5.11
+
+_uv_sys_map:
+  Linux: unknown-linux
+  Darwin: apple-darwin
+  Win32NT: pc-windows
+
+_uv_arch_map:
+  x86_64: "x86_64"
+  aarch64: "aarch64"
+
+uv_compiler_gnu: true
+
+_uv_compiler_map:
+  Linux:
+    x86_64: "{{ '-gnu' if uv_compiler_gnu else '-musl' }}"
+    aarch64: "{{ '-gnu' if uv_compiler_gnu else '-musl' }}"
+  Darwin:
+    x86_64: ""
+    aarch64: ""
+  Win32NT:
+    x86_64: "-msvc"
+    aarch64: "-msvc"
+
+_uv_sys: "{{ _uv_sys_map[ansible_system] }}"
+_uv_arch: "{{ _uv_arch_map[ansible_architecture] }}"
+_uv_compiler: "{{ _uv_compiler[ansible_system][ansible_architecture] }}"
+
+uv_release_base_url: https://github.com/astral-sh/uv/releases/download
+uv_release_archive_name: uv-{{ _uv_arch }}-{{ _uv_sys }}{{ _uv_compiler }}.{{ 'zip' if ansible_system == 'Win32NT' else 'tar.gz' }}
+uv_release_url: '{{ uv_release_base_url }}/{{ uv_v }}/{{ uv_release_archive_name }}'
+
+uv_checksum_verify: false
+uv_checksums_url: '{{ uv_release_base_url }}/{{ uv_v }}/sha256.sum'
+
+uv_archive_download_dst: /tmp
+uv_full_download_path: '{{ uv_archive_download_dst }}/{{ uv_release_archive_name }}.sha256'
+
+uv_bin_dst: /usr/local/bin
+uv_bin: uv
+uvx_bin: uvx
+
+uv_brew: false
+uv_brew_package: uv
+uv_brew_state: latest
