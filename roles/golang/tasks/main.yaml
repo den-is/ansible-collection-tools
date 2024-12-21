@@ -1,0 +1,60 @@
+- name: Get installed version if any
+  ansible.builtin.shell: go version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_golang_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register pre-flight variables
+  ansible.builtin.set_fact:
+    _installed_golang_v: "{{ _check_golang_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Reporting installed version
+  ansible.builtin.debug:
+    msg: 'Installed version: {{ _installed_golang_v if _check_golang_v_task is success else "Not Found" }}'
+
+- name: Download Golang release archive
+  ansible.builtin.get_url:
+    url: "{{ golang_release_url }}"
+    dest: "{{ golang_download_tmp_dir }}/{{ golang_release_archive_name }}"
+    mode: "0440"
+    checksum: "{{ golang_release_archive_checksum }}"
+  register: _golang_archive_download_status
+  retries: 3
+  delay: 10
+  until: _golang_archive_download_status is succeeded
+  when:
+  - golang_v is version(_installed_golang_v, 'ne')
+
+- name: Deploying Golang release
+  ansible.builtin.unarchive:
+    src: "{{ golang_download_tmp_dir }}/{{ golang_release_archive_name }}"
+    dest: "{{ golang_deploy_dst }}"
+    remote_src: true
+  when:
+  - _golang_archive_download_status is succeeded
+
+- name: Create symlink for go binary
+  ansible.builtin.file:
+    src: "{{ golang_deploy_dst }}/go/bin/go"
+    dest: /usr/local/bin/go
+    state: link
+  when:
+  - _golang_archive_download_status is succeeded
+
+- name: Create symlink for gofmt binary
+  ansible.builtin.file:
+    src: "{{ golang_deploy_dst }}/go/bin/gofmt"
+    dest: /usr/local/bin/gofmt
+    state: link
+  when:
+  - _golang_archive_download_status is succeeded
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - "{{ golang_download_tmp_dir }}/{{ golang_release_archive_name }}"
+  when:
+  - _golang_archive_download_status is succeeded
+  - golang_release_artifacts_cleanup

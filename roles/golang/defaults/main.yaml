@@ -1,0 +1,21 @@
+golang_v: 1.23.4
+
+_golang_sys_map:
+  Linux: linux
+  Darwin: darwin
+  Win32NT: windows
+
+_golang_arch_map:
+  x86_64: "amd64"
+  aarch64: "arm64"
+
+_golang_sys: "{{ _golang_sys_map[ansible_system] }}"
+_golang_arch: "{{ _golang_arch_map[ansible_architecture] }}"
+
+golang_release_archive_name: go{{ golang_v }}.{{ _golang_sys }}-{{ _golang_arch }}.{{ 'zip' if ansible_system == 'Win32NT' else 'tar.gz' }}
+golang_release_url: https://go.dev/dl/{{ golang_release_archive_name }}
+golang_release_archive_checksum: ""
+golang_release_artifacts_cleanup: true
+golang_download_tmp_dir: /tmp
+
+golang_deploy_dst: /usr/local
