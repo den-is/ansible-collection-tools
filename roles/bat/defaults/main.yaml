@@ -21,6 +21,13 @@ bat_full_download_path: '{{ bat_archive_download_dst }}/bat_{{ bat_v }}'
 bat_bin_dst: /usr/local/bin
 bat_bin: bat
 
+bat_man_install: true
+bat_man_path: /usr/share/man
+
+bat_zsh_completions_install: false
+zsh_completions_path: /usr/local/share/zsh/site-functions
+
+
 bat_brew: false
 bat_brew_package: bat
 bat_brew_state: latest

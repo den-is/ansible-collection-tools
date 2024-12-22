@@ -3,10 +3,11 @@
     path: '{{ bat_full_download_path }}'
     state: directory
 
-- name: Getting bat {{ bat_v }} archive and extracting it to {{ bat_full_download_path }}
+- name: Extracting release archive contents to {{ bat_full_download_path }}
   ansible.builtin.unarchive:
     src: '{{ bat_release_url }}'
     dest: '{{ bat_full_download_path }}'
+    extra_opts: ['--strip-components=1', '--show-stored-names']
     remote_src: true
 
 - name: Copying bat to {{ bat_bin_dst }}
@@ -16,7 +17,25 @@
     mode: '0755'
     remote_src: true
 
+- name: Installing man pages
+  ansible.builtin.copy:
+    src: '{{ bat_full_download_path }}/bat.1'
+    dest: '{{ bat_man_path }}/man1/bat.1'
+    mode: '0644'
+    remote_src: true
+  when: bat_man_install
+
+- name: Installing zsh completions
+  ansible.builtin.copy:
+    src: "{{ bat_full_download_path }}/autocomplete/bat.zsh"
+    dest: "{{ zsh_completions_path }}/_bat"
+    mode: "0644"
+  when:
+  - bat_zsh_completions_install
+
 - name: Deleting {{ bat_full_download_path }} dir
   ansible.builtin.file:
     path: '{{ bat_full_download_path }}'
     state: absent
+  loop:
+  - "{{ bat_full_download_path }}"
