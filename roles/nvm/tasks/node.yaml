@@ -1,0 +1,10 @@
+- name: Install
+  ansible.builtin.shell: >
+    nvm install node
+  args:
+    executable: /bin/bash
+  environment:
+    NVM_DIR: "{{ nvm_dir }}"
+  when:
+  - _nvm_installer_download_status is succeeded
+  - _nvm_nov is version(_installed_nvm_v, 'ne')

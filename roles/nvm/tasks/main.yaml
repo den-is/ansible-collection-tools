@@ -1,0 +1,19 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Deploying release
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - _nvm_nov is version(_installed_nvm_v, 'ne')
+  - not just_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - nvm_brew
+  - ansible_system == 'Darwin'
+
+- name: Configure Node with NVM
+  ansible.builtin.include_tasks: node.yaml

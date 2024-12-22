@@ -1,0 +1,39 @@
+- name: Install packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - git
+  - curl
+  - wget
+  - ca-certificates
+
+- name: Download NVM install script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_v }}/install.sh
+    dest: "{{ nvm_install_script_dst }}/nvm-install.sh"
+    mode: "0750"
+  register: _nvm_installer_download_status
+  retries: 3
+  delay: 10
+  until: _nvm_installer_download_status is succeeded
+  when:
+  - _nvm_nov is version(_installed_nvm_v, 'ne')
+
+- name: Execute NVM install script
+  ansible.builtin.shell: >
+    {{ nvm_install_script_dst }}/nvm-install.sh
+  args:
+    executable: /bin/bash
+  when:
+  - _nvm_installer_download_status is succeeded
+  - _nvm_nov is version(_installed_nvm_v, 'ne')
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - "{{ nvm_install_script_dst }}/nvm-install.sh"
+  when:
+  - nvm_deploy_cleanup
