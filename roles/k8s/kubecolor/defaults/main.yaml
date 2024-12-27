@@ -9,6 +9,9 @@ kubecolor_arch: "{{ kubecolor_arch_map[ansible_architecture] }}"
 kubecolor_release_base_url: https://github.com/kubecolor/kubecolor/releases/download
 kubecolor_release_url: "{{ kubecolor_release_base_url }}/v{{ kubecolor_v }}/kubecolor_{{ kubecolor_v }}_{{ ansible_system | lower }}_{{ kubecolor_arch }}.tar.gz"
 
+kubecolor_checksum_verify: false
+kubecolor_checksums_url: https://github.com/kubecolor/kubecolor/releases/download/v{{ kubecolor_v }}/checksums.txt
+
 kubecolor_archive_download_dst: /tmp
 kubecolor_full_download_path: '{{ kubecolor_archive_download_dst }}/kubecolor_{{ kubecolor_v }}'
 

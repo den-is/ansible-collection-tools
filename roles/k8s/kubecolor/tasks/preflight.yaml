@@ -20,19 +20,19 @@
 
 - name: Get kubecolor checksums
   when:
+  - kubecolor_checksum_verify
   - kubecolor_v is version(installed_kubecolor_v, 'ne')
   - not kubecolor_brew
   block:
 
   - name: Registering checksums related vars
     ansible.builtin.set_fact:
-      __checksums_url: https://github.com/kubecolor/kubecolor/releases/download/v{{ kubecolor_v }}/checksums.txt
       __github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
 
   # on macos ansible host may require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
   - name: Get checksums list
     ansible.builtin.set_fact:
-      __kubecolor_checksums: "{{ lookup('url', __checksums_url, headers=__github_api_headers, wantlist=True) | list }}"
+      __kubecolor_checksums: "{{ lookup('url', kubecolor_checksums_url, headers=__github_api_headers, wantlist=True) | list }}"
     run_once: true
     until: __kubecolor_checksums is ansible.builtin.search('linux_' + kubecolor_arch + '.tar.gz')
     retries: 10
