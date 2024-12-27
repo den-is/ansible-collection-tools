@@ -1,10 +1,16 @@
-- name: Install
-  ansible.builtin.shell: >
-    nvm install node
+# TODO: allow upgrade of node and migration of packages
+- name: Install Node.js {{ nvm_node_version }}
+  ansible.builtin.shell: >-
+    nvm install {{ nvm_node_version }}
   args:
     executable: /bin/bash
   environment:
     NVM_DIR: "{{ nvm_dir }}"
-  when:
-  - _nvm_installer_download_status is succeeded
-  - _nvm_nov is version(_installed_nvm_v, 'ne')
+
+- name: Use Node.js {{ nvm_node_version }}
+  ansible.builtin.shell: >-
+    nvm use {{ nvm_node_version }}
+  args:
+    executable: /bin/bash
+  environment:
+    NVM_DIR: "{{ nvm_dir }}"

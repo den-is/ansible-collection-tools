@@ -3,11 +3,11 @@
   tags:
   - always
 
-- name: Deploying release
+- name: Deploying from github release
   ansible.builtin.include_tasks: release.yaml
   when:
   - _nvm_nov is version(_installed_nvm_v, 'ne')
-  - not just_brew
+  - not nvm_brew
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
@@ -17,3 +17,5 @@
 
 - name: Configure Node with NVM
   ansible.builtin.include_tasks: node.yaml
+  when:
+  - nvm_manage_node
