@@ -1,4 +1,5 @@
-kubecolor_v: 0.4.0
+kubecolor_v: v0.4.0
+kubecolor_nov: '{{ kubecolor_v | regex_replace("^v", "") }}'
 
 kubecolor_arch_map:
   x86_64: amd64
@@ -7,13 +8,14 @@ kubecolor_arch_map:
 kubecolor_arch: "{{ kubecolor_arch_map[ansible_architecture] }}"
 
 kubecolor_release_base_url: https://github.com/kubecolor/kubecolor/releases/download
-kubecolor_release_url: "{{ kubecolor_release_base_url }}/v{{ kubecolor_v }}/kubecolor_{{ kubecolor_v }}_{{ ansible_system | lower }}_{{ kubecolor_arch }}.tar.gz"
+kubecolor_release_archive_name: 'kubecolor_{{ kubecolor_v }}_{{ ansible_system | lower }}_{{ kubecolor_arch }}.tar.gz'
+kubecolor_release_url: "{{ kubecolor_release_base_url }}/{{ kubecolor_v }}/{{ kubecolor_release_archive_name }}"
 
 kubecolor_checksum_verify: false
-kubecolor_checksums_url: https://github.com/kubecolor/kubecolor/releases/download/v{{ kubecolor_v }}/checksums.txt
+kubecolor_checksums_url: '{{ kubecolor_release_base_url }}/{{ kubecolor_v }}/checksums.txt'
 
 kubecolor_archive_download_dst: /tmp
-kubecolor_full_download_path: '{{ kubecolor_archive_download_dst }}/kubecolor_{{ kubecolor_v }}'
+kubecolor_extract_dst: '{{ kubecolor_archive_download_dst }}/kubecolor-{{ kubecolor_v }}'
 
 kubecolor_bin_dst: /usr/local/bin
 kubecolor_bin: kubecolor

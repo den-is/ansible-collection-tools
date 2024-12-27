@@ -6,12 +6,12 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: archive.yaml
   when:
-  - kubecolor_v is version(installed_kubecolor_v, 'ne')
+  - kubecolor_nov is version(installed_kubecolor_v, 'ne')
   - not kubecolor_brew
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
   when:
-  - kubecolor_v is version(installed_kubecolor_v, 'ne')
+  - kubecolor_nov is version(installed_kubecolor_v, 'ne')
   - kubecolor_brew
   - ansible_system == 'Darwin'
