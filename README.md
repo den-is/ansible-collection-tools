@@ -1,12 +1,10 @@
 # den_is.tools - Ansible collection
 
-⚠️ Under development. 👷
+⚠️ **Under development** 👷
 
 This Ansible collection automates the installation of various tools, services and environments.  
-Roles in this collection are extremely minimalistic and at some places ugly, there are no tests.
+Roles in this collection are extremely minimalistic and at some places ugly, there are no tests.  
 It may lack some features compared to more comprehensive roles/collections. Make sure to check all options.
-
-But for me it works well enough, if I can quickly install tool X, tool Y and ohmyzsh on some random Linux box for my convinience without visiting each tool's Installation doc page.
 
 - Collection includes roles for tools which typically:
   - Require manual installation
@@ -16,7 +14,9 @@ But for me it works well enough, if I can quickly install tool X, tool Y and ohm
 - Linux hosts are the primary target for this collection, followed by macOS
 - Windows is unsupported
 
-Contributions are welcome.
+**Contributions are welcome**
+
+Obviously, for me collection works well enough. I can quickly install some tool X, tool Y and ohmyzsh on some random Linux box, for my convinience, without visiting each tool's Installation docs/repo.
 
 ## Available tools
 ```sh
@@ -100,11 +100,13 @@ ansible-galaxy collection install git+https://github.com/den-is/ansible-collecti
     hosts: all
     become: false
     environment:
-      PATH: "/home/den/.local/bin:{{ ansible_env.PATH }}"
+      PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
     vars:
       # set top-level playbook variables
+      common_bin_dst: ~/.local/bin
+
       terragrunt_v: v0.58.12
-      terragrunt_bin_dst: ~/.local/bin
+      terragrunt_bin_dst: '{{ common_bin_dst }}'
 
     tasks:
 
@@ -118,7 +120,7 @@ ansible-galaxy collection install git+https://github.com/den-is/ansible-collecti
         name: den_is.tools.iaac.opentofu
       vars:
         # set role import variables
-        opentofu_v: v1.7.1
+        opentofu_v: v1.8.8
         opentofu_bin_dst: ~/.local/bin
       tags: tofu
 
