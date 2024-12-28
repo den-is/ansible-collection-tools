@@ -1,17 +1,20 @@
 # den_is.tools - Ansible collection
 
-Minimalistic  ansbile collection.
+⚠️ Under development. 👷
 
-This Ansible collection automates the installation of various tools, services and environments.
+This Ansible collection automates the installation of various tools, services and environments.  
+Roles in this collection are extremely minimalistic and at some places ugly, there are no tests.
+It may lack some features compared to more comprehensive roles/collections. Make sure to check all options.
 
-- It includes tools that typically require manual installation or OS-native package repositories have outdated versions.
-- This collection is particularly useful for Linux hosts, which often lack these tools or have outdated versions.
+But for me it works well enough, if I can quickly install tool X, tool Y and ohmyzsh on some random Linux box for my convinience without visiting each tool's Installation doc page.
 
-Roles in this collection are extremely minimalistic and at some places ugly.
-It may lack some features compared to more comprehensive roles/collections.
-
-- Linux hosts are the primary target for this collection, followed by macOS.
-- Windows is mostly unsupported.
+- Collection includes roles for tools which typically:
+  - Require manual installation
+  - OS-native package repositories have outdated versions
+  - or completely missing desired package
+- This collection is particularly useful for Linux hosts
+- Linux hosts are the primary target for this collection, followed by macOS
+- Windows is unsupported
 
 Contributions are welcome.
 
@@ -83,7 +86,7 @@ ansible-galaxy collection install ~/projects/ansible_collections/den_is/tools
 ansible-galaxy collection install ~/projects/ansible_collections/den_is/tools --upgrade
 
 ansible-galaxy collection build
-ansible-galaxy collection install den_is-tools-0.0.1.tar.gz -p ./collections
+ansible-galaxy collection install den_is-tools-0.18.0.tar.gz -p ./collections
 
 ansible-galaxy collection install git+https://github.com/den-is/ansible-collection-tools.git
 ```
