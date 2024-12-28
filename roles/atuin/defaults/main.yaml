@@ -1,0 +1,45 @@
+atuin_v: v18.4.0
+
+_atuin_nov: "{{ atuin_v | regex_replace('^v', '') }}"
+
+_atuin_sys_map:
+  Linux: unknown-linux
+  Darwin: apple-darwin
+
+_atuin_arch_map:
+  x86_64: "x86_64"
+  aarch64: "aarch64"
+
+# for linux hosts `musl` if `false`, default `glibc`
+atuin_gnu_compiler: true
+_atuin_compiler: >-
+  {%- if ansible_system == 'Darwin' -%}
+    ''
+  {%- else -%}
+    {%- if atuin_gnu_compiler -%}
+      '-gnu'
+    {%- else -%}
+      '-musl'
+    {%- endif -%}
+  {%- endif -%}
+
+_atuin_sys: "{{ _atuin_sys_map[ansible_system] }}"
+_atuin_arch: "{{ _atuin_arch_map[ansible_architecture] }}"
+
+atuin_release_base_url: https://github.com/atuinsh/atuin/releases/download/{{ atuin_v }}
+
+atuin_release_archive_name: atuin-{{ _atuin_arch }}-{{ _atuin_sys }}{{ _atuin_compiler }}.tar.gz
+atuin_release_url: '{{ atuin_release_base_url }}/{{ atuin_release_archive_name }}'
+
+atuin_checksum_verify: false
+atuin_checksums_url: '{{ atuin_release_base_url }}/sha256.sum'
+
+atuin_archive_download_dst: /tmp
+atuin_full_download_path: '{{ atuin_archive_download_dst }}/atuin-{{ atuin_v }}'
+
+atuin_bin_dst: /usr/local/bin
+atuin_bin: atuin
+
+atuin_brew: false
+atuin_brew_package: atuin
+atuin_brew_state: latest

@@ -1,0 +1,56 @@
+- name: Get checksum
+  when: atuin_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __atuin_checksums: "{{ lookup('url', atuin_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __atuin_checksums is search(atuin_release_archive_name)
+    retries: 10
+
+  - name: Get checksum for {{ atuin_release_archive_name }}
+    ansible.builtin.set_fact:
+      __atuin_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __atuin_checksums }}"
+    when:
+    - atuin_release_archive_name in item
+
+- name: Creating extraction dir {{ atuin_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ atuin_full_download_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ atuin_release_url }}'
+    dest: '{{ atuin_archive_download_dst }}/{{ atuin_release_archive_name }}'
+    checksum: "{{ 'sha256:' + __atuin_checksum if atuin_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ atuin_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ atuin_archive_download_dst }}/{{ atuin_release_archive_name }}'
+    dest: '{{ atuin_full_download_path }}'
+    remote_src: true
+
+- name: Copying binary to {{ atuin_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ atuin_full_download_path }}/atuin'
+    dest: '{{ atuin_bin_dst }}/{{ atuin_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ atuin_archive_download_dst }}/{{ atuin_release_archive_name }}'
+  - '{{ atuin_full_download_path }}'

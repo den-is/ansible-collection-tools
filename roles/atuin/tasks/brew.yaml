@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: '{{ atuin_brew_package }}'
+    state: '{{ atuin_brew_state }}'
+    update_homebrew: true
