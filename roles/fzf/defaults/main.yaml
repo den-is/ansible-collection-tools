@@ -5,6 +5,9 @@ fzf_git_ref: master # or a tag or "master" for latest
 
 fzf_install_script: true
 fzf_install_script_args: '--all --no-fish'
+# in case if you are going to use atuin for shell history
+# fzf_install_script_args: '--no-key-bindings --no-fish'
+
 fzf_force_install: false
 
 fzf_arch_map:
