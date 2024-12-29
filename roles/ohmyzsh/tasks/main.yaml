@@ -5,6 +5,7 @@
 
 - name: Dependencies installation
   ansible.builtin.include_tasks: deps.yaml
+  when: omz_manage_dependencies
 
 - name: Oh-my-zsh setup on a Linux host
   ansible.builtin.include_tasks: ohmyzsh.yaml

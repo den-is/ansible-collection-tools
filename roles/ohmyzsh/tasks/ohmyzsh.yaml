@@ -1,22 +1,33 @@
-- name: Checking if user exists for "{{ omz_user.name }}"
+- name: Get zsh path
+  ansible.builtin.command: command -v zsh
+  register: __get_zsh_path_task
+  changed_when: false
+  failed_when: __get_zsh_path_task.rc != 0
+
+- name: Set zsh path fact
+  ansible.builtin.set_fact:
+    zsh_path: '{{ __get_zsh_path_task.stdout }}'
+  when: __get_zsh_path_task is succeeded
+
+- name: Checking if user "{{ omz_user.name }}" exists # noqa: name[template]
   ansible.builtin.getent:
     database: passwd
     key: "{{ omz_user.name }}"
-    fail_key: false
+    split: ":"
+    fail_key: true
 
-- name: Seting fact about user existance for "{{ omz_user.name }}"
+- name: Seting facts about the user "{{ omz_user.name }}"
   ansible.builtin.set_fact:
-    target_user_exists: "{{ true if ansible_facts.getent_passwd[omz_user.name] else false }}"
+    __omz_target_user_home: "{{ ansible_facts.getent_passwd[omz_user.name][4] | default('', true) }}"
 
 - name: Clonning oh-my-zsh repo for "{{ omz_user.name }}"
   ansible.builtin.git:
-    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    repo: "{{ omz_git_repo }}"
     depth: 1
-    dest: ~{{ omz_user.name }}/.oh-my-zsh
-    version: "{{ omz_branch }}"
+    dest: "{{ __omz_target_user_home }}/.oh-my-zsh"
+    version: "{{ omz_git_ref }}"
   become: true
   become_user: "{{ omz_user.name }}"
-  when: target_user_exists
 
 - name: Create user fpath directories for user "{{ omz_user.name }}"
   ansible.builtin.file:
@@ -26,64 +37,57 @@
   become: true
   become_user: "{{ omz_user.name }}"
   loop:
-  - ~/.oh-my-zsh/completions
-  - ~/.oh-my-zsh/functions
-  when: target_user_exists
+  - "{{ __omz_target_user_home }}/.oh-my-zsh/completions"
+  - "{{ __omz_target_user_home }}/.oh-my-zsh/functions"
 
 - name: Set ~/.oh-my-zsh permissions for user "{{ omz_user.name }}"
   ansible.builtin.file:
-    path: ~{{ omz_user.name }}/.oh-my-zsh
+    path: "{{ __omz_target_user_home }}/.oh-my-zsh"
     state: directory
     mode: '0755'
   become: true
   become_user: "{{ omz_user.name }}"
-  when: target_user_exists
 
 - name: Checking if ~/.zshrc exists for "{{ omz_user.name }}"
   ansible.builtin.stat:
-    path: ~{{ omz_user.name }}/.zshrc
-  register: current_zshrc
+    path: "{{ __omz_target_user_home }}/.zshrc"
+  register: __existing_zshrc
   ignore_errors: true
   changed_when: false
-  when: target_user_exists
 
 - name: Adding default ~/.zshrc for "{{ omz_user.name }}"
-  when:
-  - default_zshrc
-  - target_user_exists
+  when: default_zshrc
   block:
   - name: Putting ~/.zshrc for "{{ omz_user.name }}"
     ansible.builtin.copy:
-      src: ~{{ omz_user.name }}/.oh-my-zsh/templates/zshrc.zsh-template
-      dest: ~{{ omz_user.name }}/.zshrc
+      src: "{{ __omz_target_user_home }}/.oh-my-zsh/templates/zshrc.zsh-template"
+      dest: "{{ __omz_target_user_home }}/.zshrc"
       mode: '0640'
       remote_src: true
     become: true
     become_user: "{{ omz_user.name }}"
-    when: not current_zshrc.stat.exists or overwrite_zshrc
+    when: not __existing_zshrc.stat.exists or overwrite_zshrc
 
   - name: Setting ZSH theme "{{ omz_theme }}"
     ansible.builtin.lineinfile:
-      path: ~{{ omz_user.name }}/.zshrc
+      path: "{{ __omz_target_user_home }}/.zshrc"
       regexp: ^ZSH_THEME=
       line: ZSH_THEME="{{ omz_user.omz_theme | default(omz_theme) }}"
     become: true
     become_user: "{{ omz_user.name }}"
 
-- name: Coniguring custom .zshrc
+- name: Configuring custom .zshrc
   ansible.builtin.template:
-    src: zshrc.j2
-    dest: ~{{ omz_user.name }}/.zshrc
+    src: "{{ omz_zshrc_template_file }}"
+    dest: "{{ __omz_target_user_home }}/.zshrc"
     mode: '0640'
   become: true
   become_user: "{{ omz_user.name }}"
   when:
   - not default_zshrc
-  - target_user_exists
 
 - name: Setting zsh as default shell for the user "{{ omz_user.name }}"
   ansible.builtin.user:
     name: "{{ omz_user.name }}"
     shell: "{{ zsh_path }}"
   become: true
-  when: target_user_exists

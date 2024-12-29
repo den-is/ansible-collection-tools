@@ -1,25 +1,35 @@
+omz_git_repo: https://github.com/robbyrussell/oh-my-zsh.git
+omz_git_ref: master
+
+# whether to manage dependencies or not (git, zsh, create dirs, ...)
+omz_manage_dependencies: true
+
+# if to use default .zshrc or generate one from template
 default_zshrc: false
 overwrite_zshrc: false
 
-omz_branch: master
+# default provided `zshrc.j2` template. or provide your own template.
+# make sure your provide values to all variables defined in your template.
+omz_zshrc_template_file: zshrc.j2
 
 omz_theme: robbyrussell
 # omz_theme: fishy
 
-omz_plugins:
-- git
+omz_plugins: []
+# omz_plugins:
+# - git
 
-omz_extra_conf:
-- export EDITOR=vim
-- export VISUAL=$EDITOR
+omz_extra_conf: {}
+# omz_extra_conf:
+# - export EDITOR=vim
+# - export VISUAL=$EDITOR
 
 # omz_update_mode possible values: prompt, disabled, auto, reminder
 omz_update_mode: prompt
 omz_update_frequency: 13
 
-
 # list of users to install oh-my-zsh for:
-# is empty apply to current user
+# if empty role deploys ohmyzsh for the current user
 # user should exist on the system. and have home directory named after its name
 #
 # omz_users:

@@ -3,16 +3,13 @@
 Setups community-driven framework for managing Zsh configuration
 
 ## Links
-- https://ohmyz.sh/
+- https://ohmyz.sh
 - https://github.com/ohmyzsh/ohmyzsh
 - https://github.com/ohmyzsh/ohmyzsh/wiki/Settings
 
 ## Notes
-- Role should be installed using root user if you pass a list of user
-  - or supply `become=true` during the role call
-  - in that case user should have sudo privilege
-- tested and works mainly with Linux systems
-  - MacOS/Darwin should be moved in own play/tasks, and usually you don't want such a rudementary .zshrc setup for your MacOS
+- Supports Linux systems only
+- Role should be executed by a privileged user. Or a user with `sudo` access, in that case run role with `become=true`.
 
 ## Example
 ```yaml
@@ -23,8 +20,8 @@ Setups community-driven framework for managing Zsh configuration
     vars:
       # you can provide default set of settings at top level
       # each of these settings can be overwritten on per user basis
-      zsh_theme: fishy
-      zsh_extra_config:
+      omz_theme: fishy
+      omz_extra_conf:
       - export EDITOR=vim
       - export VISUAL=$EDITOR
 

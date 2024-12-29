@@ -1,0 +1,45 @@
+- name: Example Oh-my-zsh setup on ubuntu
+  hosts: all
+  become: false
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+  tasks:
+
+  # user should have sudo permissions, because role will try to install git and zsh
+  # also create some common system directories needed for zsh
+  - name: Install oh-my-zsh for the current user
+    ansible.builtin.import_role:
+      name: den_is.tools.ohmyzsh
+
+  # after installation add to ~/.zshrc:
+  #   source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  # or install by cloning https://github.com/zsh-users/zsh-syntax-highlighting.git
+  # into "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+  - name: Install zsh-syntax-highlighting
+    ansible.builtin.package:
+      name: zsh-syntax-highlighting
+      state: present
+    vars:
+      omz_plugins:
+      - git
+      omz_extra_conf:
+      - export EDITOR=vim
+      - export VISUAL=$EDITOR
+
+  # or as alternative install fast-syntax-highlighting
+  # after clone add it to your plugins in ~/.zshrc
+  # plugins=(fast-syntax-highlighting ...)
+  - name: Cloning fast-syntax-highlighting
+    ansible.builtin.git:
+      repo: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+      dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/fast-syntax-highlighting"
+      depth: 1
+
+  # after installation run `p10k configure` to configure powerlevel10k
+  # or provide your preconfigured ~/.p10k.zsh
+  # set ZSH_THEME="powerlevel10k" in ~/.zshrc or re-run above role with var `omz_theme: powerlevel10k`
+  - name: Installing powerlevel10k
+    ansible.builtin.git:
+      repo: https://github.com/romkatv/powerlevel10k.git
+      dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
+      depth: 1
