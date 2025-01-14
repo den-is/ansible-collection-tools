@@ -21,4 +21,4 @@
 - name: Displaying current version
   ansible.builtin.debug:
     msg: |-
-      Current version: {{ installed_fzf_v if _check_fzf_v_task is succeeded else "Not Installed" }}
+      Installed version: {{ installed_fzf_v if _check_fzf_v_task is succeeded else "Not Found" }}

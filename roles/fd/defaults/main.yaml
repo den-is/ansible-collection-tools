@@ -1,4 +1,6 @@
-fd_v: 10.2.0
+fd_v: v10.2.0
+
+_fd_nov: "{{ fd_v | regex_replace('^v', '') }}"
 
 # fd glibc, otherwise MUSL
 fd_glibc: true
@@ -12,11 +14,11 @@ fd_arch: "{{ fd_arch_map[ansible_architecture] }}"
 
 fd_install_deb: true
 fd_release_base_url: https://github.com/sharkdp/fd/releases/download
-fd_release_url: "{{ fd_release_base_url }}/v{{ fd_v }}/fd-v{{ fd_v }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-{{ 'gnu' if fd_glibc else 'musl' }}.tar.gz"
-fd_deb_release_url: "{{ fd_release_base_url }}/v{{ fd_v }}/fd{{ '-musl' if not fd_glibc }}_{{ fd_v }}_{{ fd_arch }}.deb"
+fd_release_url: "{{ fd_release_base_url }}/v{{ _fd_nov }}/fd-v{{ _fd_nov }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-{{ 'gnu' if fd_glibc else 'musl' }}.tar.gz"
+fd_deb_release_url: "{{ fd_release_base_url }}/v{{ _fd_nov }}/fd{{ '-musl' if not fd_glibc }}_{{ _fd_nov }}_{{ fd_arch }}.deb"
 
 fd_archive_download_dst: /tmp
-fd_full_download_path: '{{ fd_archive_download_dst }}/fd_{{ fd_v }}'
+fd_full_download_path: '{{ fd_archive_download_dst }}/fd_{{ _fd_nov }}'
 
 fd_bin_dst: /usr/local/bin
 fd_bin: fd

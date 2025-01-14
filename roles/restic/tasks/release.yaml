@@ -3,7 +3,7 @@
   block:
   - name: Registering checksums related vars
     ansible.builtin.set_fact:
-      __checksums_url: "{{ restic_release_base_url }}/v{{ restic_v }}/SHA256SUMS"
+      __checksums_url: "{{ restic_release_base_url }}/v{{ _restic_nov }}/SHA256SUMS"
       _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
 
   # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"

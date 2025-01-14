@@ -4,9 +4,9 @@
     dest: ~/.fzf
     depth: 1
     version: "{{ fzf_git_ref }}"
-  when: fzf_v is version(installed_fzf_v, 'ne') or fzf_force_install
+  when: _fzf_nov is version(installed_fzf_v, 'ne') or fzf_force_install
 
 - name: Install fzf using script
   ansible.builtin.shell: ~/.fzf/install {{ fzf_install_script_args }}
   register: fzf_installation_output
-  when: fzf_v is version(installed_fzf_v, 'ne') or fzf_force_install
+  when: _fzf_nov is version(installed_fzf_v, 'ne') or fzf_force_install

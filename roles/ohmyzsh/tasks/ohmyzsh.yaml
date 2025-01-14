@@ -1,5 +1,5 @@
 - name: Get zsh path
-  ansible.builtin.command: command -v zsh
+  ansible.builtin.shell: command -v zsh
   register: __get_zsh_path_task
   changed_when: false
   failed_when: __get_zsh_path_task.rc != 0

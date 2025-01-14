@@ -1,4 +1,6 @@
-fzf_v: 0.57.0
+fzf_v: v0.57.0
+
+_fzf_nov: "{{ fzf_v | regex_replace('^v', '') }}"
 
 fzf_git_repo: https://github.com/junegunn/fzf.git
 fzf_git_ref: master # or a tag or "master" for latest
@@ -27,14 +29,14 @@ fzf_system: "{{ fzf_system_map[ansible_system] }}"
 fzf_archive_ext: "{{ 'zip' if fzf_system in ['windows', 'darwin'] else 'tar.gz' }}"
 
 fzf_release_base_url: https://github.com/junegunn/fzf/releases/download
-fzf_archive_name: fzf-{{ fzf_v }}-{{ fzf_system }}-{{ fzf_arch }}.{{ fzf_archive_ext }}
-fzf_release_url: '{{ fzf_release_base_url }}/{{ fzf_v }}/{{ fzf_archive_name }}'
+fzf_archive_name: fzf-{{ _fzf_nov }}-{{ fzf_system }}-{{ fzf_arch }}.{{ fzf_archive_ext }}
+fzf_release_url: '{{ fzf_release_base_url }}/{{ _fzf_nov }}/{{ fzf_archive_name }}'
 
 fzf_checksum_verify: false
-fzf_checksum_url: '{{ fzf_release_base_url }}/{{ fzf_v }}/fzf_{{ fzf_v }}_checksums.txt'
+fzf_checksum_url: '{{ fzf_release_base_url }}/{{ _fzf_nov }}/fzf_{{ _fzf_nov }}_checksums.txt'
 
 fzf_archive_download_dst: /tmp
-fzf_extraction_dst: '{{ fzf_archive_download_dst }}/fzf-{{ fzf_v }}'
+fzf_extraction_dst: '{{ fzf_archive_download_dst }}/fzf-{{ _fzf_nov }}'
 
 # TODO: add support for windows destinations
 fzf_bin_dst: /usr/local/bin

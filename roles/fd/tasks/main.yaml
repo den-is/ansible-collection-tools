@@ -6,7 +6,7 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: archive.yaml
   when:
-  - fd_v is version(installed_fd_v, 'ne')
+  - _fd_nov is version(installed_fd_v, 'ne')
   - not fd_install_deb
   - not fd_brew
 
@@ -15,12 +15,12 @@
   when:
   - ansible_os_family == "Debian"
   - fd_install_deb
-  - fd_v is version(installed_fd_v, 'ne')
+  - _fd_nov is version(installed_fd_v, 'ne')
   - not fd_brew
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
   when:
-  - fd_v is version(installed_fd_v, 'ne')
+  - _fd_nov is version(installed_fd_v, 'ne')
   - fd_brew
   - ansible_system == 'Darwin'

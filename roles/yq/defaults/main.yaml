@@ -1,4 +1,4 @@
-yq_v: v4.44.6
+yq_v: v4.45.1
 
 yq_arch_map:
   x86_64: amd64

@@ -16,4 +16,4 @@
 
 - name: Displaying current version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_restic_v if check_restic_v_task is success else "Not Installed" }}'
+    msg: 'Installed version: {{ installed_restic_v if check_restic_v_task is success else "Not Found" }}'

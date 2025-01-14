@@ -16,4 +16,4 @@
 
 - name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_fd_v if check_fd_v_task is success else "Not Found" }}'
+    msg: 'Installed version: {{ installed_fd_v if check_fd_v_task is success else "Not Found" }}'

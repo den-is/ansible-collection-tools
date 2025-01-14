@@ -1,5 +1,5 @@
 - name: Check if binary already exists in $PATH
-  ansible.builtin.shell: 'command -v {{ zoxide_bin }}'
+  ansible.builtin.shell: command -v {{ zoxide_bin }}
   register: zoxide_bin_exists
   ignore_errors: true
   changed_when: false
@@ -16,4 +16,4 @@
 
 - name: Displaying current version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_zoxide_v if check_zoxide_v_task is success else "Not Installed" }}'
+    msg: 'Installed version: {{ installed_zoxide_v if check_zoxide_v_task is success else "Not Found" }}'

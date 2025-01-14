@@ -6,14 +6,14 @@
 
 - name: Get installed version if any
   ansible.builtin.shell: '{{ terragrunt_bin }} --version | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"'
-  register: check_terragrunt_v_task
+  register: __check_terragrunt_v_task
   ignore_errors: true
   changed_when: false
 
 - name: Register installed version vars
   ansible.builtin.set_fact:
-    installed_terragrunt_v: "{{ check_terragrunt_v_task.stdout | default('v0.0.0', true) }}"
+    __installed_terragrunt_v: "{{ __check_terragrunt_v_task.stdout | default('v0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Displaying installed version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_terragrunt_v if check_terragrunt_v_task is success else "Not Found" }}'
+    msg: 'Installed version: {{ __installed_terragrunt_v if __check_terragrunt_v_task is success else "Not Found" }}'

@@ -1,4 +1,6 @@
-restic_v: 0.17.3
+restic_v: v0.17.3
+
+_restic_nov: "{{ restic_v | regex_replace('^v', '') }}"
 
 restic_arch_map:
   x86_64: amd64
@@ -14,14 +16,14 @@ restic_arch: "{{ restic_arch_map[ansible_architecture] }}"
 restic_system: "{{ restic_system_map[ansible_system] }}"
 restic_archive_ext: "{{ 'zip' if ansible_system == 'Win32NT' else 'bz2' }}"
 
-restic_artifact_name: restic_{{ restic_v }}_{{ restic_system }}_{{ restic_arch }}
+restic_artifact_name: restic_{{ _restic_nov }}_{{ restic_system }}_{{ restic_arch }}
 restic_archive_name: "{{ restic_artifact_name }}.{{ restic_archive_ext }}"
 restic_release_base_url: https://github.com/restic/restic/releases/download
-restic_release_url: '{{ restic_release_base_url }}/v{{ restic_v }}/{{ restic_archive_name }}'
+restic_release_url: '{{ restic_release_base_url }}/v{{ _restic_nov }}/{{ restic_archive_name }}'
 restic_checksum_verify: true
 
 restic_archive_download_dst: /tmp
-restic_extraction_dst: '{{ restic_archive_download_dst }}/restic-{{ restic_v }}'
+restic_extraction_dst: '{{ restic_archive_download_dst }}/restic-{{ _restic_nov }}'
 
 restic_bin_dst: /usr/local/bin
 restic_bin: restic

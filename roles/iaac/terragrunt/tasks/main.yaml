@@ -6,12 +6,12 @@
 - name: Binary download and installation
   ansible.builtin.include_tasks: release.yaml
   when:
-  - terragrunt_v is version(installed_terragrunt_v, 'ne')
+  - terragrunt_v is version(__installed_terragrunt_v, 'ne')
   - not terragrunt_brew
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
   when:
-  - terragrunt_v is version(installed_terragrunt_v, 'ne')
+  - terragrunt_v is version(__installed_terragrunt_v, 'ne')
   - terragrunt_brew
   - ansible_system == 'Darwin'

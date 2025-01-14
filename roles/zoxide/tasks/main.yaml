@@ -6,12 +6,12 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
-  - zoxide_v is version(installed_zoxide_v, 'ne')
+  - _zoxide_nov is version(installed_zoxide_v, 'ne')
   - not zoxide_brew
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
   when:
-  - zoxide_v is version(installed_zoxide_v, 'ne')
+  - _zoxide_nov is version(installed_zoxide_v, 'ne')
   - zoxide_brew
   - ansible_system == 'Darwin'

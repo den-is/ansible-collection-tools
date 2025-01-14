@@ -1,4 +1,6 @@
-bat_v: "0.24.0"
+bat_v: v0.25.0
+
+_bat_nov: "{{ bat_v | regex_replace('^v', '') }}"
 
 # bat GNU, otherwise MUSL
 bat_gnu: true
@@ -12,11 +14,11 @@ bat_arch: "{{ bat_arch_map[ansible_architecture] }}"
 
 bat_install_deb: true
 bat_release_base_url: https://github.com/sharkdp/bat/releases/download
-bat_release_url: "{{ bat_release_base_url }}/v{{ bat_v }}/bat-v{{ bat_v }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-{{ 'gnu' if bat_gnu else 'musl' }}.tar.gz"
-bat_deb_release_url: "{{ bat_release_base_url }}/v{{ bat_v }}/bat{{ '-musl' if not bat_gnu }}_{{ bat_v }}_{{ bat_arch }}.deb"
+bat_release_url: "{{ bat_release_base_url }}/v{{ _bat_nov }}/bat-v{{ _bat_nov }}-{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-{{ 'gnu' if bat_gnu else 'musl' }}.tar.gz"
+bat_deb_release_url: "{{ bat_release_base_url }}/v{{ _bat_nov }}/bat{{ '-musl' if not bat_gnu }}_{{ _bat_nov }}_{{ bat_arch }}.deb"
 
 bat_archive_download_dst: /tmp
-bat_full_download_path: '{{ bat_archive_download_dst }}/bat_{{ bat_v }}'
+bat_full_download_path: '{{ bat_archive_download_dst }}/bat_{{ _bat_nov }}'
 
 bat_bin_dst: /usr/local/bin
 bat_bin: bat

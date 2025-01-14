@@ -11,12 +11,12 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
-  - restic_v is version(installed_restic_v, 'ne')
+  - _restic_nov is version(installed_restic_v, 'ne')
   - not restic_brew
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
   when:
-  - restic_v is version(installed_restic_v, 'ne')
+  - _restic_nov is version(installed_restic_v, 'ne')
   - restic_brew
   - ansible_system == 'Darwin'
