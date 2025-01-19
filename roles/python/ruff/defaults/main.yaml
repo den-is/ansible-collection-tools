@@ -1,0 +1,44 @@
+ruff_v: 0.9.2
+
+ruff_compiler_gnu: true
+
+_ruff_sys_map:
+  Linux: unknown-linux
+  Darwin: apple-darwin
+  Win32NT: pc-windows
+
+_ruff_arch_map:
+  x86_64: "x86_64"
+  aarch64: "aarch64"
+
+_ruff_compiler_map:
+  Linux:
+    x86_64: "{{ '-gnu' if ruff_compiler_gnu else '-musl' }}"
+    aarch64: "{{ '-gnu' if ruff_compiler_gnu else '-musl' }}"
+  Darwin:
+    x86_64: ""
+    aarch64: ""
+  Win32NT:
+    x86_64: "-msvc"
+    aarch64: "-msvc"
+
+_ruff_sys: "{{ _ruff_sys_map[ansible_system] }}"
+_ruff_arch: "{{ _ruff_arch_map[ansible_architecture] }}"
+_ruff_compiler: "{{ _ruff_compiler[ansible_system][ansible_architecture] }}"
+
+ruff_release_base_url: https://github.com/astral-sh/ruff/releases/download
+ruff_release_archive_name: ruff-{{ _ruff_arch }}-{{ _ruff_sys }}{{ _ruff_compiler }}.{{ 'zip' if ansible_system == 'Win32NT' else 'tar.gz' }}
+ruff_release_url: '{{ ruff_release_base_url }}/{{ ruff_v }}/{{ ruff_release_archive_name }}'
+
+ruff_checksum_verify: false
+ruff_checksums_url: '{{ ruff_release_base_url }}/{{ ruff_v }}/sha256.sum'
+
+ruff_archive_download_dst: /tmp
+ruff_extraction_path: '{{ ruff_archive_download_dst }}/ruff-{{ ruff_v }}'
+
+ruff_bin_dst: /usr/local/bin
+ruff_bin: ruff
+
+ruff_brew: false
+ruff_brew_package: ruff
+ruff_brew_state: latest

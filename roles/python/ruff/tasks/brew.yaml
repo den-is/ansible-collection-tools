@@ -1,0 +1,5 @@
+- name: Brew install ruff
+  community.general.homebrew:
+    name: '{{ ruff_brew_package }}'
+    state: '{{ ruff_brew_state }}'
+    update_homebrew: true
