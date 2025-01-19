@@ -34,7 +34,7 @@ uv_checksum_verify: false
 uv_checksums_url: '{{ uv_release_base_url }}/{{ uv_v }}/sha256.sum'
 
 uv_archive_download_dst: /tmp
-uv_full_download_path: '{{ uv_archive_download_dst }}/{{ uv_release_archive_name }}.sha256'
+uv_extraction_path: '{{ uv_archive_download_dst }}/uv-{{ uv_v }}'
 
 uv_bin_dst: /usr/local/bin
 uv_bin: uv

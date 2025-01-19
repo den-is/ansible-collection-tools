@@ -22,9 +22,9 @@
     - uv_release_archive_name in item
 
 
-- name: Creating extraction dir {{ uv_full_download_path }}
+- name: Creating extraction dir {{ uv_extraction_path }}
   ansible.builtin.file:
-    path: '{{ uv_full_download_path }}'
+    path: '{{ uv_extraction_path }}'
     state: directory
     mode: '0755'
 
@@ -35,22 +35,22 @@
     checksum: "{{ 'sha256:' + __uv_checksum if uv_checksum_verify else '' }}"
     mode: '0644'
 
-- name: Extracting archive to {{ uv_full_download_path }}
+- name: Extracting archive to {{ uv_extraction_path }}
   ansible.builtin.unarchive:
     src: '{{ uv_archive_download_dst }}/{{ uv_release_archive_name }}'
-    dest: '{{ uv_full_download_path }}'
+    dest: '{{ uv_extraction_path }}'
     remote_src: true
 
 - name: Installing uv
   ansible.builtin.copy:
-    src: '{{ uv_full_download_path }}/uv'
+    src: '{{ uv_extraction_path }}/uv'
     dest: '{{ uv_bin_dst }}/{{ uv_bin }}'
     mode: '0755'
     remote_src: true
 
 - name: Installing uvx
   ansible.builtin.copy:
-    src: '{{ uv_full_download_path }}/uvx'
+    src: '{{ uv_extraction_path }}/uvx'
     dest: '{{ uv_bin_dst }}/{{ uvx_bin }}'
     mode: '0755'
     remote_src: true
@@ -61,4 +61,4 @@
     state: absent
   loop:
   - '{{ uv_archive_download_dst }}/{{ uv_release_archive_name }}'
-  - '{{ uv_full_download_path }}'
+  - '{{ uv_extraction_path }}'
