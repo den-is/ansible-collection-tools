@@ -61,6 +61,7 @@
     src: "{{ just_full_download_path }}/completions/just.zsh"
     dest: "{{ zsh_completions_path }}/_just"
     mode: "0644"
+    remote_src: true
   when:
   - just_zsh_completions_install
 
