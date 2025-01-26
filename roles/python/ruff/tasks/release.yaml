@@ -40,6 +40,9 @@
     src: '{{ ruff_archive_download_dst }}/{{ ruff_release_archive_name }}'
     dest: '{{ ruff_extraction_path }}'
     remote_src: true
+    extra_opts:
+    - --strip-components=1
+    - --show-stored-names
 
 - name: Installing ruff
   ansible.builtin.copy:
