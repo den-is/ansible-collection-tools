@@ -1,4 +1,4 @@
-uv_v: 0.5.21
+uv_v: 0.5.24
 
 _uv_sys_map:
   Linux: unknown-linux
@@ -18,16 +18,13 @@ _uv_compiler_map:
   Darwin:
     x86_64: ""
     aarch64: ""
-  Win32NT:
-    x86_64: "-msvc"
-    aarch64: "-msvc"
 
 _uv_sys: "{{ _uv_sys_map[ansible_system] }}"
 _uv_arch: "{{ _uv_arch_map[ansible_architecture] }}"
-_uv_compiler: "{{ _uv_compiler[ansible_system][ansible_architecture] }}"
+_uv_compiler: "{{ _uv_compiler_map[ansible_system][ansible_architecture] }}"
 
 uv_release_base_url: https://github.com/astral-sh/uv/releases/download
-uv_release_archive_name: uv-{{ _uv_arch }}-{{ _uv_sys }}{{ _uv_compiler }}.{{ 'zip' if ansible_system == 'Win32NT' else 'tar.gz' }}
+uv_release_archive_name: uv-{{ _uv_arch }}-{{ _uv_sys }}{{ _uv_compiler }}.tar.gz
 uv_release_url: '{{ uv_release_base_url }}/{{ uv_v }}/{{ uv_release_archive_name }}'
 
 uv_checksum_verify: false
