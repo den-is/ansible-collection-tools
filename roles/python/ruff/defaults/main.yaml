@@ -24,7 +24,7 @@ _ruff_compiler_map:
 
 _ruff_sys: "{{ _ruff_sys_map[ansible_system] }}"
 _ruff_arch: "{{ _ruff_arch_map[ansible_architecture] }}"
-_ruff_compiler: "{{ _ruff_compiler[ansible_system][ansible_architecture] }}"
+_ruff_compiler: "{{ _ruff_compiler_map[ansible_system][ansible_architecture] }}"
 
 ruff_release_base_url: https://github.com/astral-sh/ruff/releases/download
 ruff_release_archive_name: ruff-{{ _ruff_arch }}-{{ _ruff_sys }}{{ _ruff_compiler }}.{{ 'zip' if ansible_system == 'Win32NT' else 'tar.gz' }}
