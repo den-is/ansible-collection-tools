@@ -10,6 +10,11 @@
     __kubectx_nov_v: "{{ kubectx_v | regex_replace('^v', '') }}"
     installed_kubectx_v: "{{ check_kubectx_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Report installed version
   ansible.builtin.debug:
-    msg: 'Current kubectx version: {{ installed_kubectx_v if check_kubectx_v_task is success else "Not Available" }}'
+    msg: |-
+      Installed kubectx version: {% if kubectx_go -%}
+        {{- installed_kubectx_v if check_kubectx_v_task is success else "Not Available" -}}'
+      {%- else -%}
+        Bash flavor without version
+      {%- endif -%}

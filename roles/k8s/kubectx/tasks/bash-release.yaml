@@ -4,6 +4,10 @@
     dest: "{{ kubectx_bin_dst }}/{{ kubectx_bin }}"
     mode: '0755'
     force: "{{ kubectx_force_download | default(false) }}"
+  register: __kubectx_download_status
+  retries: 3
+  delay: 10
+  until: __kubectx_download_status is succeeded
 
 - name: Download and install kubens
   ansible.builtin.get_url:
@@ -11,3 +15,7 @@
     dest: "{{ kubectx_bin_dst }}/{{ kubens_bin }}"
     mode: '0755'
     force: "{{ kubectx_force_download | default(false) }}"
+  register: __kubens_download_status
+  retries: 3
+  delay: 10
+  until: __kubens_download_status is succeeded
