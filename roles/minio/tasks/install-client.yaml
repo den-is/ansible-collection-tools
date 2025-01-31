@@ -9,10 +9,10 @@
     dest: "/tmp/{{ __minio_client_artifact }}"
     mode: "0755"
     checksum: "{{ 'sha256:' + _minio_client_checksum if minio_validate_checksum }}"
-  register: _download_client
-  until: _download_client is succeeded
+  register: _download_minio_client_status
+  until: _download_minio_client_status is succeeded
   retries: 5
-  delay: 2
+  delay: 5
 
 - name: Move the Minio client binary artifact to the destination
   ansible.builtin.copy:

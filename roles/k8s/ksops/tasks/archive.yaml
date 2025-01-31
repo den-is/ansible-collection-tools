@@ -36,10 +36,10 @@
     dest: '{{ ksops_archive_download_dst }}/{{ ksops_release_archive_name }}'
     checksum: "{{ 'sha256:' + __ksops_checksum if ksops_checksum_verify else '' }}"
     mode: '0644'
-    register: _ksops_archive_download_status
-    retries: 3
-    delay: 10
-    until: _ksops_archive_download_status is succeeded
+  register: _ksops_archive_download_status
+  retries: 3
+  delay: 10
+  until: _ksops_archive_download_status is succeeded
   when:
   - _ksops_bin_exists is failed or ksops_force_install
 
