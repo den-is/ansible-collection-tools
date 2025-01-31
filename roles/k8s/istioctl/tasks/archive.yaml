@@ -36,10 +36,10 @@
     dest: '{{ istioctl_archive_download_dst }}/{{ istioctl_release_archive_name }}'
     checksum: "{{ 'sha256:' + __istioctl_checksum if istioctl_checksum_verify else '' }}"
     mode: '0644'
-    register: _istioctl_archive_download_status
-    retries: 3
-    delay: 10
-    until: _istioctl_archive_download_status is succeeded
+  register: _istioctl_archive_download_status
+  retries: 3
+  delay: 10
+  until: _istioctl_archive_download_status is succeeded
   when:
   - _istioctl_bin_exists is failed or istioctl_force_install
 
