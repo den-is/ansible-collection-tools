@@ -1,4 +1,4 @@
-argo_rollouts_v: v1.7.2
+argo_rollouts_v: v1.8.0
 
 argo_rollouts_sys_map:
   Darwin: darwin

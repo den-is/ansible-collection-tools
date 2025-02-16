@@ -29,16 +29,18 @@
   become: true
   become_user: "{{ omz_user.name }}"
 
-- name: Create user fpath directories for user "{{ omz_user.name }}"
+- name: Create custom fpath directories for user "{{ omz_user.name }}"
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: '0750'
+    mode: '0755'
   become: true
   become_user: "{{ omz_user.name }}"
   loop:
-  - "{{ __omz_target_user_home }}/.oh-my-zsh/completions"
-  - "{{ __omz_target_user_home }}/.oh-my-zsh/functions"
+  - "{{ __omz_target_user_home }}/.oh-my-zsh/custom/completions"
+  - "{{ __omz_target_user_home }}/.oh-my-zsh/custom/functions"
+  - "{{ __omz_target_user_home }}/.oh-my-zsh/custom/plugins"
+  - "{{ __omz_target_user_home }}/.oh-my-zsh/custom/themes"
 
 - name: Set ~/.oh-my-zsh permissions for user "{{ omz_user.name }}"
   ansible.builtin.file:

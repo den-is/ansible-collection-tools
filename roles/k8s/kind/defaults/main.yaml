@@ -1,4 +1,4 @@
-kind_v: v0.26.0
+kind_v: v0.27.0
 
 kind_arch_map:
   x86_64: amd64
