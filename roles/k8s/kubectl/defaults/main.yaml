@@ -1,4 +1,4 @@
-kubectl_v: v1.31.3
+kubectl_v: v1.32.2
 kubectl_latest: false
 
 # Upload kubectl binary from ansible host
