@@ -1,4 +1,4 @@
-nvm_v: v0.40.1
+nvm_v: v0.40.2
 
 _nvm_nov: "{{ nvm_v | regex_replace('^v', '') }}"
 nvm_deploy_cleanup: true

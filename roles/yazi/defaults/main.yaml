@@ -1,4 +1,4 @@
-yazi_v: v25.2.26
+yazi_v: v25.3.2
 
 yazi_nov: '{{ yazi_v | regex_replace("^v", "") }}'
 
