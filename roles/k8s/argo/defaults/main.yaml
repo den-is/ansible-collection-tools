@@ -1,0 +1,29 @@
+argo_v: v3.6.5
+
+argo_sys_map:
+  Darwin: darwin
+  Linux: linux
+
+argo_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+argo_sys: "{{ argo_sys_map[ansible_system] }}"
+argo_arch: "{{ argo_arch_map[ansible_architecture] }}"
+
+argo_release_base_url: https://github.com/argoproj/argo-workflows/releases/download
+argo_release_archive_name: argo-{{ argo_sys }}-{{ argo_arch }}.gz
+argo_release_url: "{{ argo_release_base_url }}/{{ argo_v }}/{{ argo_release_archive_name }}"
+
+argo_archive_download_dst: /tmp
+argo_extraction_path: '{{ argo_archive_download_dst }}/argo-{{ argo_v }}'
+
+argo_checksum_verify: false
+argo_checksum_url: "{{ argo_release_base_url }}/{{ argo_v }}/argo-workflows-cli-checksums.txt"
+
+argo_bin_dst: /usr/local/bin
+argo_bin: argo
+
+argo_brew: false
+argo_brew_package: argo
+argo_brew_state: latest
