@@ -1,4 +1,4 @@
-direnv_v: v2.35.0
+direnv_v: v2.36.0
 
 _direnv_nov: "{{ direnv_v | regex_replace('^v', '') }}"
 

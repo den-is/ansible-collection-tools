@@ -1,4 +1,4 @@
-argocd_v: v2.14.8
+argocd_v: v2.14.10
 
 argocd_sys_map:
   Darwin: darwin
