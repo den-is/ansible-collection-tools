@@ -1,4 +1,4 @@
-k9s_v: v0.50.3
+k9s_v: v0.50.4
 
 k9s_arch_map:
   x86_64: amd64
