@@ -1,4 +1,4 @@
-ruff_v: 0.11.8
+ruff_v: 0.11.12
 
 ruff_compiler_gnu: true
 
