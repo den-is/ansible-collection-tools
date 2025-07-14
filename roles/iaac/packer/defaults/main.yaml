@@ -1,4 +1,4 @@
-packer_v: 1.12.0
+packer_v: 1.13.1
 
 _packer_arch_map:
   x86_64: "amd64"

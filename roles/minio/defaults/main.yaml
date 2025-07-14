@@ -7,8 +7,8 @@ minio_install_packages: false
 ## But what if we need to check versions of Minio server and client for all installation cases, binary, rpm, deb?
 ## RPM and DEB filename are completely distinct from the binary filename, and RPM differs from DEB package name
 ## also Client package names differ!
-minio_server_v: minio.RELEASE.2025-03-12T18-04-18Z
-minio_client_v: mc.RELEASE.2025-03-12T17-29-24Z
+minio_server_v: minio.RELEASE.2025-06-13T11-33-47Z
+minio_client_v: mc.RELEASE.2025-05-21T01-59-54Z
 
 __minio_server_artifact: >-
   {%- if minio_install_latest -%}

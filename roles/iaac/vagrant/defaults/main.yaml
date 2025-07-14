@@ -1,4 +1,4 @@
-vagrant_v: 2.4.6
+vagrant_v: 2.4.7
 
 vagrant_arch_map:
   x86_64: "amd64"

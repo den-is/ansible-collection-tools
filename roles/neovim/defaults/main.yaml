@@ -1,5 +1,5 @@
-neovim_v: v0.10.4
-neovim_bob_v: v4.0.3
+neovim_v: v0.11.3
+neovim_bob_v: v4.1.1
 
 _neovim_os_arch_map:
   Linux:
