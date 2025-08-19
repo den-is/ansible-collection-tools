@@ -1,4 +1,4 @@
-kustomize_v: v5.7.0
+kustomize_v: v5.7.1
 
 kustomize_arch_map:
   x86_64: amd64

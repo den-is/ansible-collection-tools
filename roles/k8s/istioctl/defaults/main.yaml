@@ -1,4 +1,4 @@
-istioctl_v: 1.26.2
+istioctl_v: 1.27.0
 
 istioctl_force_install: true
 
