@@ -1,4 +1,4 @@
-fd_v: v10.2.0
+fd_v: v10.3.0
 
 _fd_nov: "{{ fd_v | regex_replace('^v', '') }}"
 
