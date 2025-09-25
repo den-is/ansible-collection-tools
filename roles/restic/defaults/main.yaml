@@ -1,4 +1,4 @@
-restic_v: v0.18.0
+restic_v: v0.18.1
 
 _restic_nov: "{{ restic_v | regex_replace('^v', '') }}"
 

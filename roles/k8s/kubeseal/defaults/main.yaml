@@ -1,4 +1,4 @@
-kubeseal_v: v0.31.0
+kubeseal_v: v0.32.2
 
 __kubeseal_nov: '{{ kubeseal_v | regex_replace("^v", "") }}'
 

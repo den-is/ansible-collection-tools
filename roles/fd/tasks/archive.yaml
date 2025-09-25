@@ -2,6 +2,7 @@
   ansible.builtin.file:
     path: '{{ fd_full_download_path }}'
     state: directory
+    mode: '0755'
 
 - name: Getting fd {{ fd_v }} archive and extracting it to {{ fd_full_download_path }}
   ansible.builtin.unarchive:

@@ -1,4 +1,4 @@
-stern_v: v1.32.0
+stern_v: v1.33.0
 
 stern_nov_v: "{{ stern_v | regex_replace('^v', '') }}"
 
