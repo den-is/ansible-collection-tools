@@ -1,4 +1,4 @@
-kubecolor_v: v0.5.1
+kubecolor_v: v0.5.2
 __kubecolor_nov: '{{ kubecolor_v | regex_replace("^v", "") }}'
 
 kubecolor_arch_map:
