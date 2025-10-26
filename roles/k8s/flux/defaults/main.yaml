@@ -1,4 +1,4 @@
-flux_v: v2.7.0
+flux_v: v2.7.2
 
 flux_nov: "{{ flux_v | regex_replace('^v', '') }}"
 
