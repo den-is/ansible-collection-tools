@@ -1,0 +1,56 @@
+- name: Get checksum
+  when: argonaut_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __argonaut_checksums: "{{ lookup('url', argonaut_checksum_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __argonaut_checksums is search(argonaut_release_artifact_name)
+    retries: 10
+
+  - name: Get checksum for {{ argonaut_release_artifact_name }}
+    ansible.builtin.set_fact:
+      __argonaut_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __argonaut_checksums }}"
+    when:
+    - argonaut_release_artifact_name in item
+
+- name: Creating argonaut extraction dir {{ argonaut_extract_dst }}
+  ansible.builtin.file:
+    path: '{{ argonaut_extract_dst }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ argonaut_release_url }}'
+    dest: '{{ argonaut_archive_download_dst }}/{{ argonaut_release_artifact_name }}'
+    checksum: "{{ 'sha256:' + __argonaut_checksum if argonaut_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Extracting release archive
+  ansible.builtin.unarchive:
+    src: '{{ argonaut_archive_download_dst }}/{{ argonaut_release_artifact_name }}'
+    dest: '{{ argonaut_extract_dst }}'
+    remote_src: true
+
+- name: Copying argonaut to {{ argonaut_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ argonaut_extract_dst }}/argonaut'
+    dest: '{{ argonaut_bin_dst }}/{{ argonaut_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ argonaut_archive_download_dst }}/{{ argonaut_release_artifact_name }}'
+  - '{{ argonaut_extract_dst }}'
