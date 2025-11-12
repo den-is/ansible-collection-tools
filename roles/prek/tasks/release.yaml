@@ -1,0 +1,60 @@
+- name: Get checksum
+  when: prek_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __prek_checksums: "{{ lookup('url', prek_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __prek_checksums is search(prek_release_archive_name)
+    retries: 10
+
+  - name: Get checksum for {{ prek_release_archive_name }}
+    ansible.builtin.set_fact:
+      __prek_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __prek_checksums }}"
+    when:
+    - prek_release_archive_name in item
+
+
+- name: Creating extraction dir {{ prek_extraction_path }}
+  ansible.builtin.file:
+    path: '{{ prek_extraction_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ prek_release_url }}'
+    dest: '{{ prek_archive_download_dst }}/{{ prek_release_archive_name }}'
+    checksum: "{{ 'sha256:' + __prek_checksum if prek_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ prek_extraction_path }}
+  ansible.builtin.unarchive:
+    src: '{{ prek_archive_download_dst }}/{{ prek_release_archive_name }}'
+    dest: '{{ prek_extraction_path }}'
+    remote_src: true
+    extra_opts:
+    - --strip-components=1
+    - --show-stored-names
+
+- name: Installing prek
+  ansible.builtin.copy:
+    src: '{{ prek_extraction_path }}/prek'
+    dest: '{{ prek_bin_dst }}/{{ prek_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ prek_archive_download_dst }}/{{ prek_release_archive_name }}'
+  - '{{ prek_extraction_path }}'

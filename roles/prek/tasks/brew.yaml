@@ -1,0 +1,5 @@
+- name: Brew install prek
+  community.general.homebrew:
+    name: '{{ prek_brew_package }}'
+    state: '{{ prek_brew_state }}'
+    update_homebrew: true

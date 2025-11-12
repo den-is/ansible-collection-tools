@@ -1,0 +1,41 @@
+prek_v: 0.2.13
+
+prek_compiler_gnu: true
+
+_prek_sys_map:
+  Linux: unknown-linux
+  Darwin: apple-darwin
+  Win32NT: pc-windows
+
+_prek_arch_map:
+  x86_64: "x86_64"
+  aarch64: "aarch64"
+
+_prek_compiler_map:
+  Linux:
+    x86_64: "{{ '-gnu' if prek_compiler_gnu else '-musl' }}"
+    aarch64: "{{ '-gnu' if prek_compiler_gnu else '-musl' }}"
+  Darwin:
+    x86_64: ""
+    aarch64: ""
+
+_prek_sys: "{{ _prek_sys_map[ansible_system] }}"
+_prek_arch: "{{ _prek_arch_map[ansible_architecture] }}"
+_prek_compiler: "{{ _prek_compiler_map[ansible_system][ansible_architecture] }}"
+
+prek_release_base_url: https://github.com/j178/prek/releases/download/v{{ prek_v }}
+prek_release_archive_name: prek-{{ _prek_arch }}-{{ _prek_sys }}{{ _prek_compiler }}.tar.gz
+prek_release_url: '{{ prek_release_base_url }}/{{ prek_release_archive_name }}'
+
+prek_checksum_verify: false
+prek_checksums_url: '{{ prek_release_base_url }}/{{ prek_release_archive_name }}.sha256'
+
+prek_archive_download_dst: /tmp
+prek_extraction_path: '{{ prek_archive_download_dst }}/prek-{{ prek_v }}'
+
+prek_bin_dst: /usr/local/bin
+prek_bin: prek
+
+prek_brew: false
+prek_brew_package: prek
+prek_brew_state: latest
