@@ -1,13 +1,25 @@
-helm_v: v3.19.1
+helm_v: v3.19.2
 
-helm_arch_map:
+# TODO not yet impelemented
+latest_urls:
+  # v3: https://get.helm.sh/helm-latest-version # also returns v3, at the moment of writing
+  v3: https://get.helm.sh/helm3-latest-version
+  v4: https://get.helm.sh/helm4-latest-version
+
+_helm_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-helm_arch: "{{ helm_arch_map[ansible_architecture] }}"
+_helm_arch: "{{ _helm_arch_map[ansible_architecture] }}"
 
-helm_release_url: https://get.helm.sh/helm-{{ helm_v }}-{{ ansible_system | lower }}-{{ helm_arch }}.tar.gz
-helm_download_dst: /tmp/helm_{{ helm_v }}
+helm_release_artifact: helm-{{ helm_v }}-{{ ansible_system | lower }}-{{ _helm_arch }}.tar.gz
+helm_release_url: https://get.helm.sh/{{ helm_release_artifact }}
+helm_archive_download_dst: /tmp
+helm_extraction_path: '{{ helm_archive_download_dst }}/helm-{{ helm_v }}'
+helm_cleanup: true
+
+helm_checksum_verify: false
+helm_checksum_url: "{{ helm_release_url }}.sha256"
 
 helm_bin: helm
 helm_bin_dst: /usr/local/bin
