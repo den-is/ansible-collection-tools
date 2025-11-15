@@ -26,6 +26,13 @@
     - _helm_binary_dir_check.stat.isdir
     fail_msg: "Directory '{{ helm_bin_dst }}' does not exist or is not a directory."
 
+- name: Get Helm latest version
+  ansible.builtin.set_fact:
+    __helm_latest_version: "{{ lookup('url', _helm_latest_url) }}"
+  run_once: true
+  retries: 10
+  when: helm_latest or helm_latest_v3
+
 - name: Get current Helm version if any
   # shell: '{{ helm_bin_dst }}/{{ helm_bin }} version -c --short | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"'
   ansible.builtin.shell: "{{ helm_bin_dst }}/{{ helm_bin }} version --template='{{ '{{' }}.Version{{ '}}' }}'"
@@ -33,9 +40,33 @@
   ignore_errors: true
   changed_when: false
 
+- name: Registering Helm version to install
+  ansible.builtin.set_fact:
+    _helm_v_calculated: >-
+      {%- if helm_latest or helm_latest_v3 -%}
+        {{ __helm_latest_version }}
+      {%- else -%}
+        {{ helm_v }}
+      {%- endif -%}
+
+- name: Reporting Helm version to be installed
+  ansible.builtin.debug:
+    msg: "Version to be installed: {{ _helm_v_calculated }}"
+
 - name: Registering Preflight vars
   ansible.builtin.set_fact:
     installed_helm_v: "{{ _helm_check_version_task.stdout | default('v0.0.0', true) }}"
+    helm_release_artifact: helm-{{ _helm_v_calculated }}-{{ ansible_system | lower }}-{{ _helm_arch }}.tar.gz
+    helm_extraction_path: '{{ helm_archive_download_dst }}/helm-{{ _helm_v_calculated }}'
+
+- name: Set Helm release download URL
+  ansible.builtin.set_fact:
+    helm_release_url: https://get.helm.sh/{{ helm_release_artifact }}
+
+- name: Set Helm checksum URL
+  ansible.builtin.set_fact:
+    helm_checksum_url: "{{ helm_release_url }}.sha256"
+  when: helm_checksum_verify
 
 - name: Reporting installed version
   ansible.builtin.debug:

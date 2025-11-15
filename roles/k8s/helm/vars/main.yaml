@@ -1,0 +1,17 @@
+_helm_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+_helm_arch: "{{ _helm_arch_map[ansible_architecture] }}"
+
+_helm_latest_urls:
+  # v3: https://get.helm.sh/helm-latest-version # also returns v3, at the moment of writing
+  v3: https://get.helm.sh/helm3-latest-version
+  v4: https://get.helm.sh/helm4-latest-version
+
+_helm_latest_url: >-
+  {%- if helm_latest -%}
+    {{ _helm_latest_urls.v4 }}
+  {%- elif helm_latest_v3 -%}
+    {{ _helm_latest_urls.v3 }}
+  {%- endif -%}

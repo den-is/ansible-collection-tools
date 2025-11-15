@@ -6,13 +6,13 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
-  - helm_v is version(installed_helm_v, 'ne')
+  - _helm_v_calculated is version(installed_helm_v, 'ne')
   - not helm_brew
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
   when:
-  - helm_v is version(installed_helm_v, 'ne')
+  - _helm_v_calculated is version(installed_helm_v, 'ne')
   - helm_brew
   - ansible_system == 'Darwin'
 
