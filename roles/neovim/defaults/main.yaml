@@ -1,5 +1,5 @@
 neovim_v: v0.11.3
-neovim_bob_v: v4.1.4
+neovim_bob_v: v4.1.5
 
 _neovim_os_arch_map:
   Linux:

@@ -1,4 +1,4 @@
-rclone_v: v1.71.2
+rclone_v: v1.72.0
 
 rclone_arch_map:
   x86_64: amd64

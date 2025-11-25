@@ -26,19 +26,19 @@
     - _helm_binary_dir_check.stat.isdir
     fail_msg: "Directory '{{ helm_bin_dst }}' does not exist or is not a directory."
 
-- name: Get Helm latest version
-  ansible.builtin.set_fact:
-    __helm_latest_version: "{{ lookup('url', _helm_latest_url) }}"
-  run_once: true
-  retries: 10
-  when: helm_latest or helm_latest_v3
-
 - name: Get current Helm version if any
   # shell: '{{ helm_bin_dst }}/{{ helm_bin }} version -c --short | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"'
   ansible.builtin.shell: "{{ helm_bin_dst }}/{{ helm_bin }} version --template='{{ '{{' }}.Version{{ '}}' }}'"
   register: _helm_check_version_task
   ignore_errors: true
   changed_when: false
+
+- name: Get Helm latest version
+  ansible.builtin.set_fact:
+    __helm_latest_version: "{{ lookup('url', _helm_latest_url) }}"
+  run_once: true
+  retries: 10
+  when: helm_latest or helm_latest_v3
 
 - name: Registering Helm version to install
   ansible.builtin.set_fact:

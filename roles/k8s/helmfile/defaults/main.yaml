@@ -1,4 +1,4 @@
-helmfile_v: v1.1.9
+helmfile_v: v1.2.1
 
 helmfile_v_no_v: "{{ helmfile_v | regex_replace('^v', '') }}"
 
