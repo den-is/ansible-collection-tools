@@ -1,9 +1,36 @@
-- name: Removing ripgrep binary
-  ansible.builtin.file:
-    path: "{{ ripgrep_bin_dir }}/ripgrep"
-    state: absent
+- name: Uninstall ripgrep installed from release archive
+  when: not ripgrep_os_package
+  block:
 
-- name: Removing ripgrep zsh completions
-  ansible.builtin.file:
-    path: "{{ zsh_completions_path }}/_ripgrep"
-    state: absent
+  - name: Removing ripgrep binary
+    ansible.builtin.file:
+      path: "{{ ripgrep_bin_dst }}/{{ ripgrep_bin}}"
+      state: absent
+
+  - name: Removing ripgrep man pages
+    ansible.builtin.file:
+      path: '{{ ripgrep_man_path }}/man1/rg.1'
+      state: absent
+    ignore_errors: true
+    when: ripgrep_deploy_man
+
+  - name: Removing ripgrep Bash completions
+    ansible.builtin.file:
+      path: "{{ bash_completions_path }}/rg.bash"
+      state: absent
+    ignore_errors: true
+    when: ripgrep_deploy_completions
+
+  - name: Removing ripgrep ZSH completions
+    ansible.builtin.file:
+      path: "{{ zsh_completions_path }}/_rg"
+      state: absent
+    ignore_errors: true
+    when: ripgrep_deploy_completions
+
+  - name: Removing ripgrep Fish completions
+    ansible.builtin.file:
+      path: "{{ fish_completions_path }}/rg.fish"
+      state: absent
+    ignore_errors: true
+    when: ripgrep_deploy_completions

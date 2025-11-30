@@ -1,0 +1,100 @@
+- name: Get checksum
+  when: ripgrep_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __ripgrep_checksums: "{{ lookup('url', ripgrep_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __ripgrep_checksums is search(ripgrep_release_archive_name)
+    retries: 10
+
+  - name: Get checksum for {{ ripgrep_release_archive_name }}
+    ansible.builtin.set_fact:
+      __ripgrep_archive_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __ripgrep_checksums }}"
+    when:
+    - ripgrep_release_archive_name in item
+
+
+- name: Creating extraction dir {{ ripgrep_extraction_path }}
+  ansible.builtin.file:
+    path: '{{ ripgrep_extraction_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ ripgrep_release_url }}'
+    dest: '{{ ripgrep_archive_download_dst }}/{{ ripgrep_release_archive_name }}'
+    checksum: "{{ 'sha256:' + __ripgrep_archive_checksum if ripgrep_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ ripgrep_extraction_path }}
+  ansible.builtin.unarchive:
+    src: '{{ ripgrep_archive_download_dst }}/{{ ripgrep_release_archive_name }}'
+    dest: '{{ ripgrep_extraction_path }}'
+    remote_src: true
+    extra_opts:
+    - --strip-components=1
+    - --show-stored-names
+
+- name: Installing ripgrep binary to {{ ripgrep_bin_dst }}/{{ ripgrep_bin }}
+  ansible.builtin.copy:
+    src: '{{ ripgrep_extraction_path }}/rg'
+    dest: '{{ ripgrep_bin_dst }}/{{ ripgrep_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Installing man pages
+  ansible.builtin.copy:
+    src: '{{ ripgrep_extraction_path }}/doc/rg.1'
+    dest: '{{ ripgrep_man_path }}/man1/rg.1'
+    mode: '0644'
+    remote_src: true
+  when: ripgrep_deploy_man
+
+- name: Installing ZSH completions
+  ansible.builtin.copy:
+    src: "{{ ripgrep_extraction_path }}/complete/_rg"
+    dest: "{{ zsh_completions_path }}/_rg"
+    mode: "0644"
+    remote_src: true
+  when:
+  - ripgrep_deploy_completions
+  - _zsh_completions_dst_check.stat.exists
+
+- name: Installing Bash completions
+  ansible.builtin.copy:
+    src: "{{ ripgrep_extraction_path }}/complete/rg.bash"
+    dest: "{{ bash_completions_path }}/rg.bash"
+    mode: "0644"
+    remote_src: true
+  when:
+  - ripgrep_deploy_completions
+  - _bash_completions_dst_check.stat.exists
+
+- name: Installing Fish completions
+  ansible.builtin.copy:
+    src: "{{ ripgrep_extraction_path }}/complete/rg.fish"
+    dest: "{{ fish_completions_path }}/rg.fish"
+    mode: "0644"
+    remote_src: true
+  when:
+  - ripgrep_deploy_completions
+  - _fish_completions_dst_check.stat.exists
+
+## Post deploy cleanup
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ ripgrep_archive_download_dst }}/{{ ripgrep_release_archive_name }}'
+  - '{{ ripgrep_extraction_path }}'
+  when: ripgrep_cleanup_release_artifacts

@@ -3,20 +3,29 @@
   tags:
   - always
 
+- name: Deploy from release archive
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - ripgrep_v is version(_installed_ripgrep_v, 'ne')
+  - not ripgrep_os_package | bool
+  - not ripgrep_brew | bool
+
 - name: Install ripgrep on a Debian based OS
   ansible.builtin.include_tasks: debian.yaml
   when:
-  - not ripgrep_brew_install
-  - ansible_os_family == "Debian"
+  - ansible_facts["os_family"] == "Debian"
+  - ripgrep_os_package | bool
+  - not ripgrep_brew | bool
 
 - name: Install ripgrep on a RedHat based OS
   ansible.builtin.include_tasks: redhat.yaml
   when:
-  - not ripgrep_brew_install
-  - ansible_os_family == "RedHat"
+  - ansible_facts["os_family"] == "RedHat"
+  - ripgrep_os_package | bool
+  - not ripgrep_brew | bool
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
   when:
-  - ripgrep_brew_install
-  - ansible_os_family == "Darwin"
+  - ripgrep_brew | bool
+  - ansible_facts["os_family"] == "Darwin"

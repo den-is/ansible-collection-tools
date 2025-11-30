@@ -1,11 +1,59 @@
 ripgrep_v: 15.1.0
 
-ripgrep_apt_os_repo: true
-ripgrep_download_base_url: https://github.com/BurntSushi/ripgrep/releases/download
-ripgrep_apt_download_url: "{{ ripgrep_download_base_url }}/{{ ripgrep_v }}/ripgrep_{{ ripgrep_v }}-1_amd64.deb"
+# Install ripgrep from OS packages, otherwise from github release archive
+ripgrep_os_package: false
 
+# Release archive
+# ripgrep_gnu: true
+
+_ripgrep_sys_map:
+  Linux: unknown-linux
+  Darwin: apple-darwin
+
+_ripgrep_arch_map:
+  x86_64: x86_64
+  aarch64: aarch64
+
+_ripgrep_compiler_map:
+  Linux:
+    x86_64: -musl
+    aarch64: -gnu
+  Darwin:
+    x86_64: ""
+    aarch64: ""
+
+_ripgrep_sys: "{{ _ripgrep_sys_map[ansible_facts['system']] }}"
+_ripgrep_arch: "{{ _ripgrep_arch_map[ansible_facts['architecture']] }}"
+_ripgrep_compiler: "{{ _ripgrep_compiler_map[ansible_facts['system']][ansible_facts['architecture']] }}"
+
+_ripgrep_release_base_url: https://github.com/BurntSushi/ripgrep/releases/download
+ripgrep_release_archive_name: ripgrep-{{ ripgrep_v }}-{{ _ripgrep_arch }}-{{ _ripgrep_sys }}{{ _ripgrep_compiler }}.tar.gz
+ripgrep_release_url: '{{ _ripgrep_release_base_url }}/{{ ripgrep_v }}/{{ ripgrep_release_archive_name }}'
+
+ripgrep_checksum_verify: false
+ripgrep_checksums_url: '{{ ripgrep_release_url }}.sha256'
+
+ripgrep_archive_download_dst: /tmp
+ripgrep_extraction_path: '{{ ripgrep_archive_download_dst }}/ripgrep-{{ ripgrep_v }}'
+ripgrep_cleanup_release_artifacts: false
+
+ripgrep_bin_dst: /usr/local/bin
+ripgrep_bin: rg
+
+ripgrep_deploy_man: true
+ripgrep_man_path: /usr/share/man
+ripgrep_deploy_completions: true
+bash_completions_path: /usr/share/bash-completion/completions
+zsh_completions_path: /usr/share/zsh/site-functions
+fish_completions_path: /usr/share/fish/vendor_completions.d
+
+# Deb packages
+ripgrep_apt_os_repo: true
+ripgrep_apt_download_url: "{{ _ripgrep_release_base_url }}/{{ ripgrep_v }}/ripgrep_{{ ripgrep_v }}-1_amd64.deb"
+
+# system: Darwin
+ripgrep_brew: false
 ripgrep_brew_package: ripgrep
-ripgrep_brew_install: false
 ripgrep_brew_state: latest
 ripgrep_brew_update: true
 

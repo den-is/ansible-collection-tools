@@ -1,16 +1,18 @@
-- name: Install ripgrep from release deb package
-  ansible.builtin.apt:
-    deb: "{{ ripgrep_apt_download_url }}"
-  when:
-  - not ripgrep_apt_os_repo
-  - not ripgrep_uninstall
+- name: Install ripgrep on Debian based OS
+  when: not ripgrep_uninstall
+  block:
 
-- name: Install ripgrep from OS packages
-  ansible.builtin.apt:
-    name: ripgrep
-  when:
-  - ripgrep_apt_os_repo
-  - not ripgrep_uninstall
+  - name: Install ripgrep from release deb package
+    ansible.builtin.apt:
+      deb: "{{ ripgrep_apt_download_url }}"
+    when:
+    - not ripgrep_apt_os_repo
+
+  - name: Install ripgrep from OS packages
+    ansible.builtin.apt:
+      name: ripgrep
+    when:
+    - ripgrep_apt_os_repo
 
 - name: Uninstall ripgrep
   ansible.builtin.apt:
