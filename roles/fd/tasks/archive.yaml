@@ -8,6 +8,7 @@
   ansible.builtin.unarchive:
     src: '{{ fd_release_url }}'
     dest: '{{ fd_full_download_path }}'
+    extra_opts: ['--strip-components=1', '--show-stored-names']
     remote_src: true
 
 - name: Copying fd to {{ fd_bin_dst }}

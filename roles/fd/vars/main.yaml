@@ -1,0 +1,6 @@
+__fd_install_deb: >-
+  {%- if ansible_facts["os_family"] != "Debian" -%}
+  false
+  {%- else -%}
+  {{ fd_install_deb }}
+  {%- endif -%}
