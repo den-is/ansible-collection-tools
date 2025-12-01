@@ -4,7 +4,7 @@
     state: present
     update_cache: true
   become: true
-  when: ansible_os_family == "Debian"
+  when: ansible_facts['os_family'] == "Debian"
 
 - name: Install python compilation dependencies on a RedHat based OS
   ansible.builtin.dnf:
@@ -12,4 +12,19 @@
     state: present
     update_cache: true
   become: true
-  when: ansible_os_family == "RedHat"
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Install DNF dependencies for building python on Fedora
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  become: true
+  loop:
+  - gdbm-devel
+  - bluez-libs-devel
+  - tix-devel
+  - libuuid-devel
+  when:
+  - ansible_facts['os_family'] == "RedHat"
+  - ansible_facts['distribution'] == "Fedora"

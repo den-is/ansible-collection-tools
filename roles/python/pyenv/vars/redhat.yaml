@@ -17,8 +17,3 @@ python_build_deps:
 - xz
 - xz-devel
 - libffi-devel
-
-# dnf builddep python3
-# - gdbm-devel
-# - bluez-libs-devel
-# - tix-devel

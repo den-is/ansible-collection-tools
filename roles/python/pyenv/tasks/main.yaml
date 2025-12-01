@@ -17,7 +17,7 @@
   ansible.builtin.include_tasks: homebrew.yaml
   when:
   - pyenv_brew_install
-  - ansible_os_family == "Darwin"
+  - ansible_facts['os_family'] == "Darwin"
 
 # enable yaml strout callback plugin for better output
 - name: Pyenv post-installation instructions
@@ -25,10 +25,16 @@
     msg: |-
       Docs https://github.com/pyenv/pyenv?tab=readme-ov-file#installation
 
-      Preffered method: Add the following to your shell profile file (e.g. ~/.bashrc, ~/.zshrc, ~/.profile, or ~/.bash_profile):
+      Preffered method: Add the following to your shell profile file (e.g. ~/.bashrc, ~/.zshrc, ~/.bash_profile or ~/.profile):
 
+        # for Bash
         export PYENV_ROOT="$HOME/.pyenv"
-        eval "$(pyenv init --path)"
-        eval "$(pyenv init -)"
+        [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+        eval "$(pyenv init - bash)"
+
+        # for Zsh
+        export PYENV_ROOT="$HOME/.pyenv"
+        [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+        eval "$(pyenv init - zsh)"
 
       For oh-my-zsh you can try plugin https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/pyenv
