@@ -1,0 +1,65 @@
+- name: Creating extraction dir {{ chezmoi_extraction_path }}
+  ansible.builtin.file:
+    path: '{{ chezmoi_extraction_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Dowloading release archive
+  ansible.builtin.get_url:
+    url: "{{ _chezmoi_release_base_url }}/{{ _chezmoi_artifact_name }}"
+    dest: '{{ chezmoi_archive_download_dst }}/{{ _chezmoi_artifact_name }}'
+    checksum: "{{ '' if not chezmoi_checksum_verify else 'sha256:' + __chezmoi_artifact_checksum }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ chezmoi_extraction_path }}
+  ansible.builtin.unarchive:
+    src: '{{ chezmoi_archive_download_dst }}/{{ _chezmoi_artifact_name }}'
+    dest: '{{ chezmoi_extraction_path }}'
+    remote_src: true
+
+- name: Installing chezmoi binary to {{ chezmoi_bin_dst }}/{{ chezmoi_bin }}
+  ansible.builtin.copy:
+    src: '{{ chezmoi_extraction_path }}/chezmoi'
+    dest: '{{ chezmoi_bin_dst }}/{{ chezmoi_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Installing ZSH completions
+  ansible.builtin.copy:
+    src: "{{ chezmoi_extraction_path }}/completions/chezmoi.zsh"
+    dest: "{{ zsh_completions_path }}/_chezmoi"
+    mode: "0644"
+    remote_src: true
+  when:
+  - chezmoi_deploy_completions
+  - _zsh_completions_dst_check.stat.exists
+
+- name: Installing Bash completions
+  ansible.builtin.copy:
+    src: "{{ chezmoi_extraction_path }}/completions/chezmoi-completion.bash"
+    dest: "{{ bash_completions_path }}/chezmoi.bash"
+    mode: "0644"
+    remote_src: true
+  when:
+  - chezmoi_deploy_completions
+  - _bash_completions_dst_check.stat.exists
+
+- name: Installing Fish completions
+  ansible.builtin.copy:
+    src: "{{ chezmoi_extraction_path }}/completions/chezmoi.fish"
+    dest: "{{ fish_completions_path }}/chezmoi.fish"
+    mode: "0644"
+    remote_src: true
+  when:
+  - chezmoi_deploy_completions
+  - _fish_completions_dst_check.stat.exists
+
+## Post deploy cleanup
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ chezmoi_archive_download_dst }}/{{ _chezmoi_artifact_name }}'
+  - '{{ chezmoi_extraction_path }}'
+  when: chezmoi_cleanup_release_artifacts

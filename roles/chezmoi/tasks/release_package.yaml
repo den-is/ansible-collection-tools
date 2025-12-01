@@ -1,0 +1,20 @@
+- name: Getting release chezmoi
+  ansible.builtin.get_url:
+    url: "{{ _chezmoi_release_base_url }}/{{ _chezmoi_artifact_name }}"
+    dest: '{{ chezmoi_archive_download_dst }}/{{ _chezmoi_artifact_name }}'
+    checksum: "{{ '' if not chezmoi_checksum_verify else 'sha256:' + __chezmoi_artifact_checksum }}"
+    mode: '0644'
+
+- name: Install RPM package
+  ansible.builtin.dnf:
+    name: '{{ chezmoi_archive_download_dst }}/{{ _chezmoi_artifact_name }}'
+    state: present
+  when:
+  - ansible_facts['pkg_mgr'] == 'dnf5' or ansible_facts['pkg_mgr'] == 'dnf'
+
+- name: Install DEB package
+  ansible.builtin.apt:
+    deb: '{{ chezmoi_archive_download_dst }}/{{ _chezmoi_artifact_name }}'
+    state: present
+  when:
+  - ansible_facts['pkg_mgr'] == 'apt'

@@ -1,0 +1,18 @@
+- name: Registering Github API headers
+  ansible.builtin.set_fact:
+    _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+# on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+- name: Get checksums list
+  ansible.builtin.set_fact:
+    __chezmoi_checksums: "{{ lookup('url', chezmoi_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+  run_once: true
+  until: __chezmoi_checksums is search(_chezmoi_artifact_name)
+  retries: 10
+
+- name: Get checksum for {{ _chezmoi_artifact_name }}
+  ansible.builtin.set_fact:
+    __chezmoi_artifact_checksum: "{{ item.split(' ')[0] }}"
+  loop: "{{ __chezmoi_checksums }}"
+  when:
+  - item.endswith(' ' ~ _chezmoi_artifact_name)

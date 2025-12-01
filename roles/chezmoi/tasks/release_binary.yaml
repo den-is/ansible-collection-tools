@@ -1,0 +1,6 @@
+- name: Download chezmoi binary
+  ansible.builtin.get_url:
+    url: "{{ _chezmoi_release_base_url }}/{{ _chezmoi_artifact_name }}"
+    dest: "{{ chezmoi_bin_dst }}/{{ chezmoi_bin }}"
+    mode: '0755'
+    checksum: "{{ '' if not chezmoi_checksum_verify else 'sha256:' + __chezmoi_artifact_checksum }}"

@@ -1,0 +1,42 @@
+- name: Get currently installed version if any
+  ansible.builtin.shell: chezmoi --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_current_chezmoi_version_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Setting version facts
+  ansible.builtin.set_fact:
+    _current_chezmoi_v: "{{ _check_current_chezmoi_version_task.stdout | default('0.0.0', true) }}"
+
+- name: Set final artifact name
+  ansible.builtin.set_fact:
+    _chezmoi_artifact_name: >-
+      {%- if chezmoi_install_archive -%}
+      {{ chezmoi_release_archive_name }}
+      {%- elif chezmoi_install_binary -%}
+      {{ chezmoi_release_binary_name }}
+      {%- elif chezmoi_install_package -%}
+      {%- if ansible_facts['os_family'] == 'RedHat' -%}
+      {{ chezmoi_release_rpm_name }}
+      {%- elif ansible_facts['os_family'] == 'Debian' -%}
+      {{ chezmoi_release_deb_name }}
+      {%- endif -%}
+      {%- endif -%}
+
+- name: Check if Bash completions path exists
+  ansible.builtin.stat:
+    path: "{{ bash_completions_path }}"
+  register: _bash_completions_dst_check
+  when: chezmoi_deploy_completions
+
+- name: Check if ZSH completions path exists
+  ansible.builtin.stat:
+    path: "{{ zsh_completions_path }}"
+  register: _zsh_completions_dst_check
+  when: chezmoi_deploy_completions
+
+- name: Check if Fish completions path exists
+  ansible.builtin.stat:
+    path: "{{ fish_completions_path }}"
+  register: _fish_completions_dst_check
+  when: chezmoi_deploy_completions

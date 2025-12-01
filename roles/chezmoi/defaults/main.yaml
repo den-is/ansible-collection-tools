@@ -1,0 +1,53 @@
+chezmoi_v: v2.67.1
+chezmoi_musl: false
+
+
+
+_chezmoi_nov: "{{ chezmoi_v | regex_replace('^v', '') }}"
+
+_chezmoi_rpm_arch_map:
+  x86_64: x86_64
+  aarch64: aarch64
+
+_chezmoi_arch_map:
+  x86_64: amd64
+  aarch64: arm64
+
+_chezmoi_sys: "{{ ansible_facts['system'] | lower }}"
+_chezmoi_rpm_arch: "{{ _chezmoi_rpm_arch_map[ansible_facts['architecture']] }}"
+_chezmoi_arch: "{{ _chezmoi_arch_map[ansible_facts['architecture']] }}"
+
+chezmoi_install_archive: true
+chezmoi_install_binary: false
+chezmoi_install_package: false
+
+_chezmoi_release_base_url: https://github.com/twpayne/chezmoi/releases/download/v{{ _chezmoi_nov }}
+
+chezmoi_checksum_verify: false
+chezmoi_checksums_url: '{{ _chezmoi_release_base_url }}/chezmoi_{{ _chezmoi_nov }}_checksums.txt'
+
+chezmoi_release_binary_name: chezmoi-{{ _chezmoi_sys }}-{{ _chezmoi_arch }}{{ '-musl' if chezmoi_musl and _chezmoi_sys == 'linux'}}
+chezmoi_release_rpm_name: chezmoi-{{ _chezmoi_nov }}-{{ _chezmoi_rpm_arch }}.rpm
+chezmoi_release_deb_name: chezmoi_{{ _chezmoi_nov }}_linux_{{ _chezmoi_arch }}.deb
+chezmoi_release_archive_name: chezmoi_{{ _chezmoi_nov }}_{{ _chezmoi_sys }}{{ '-musl' if chezmoi_musl and _chezmoi_sys == 'linux'}}_{{ _chezmoi_arch }}.tar.gz
+
+chezmoi_archive_download_dst: /tmp
+chezmoi_extraction_path: '{{ chezmoi_archive_download_dst }}/chezmoi-{{ chezmoi_v }}'
+chezmoi_cleanup_release_artifacts: true
+
+chezmoi_bin_dst: /usr/local/bin
+chezmoi_bin: chezmoi
+
+chezmoi_deploy_completions: true
+bash_completions_path: /usr/share/bash-completion/completions
+zsh_completions_path: /usr/share/zsh/site-functions
+fish_completions_path: /usr/share/fish/vendor_completions.d
+
+# system: Darwin
+chezmoi_brew: false
+chezmoi_brew_package: chezmoi
+chezmoi_brew_state: latest
+chezmoi_brew_update: true
+
+# not yet implemented
+chezmoi_uninstall: false
