@@ -35,7 +35,7 @@ ripgrep_checksums_url: '{{ ripgrep_release_url }}.sha256'
 
 ripgrep_archive_download_dst: /tmp
 ripgrep_extraction_path: '{{ ripgrep_archive_download_dst }}/ripgrep-{{ ripgrep_v }}'
-ripgrep_cleanup_release_artifacts: false
+ripgrep_cleanup_release_artifacts: true
 
 ripgrep_bin_dst: /usr/local/bin
 ripgrep_bin: rg
