@@ -1,9 +1,34 @@
 - name: Get currently installed version if any
-  ansible.builtin.shell: eza --version | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"
-  register: check_current_eza_version_task
+  ansible.builtin.shell: eza --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_current_eza_version_task
   ignore_errors: true
   changed_when: false
 
 - name: Setting version facts
   ansible.builtin.set_fact:
-    current_eza_v: "{{ check_current_eza_version_task.stdout | default('v0.0.0', true) }}"
+    _installed_eza_v: "{{ _check_current_eza_version_task.stdout | default('0.0.0', true) }}"
+
+- name: Check if man path exists
+  ansible.builtin.stat:
+    path: "{{ man_base_path }}"
+  register: _man_base_dir_check
+  when: eza_deploy_man
+
+- name: Check completions destinations
+  when: eza_deploy_completions
+  block:
+
+  - name: Check if Bash completions path exists
+    ansible.builtin.stat:
+      path: "{{ bash_completions_path }}"
+    register: _bash_completions_dst_check
+
+  - name: Check if ZSH completions path exists
+    ansible.builtin.stat:
+      path: "{{ zsh_completions_path }}"
+    register: _zsh_completions_dst_check
+
+  - name: Check if Fish completions path exists
+    ansible.builtin.stat:
+      path: "{{ fish_completions_path }}"
+    register: _fish_completions_dst_check

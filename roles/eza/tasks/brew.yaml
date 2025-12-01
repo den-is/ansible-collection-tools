@@ -1,5 +1,5 @@
 - name: Brew install
   community.general.homebrew:
-    name: eza
+    name: "{{ eza_brew_package}}"
     state: "{{ 'absent' if eza_uninstall else eza_brew_state }}"
     update_homebrew: "{{ eza_brew_update }}"

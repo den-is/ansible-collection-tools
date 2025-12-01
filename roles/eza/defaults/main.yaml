@@ -1,17 +1,50 @@
 eza_v: v0.23.4
 
-eza_download_base_url: https://github.com/eza-community/eza/releases/download
+# Provide checksum for downloaded archive to verify integrity
+# Found on the Github Release page
+eza_archive_checksum:
 
-eza_download_url: "{{ eza_download_base_url }}/{{ eza_v }}/eza_x86_64-unknown-linux-gnu.tar.gz"
+eza_musl: false
 
-eza_bin_dir: /usr/local/bin
+_eza_nov: "{{ eza_v | regex_replace('^v', '') }}"
+
+_eza_arch_map:
+  x86_64: x86_64
+  aarch64: aarch64
+
+_eza_sys_map:
+  Linux: unknown-linux
+  # no releases for darwin
+  # Darwin: apple-darwin
+
+_eza_arch: "{{ _eza_arch_map[ansible_facts['architecture']] }}"
+_eza_sys: "{{ _eza_sys_map[ansible_facts['system']] }}"
+
+_eza_release_base_url: https://github.com/eza-community/eza/releases/download/v{{ _eza_nov }}
+_eza_release_archive_name: eza_{{ _eza_arch }}-{{ _eza_sys }}{{ '-musl' if eza_musl else '-gnu' }}.tar.gz
+eza_release_url: "{{ _eza_release_base_url }}/{{ _eza_release_archive_name }}"
+
+eza_archive_download_dst: /tmp
+eza_extraction_path: '{{ eza_archive_download_dst }}/eza-{{ _eza_nov }}'
+eza_cleanup_release_artifacts: true
+
+eza_bin_dst: /usr/local/bin
+eza_bin: eza
 
 eza_brew_install: false
+eza_brew_package: eza
 eza_brew_state: latest
 eza_brew_update: true
 
-eza_zsh_completions_install: true
-eza_zsh_completions_url: https://raw.githubusercontent.com/eza-community/eza/main/completions/zsh/_eza
-zsh_completions_path: /usr/local/share/zsh/site-functions
+eza_deploy_man: true
+eza_man_url: '{{ _eza_release_base_url }}/man-{{ _eza_nov }}.tar.gz'
+man_base_path: /usr/local/share/man
 
+eza_deploy_completions: true
+eza_competions_url: '{{ _eza_release_base_url }}/completions-{{ _eza_nov }}.tar.gz'
+bash_completions_path: /usr/share/bash-completion/completions
+zsh_completions_path: /usr/share/zsh/site-functions
+fish_completions_path: /usr/share/fish/vendor_completions.d
+
+# Not yet implemented
 eza_uninstall: false

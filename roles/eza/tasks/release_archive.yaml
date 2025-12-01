@@ -1,0 +1,127 @@
+- name: Creating extraction dir {{ eza_extraction_path }}
+  ansible.builtin.file:
+    path: '{{ eza_extraction_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ eza_release_url }}'
+    dest: '{{ eza_archive_download_dst }}/{{ _eza_release_archive_name }}'
+    checksum: "{{ '' if not eza_archive_checksum else 'sha256:' +  eza_archive_checksum }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ eza_extraction_path }}
+  ansible.builtin.unarchive:
+    src: '{{ eza_archive_download_dst }}/{{ _eza_release_archive_name }}'
+    dest: '{{ eza_extraction_path }}'
+    remote_src: true
+
+- name: Installing binary to {{ eza_bin_dst }}/{{ eza_bin }}
+  ansible.builtin.copy:
+    src: '{{ eza_extraction_path }}/eza'
+    dest: '{{ eza_bin_dst }}/{{ eza_bin }}'
+    mode: '0755'
+    remote_src: true
+
+
+## Installing man
+- name: Deploy man pages
+  when:
+  - eza_deploy_man
+  - _man_base_dir_check.stat.exists
+  block:
+  - name: Creating extraction dir {{ eza_extraction_path }}/man
+    ansible.builtin.file:
+      path: '{{ eza_extraction_path }}/man'
+      state: directory
+      mode: '0755'
+
+  - name: Extracting man archive to {{ eza_extraction_path }}/man
+    ansible.builtin.unarchive:
+      src: '{{ eza_man_url }}'
+      dest: '{{ eza_extraction_path }}/man'
+      remote_src: true
+      extra_opts:
+      - --strip-components=3
+      - --show-stored-names
+
+  # todo dynamically loop over files and determine their destination
+  - name: Deploying eza.1 man page to {{ man_base_path }}/man1
+    ansible.builtin.copy:
+      src: '{{ eza_extraction_path }}/man/eza.1'
+      dest: '{{ man_base_path }}/man1/eza.1'
+      mode: '0755'
+      remote_src: true
+    when:
+    - _zsh_completions_dst_check.stat.exists
+
+  - name: Deploying eza_colors.5 man page to {{ man_base_path }}/man5
+    ansible.builtin.copy:
+      src: '{{ eza_extraction_path }}/man/eza_colors.5'
+      dest: '{{ man_base_path }}/man5/eza_colors.5'
+      mode: '0755'
+      remote_src: true
+
+  - name: Deploying eza_colors-explanation.5 man page to {{ man_base_path }}/man5
+    ansible.builtin.copy:
+      src: '{{ eza_extraction_path }}/man/eza_colors-explanation.5'
+      dest: '{{ man_base_path }}/man5/eza_colors-explanation.5'
+      mode: '0755'
+      remote_src: true
+
+## Installing completions
+- name: Deploy eza completions for shells
+  when: eza_deploy_completions
+  block:
+  - name: Creating extraction dir {{ eza_extraction_path }}/completions
+    ansible.builtin.file:
+      path: '{{ eza_extraction_path }}/completions'
+      state: directory
+      mode: '0755'
+
+  - name: Extracting completions archive to {{ eza_extraction_path }}/completions
+    ansible.builtin.unarchive:
+      src: '{{ eza_competions_url }}'
+      dest: '{{ eza_extraction_path }}/completions'
+      remote_src: true
+      extra_opts:
+      - --strip-components=3
+      - --show-stored-names
+
+  - name: Installing ZSH completions
+    ansible.builtin.copy:
+      src: "{{ eza_extraction_path }}/completions/_eza"
+      dest: "{{ zsh_completions_path }}/_eza"
+      mode: "0644"
+      remote_src: true
+    when:
+    - _zsh_completions_dst_check.stat.exists
+
+  - name: Installing Bash completions
+    ansible.builtin.copy:
+      src: "{{ eza_extraction_path }}/completions/eza"
+      dest: "{{ bash_completions_path }}/eza"
+      mode: "0644"
+      remote_src: true
+    when:
+    - _bash_completions_dst_check.stat.exists
+
+  - name: Installing Fish completions
+    ansible.builtin.copy:
+      src: "{{ eza_extraction_path }}/completions/eza.fish"
+      dest: "{{ fish_completions_path }}/eza.fish"
+      mode: "0644"
+      remote_src: true
+    when:
+    - _fish_completions_dst_check.stat.exists
+
+## Post deploy cleanup
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ eza_archive_download_dst }}/{{ _eza_release_archive_name }}'
+  - '{{ eza_extraction_path }}'
+  when: eza_cleanup_release_artifacts
