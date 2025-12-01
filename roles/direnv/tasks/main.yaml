@@ -14,4 +14,4 @@
   when:
   - _direnv_nov is version(installed_direnv_v, 'ne')
   - direnv_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'
