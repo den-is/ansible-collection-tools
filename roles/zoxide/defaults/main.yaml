@@ -13,11 +13,11 @@ zoxide_system_map:
 zoxide_clib_map:
   Linux: musl
 
-zoxide_arch: "{{ zoxide_arch_map[ansible_architecture] }}"
-zoxide_system: "{{ zoxide_system_map[ansible_system] }}"
+zoxide_arch: "{{ zoxide_arch_map[ansible_facts['architecture']] }}"
+zoxide_system: "{{ zoxide_system_map[ansible_facts['system']] }}"
 
 zoxide_release_base_url: https://github.com/ajeetdsouza/zoxide/releases/download
-zoxide_archive_name: zoxide-{{ _zoxide_nov }}-{{ zoxide_arch }}-{{ zoxide_system }}{{ "-musl" if ansible_system == "Linux" }}.tar.gz
+zoxide_archive_name: zoxide-{{ _zoxide_nov }}-{{ zoxide_arch }}-{{ zoxide_system }}{{ "-musl" if ansible_facts['system'] == "Linux" }}.tar.gz
 zoxide_release_url: '{{ zoxide_release_base_url }}/v{{ _zoxide_nov }}/{{ zoxide_archive_name }}'
 
 zoxide_archive_download_dst: /tmp

@@ -14,4 +14,4 @@
   when:
   - _zoxide_nov is version(installed_zoxide_v, 'ne')
   - zoxide_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'
