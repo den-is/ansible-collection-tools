@@ -1,0 +1,2 @@
+_kubernetes_repo_url: https://pkgs.k8s.io/core:/stable:/{{ _kubernetes_major_minor_v }}/rpm/
+_kubernetes_repo_gpgkey: https://pkgs.k8s.io/core:/stable:/{{ _kubernetes_major_minor_v }}/rpm/repodata/repomd.xml.key

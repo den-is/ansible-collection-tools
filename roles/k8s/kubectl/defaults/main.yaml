@@ -7,8 +7,11 @@ kubectl_bin_path_on_control_host: ""
 
 # Manage kubernetes repository
 kubernetes_repo: false
+kubernetes_repo_enabled: true
+kubernetes_repo_gpg_check: true
 kubernetes_apt_gpg_path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 kubernetes_rpm_excludes: ""
+kubernetes_rpm_repo_extra_config: ""
 
 _kubectl_arch_map:
   x86_64: "amd64"
@@ -24,8 +27,8 @@ _kubectl_sys: "{{ _kubectl_sys_map[ansible_facts['system']] }}"
 
 kubectl_release_artifact_name: kubectl{{ '.exe' if ansible_facts['system'] == 'Win32NT' }}
 kubectl_release_url: https://dl.k8s.io/release/{{ kubectl_v }}/bin/{{ _kubectl_sys }}/{{ _kubectl_arch }}/{{ kubectl_release_artifact_name }}
-kubectl_verify_checksum256: false
-kubectl_release_sha256_url: "{{ kubectl_release_url }}.sha256"
+kubectl_checksum_verify: false
+kubectl_checksum_url: "{{ kubectl_release_url }}.sha256"
 
 kubectl_bin_dst: /usr/local/bin
 kubectl_bin: kubectl

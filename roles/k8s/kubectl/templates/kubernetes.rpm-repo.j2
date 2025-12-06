@@ -1,10 +1,9 @@
-
-exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
-
-
 [kubernetes]
 name=Kubernetes
-baseurl={{ _kubernetes_rpm_repo_url }}
-enabled=1
-gpgcheck=1
-gpgkey={{ _kubernetes_rpm_key_url }}
+baseurl={{ _kubernetes_repo_url }}
+enabled={{ '1' if kubernetes_repo_enabled else '0' }}
+gpgcheck={{ '1' if kubernetes_repo_gpg_check else '0' }}
+gpgkey={{ _kubernetes_repo_gpgkey }}
+{% if kubernetes_rpm_repo_extra_config is defined and kubernetes_rpm_repo_extra_config | length > 0 %}
+{{ kubernetes_rpm_repo_extra_config }}
+{% endif %}

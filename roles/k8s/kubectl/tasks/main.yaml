@@ -6,7 +6,7 @@
 - name: Binary installation
   ansible.builtin.include_tasks: binary.yaml
   when:
-  - kubectl_v is version(installed_kubectl_v, 'ne')
+  - kubectl_v is version(_installed_kubectl_v, 'ne')
   - not kubectl_brew
   - not kubernetes_repo
 
@@ -14,7 +14,7 @@
   ansible.builtin.import_tasks: apt.yaml
   become: true
   when:
-  - kubectl_v is version(installed_kubectl_v, 'ne')
+  - kubectl_v is version(_installed_kubectl_v, 'ne')
   - ansible_facts['os_family'] == 'Debian'
   - kubernetes_repo
 
@@ -22,13 +22,13 @@
   ansible.builtin.import_tasks: rpm.yaml
   become: true
   when:
-  - kubectl_v is version(installed_kubectl_v, 'ne')
+  # - kubectl_v is version(_installed_kubectl_v, 'ne')
   - ansible_facts['os_family'] == 'RedHat'
   - kubernetes_repo
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
   when:
-  - kubectl_v is version(installed_kubectl_v, 'ne')
+  - kubectl_v is version(_installed_kubectl_v, 'ne')
   - kubectl_brew
   - ansible_facts['system'] == 'Darwin'

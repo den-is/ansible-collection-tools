@@ -1,9 +1,4 @@
-- name: Setting RPM repo vars
-  ansible.builtin.set_fact:
-    _kubernetes_rpm_key_url: https://pkgs.k8s.io/core:/stable:/{{ _kubernetes_major_minor_v }}/rpm/repodata/repomd.xml.key
-    _kubernetes_rpm_repo_url: https://pkgs.k8s.io/core:/stable:/{{ _kubernetes_major_minor_v }}/rpm/
-
-- name: Install gnupg
+- name: Install GnuPG
   ansible.builtin.dnf:
     name: gnupg
     state: present
@@ -27,7 +22,7 @@
 - name: Update kubectl to the latest/new version
   ansible.builtin.dnf:
     name: kubectl
-    state: present
+    state: latest
     exclude: "{{ kubernetes_rpm_excludes }}"
     update_cache: true
-  when: kubectl_v is version(installed_kubectl_v, 'ne')
+  when: kubectl_v is version(_installed_kubectl_v, 'ne')
