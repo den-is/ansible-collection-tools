@@ -18,7 +18,6 @@ age_release_url: '{{ age_release_base_url }}/{{ age_v }}/{{ age_archive_name }}'
 age_archive_download_dst: /tmp
 age_extraction_dst: '{{ age_archive_download_dst }}/age-{{ age_v }}'
 
-# TODO: add support for windows destinations
 age_bin_dst: /usr/local/bin
 age_bin: age
 

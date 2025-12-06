@@ -2,18 +2,20 @@
   ansible.builtin.get_url:
     url: '{{ age_release_url }}'
     dest: '{{ age_archive_download_dst }}/{{ age_archive_name }}'
-    checksum: 'sha256:{{ __age_checksum }}'
+    mode: '0644'
 
 - name: Creating extraction dir {{ age_extraction_dst }}
   ansible.builtin.file:
     path: '{{ age_extraction_dst }}'
     state: directory
+    mode: '0755'
 
 - name: Extracting archive
   ansible.builtin.unarchive:
     src: '{{ age_archive_download_dst }}/{{ age_archive_name }}'
     dest: '{{ age_extraction_dst }}'
     remote_src: true
+    extra_opts: ['--strip-components=1', '--show-stored-names']
 
 - name: Installing age binary
   ansible.builtin.copy:
