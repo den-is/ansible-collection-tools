@@ -1,0 +1,38 @@
+nvim_bob_v: v4.1.5
+nvim_bob_openssl: false
+
+_nvim_bob_nov: "{{ nvim_bob_v | regex_replace('^v', '') }}"
+
+_nvim_bob_arch_map:
+  aarch64: aarch64
+  x86_64: x86_64
+
+_nvim_bob_system_map:
+  Darwin: macos
+  Linux: linux
+  Win32NT: windows
+
+_nvim_bob_arch: "{{ _nvim_bob_arch_map[ansible_facts['architecture']] }}"
+_nvim_bob_system: "{{ _nvim_bob_system_map[ansible_facts['system']] }}"
+
+nvim_bob_release_base_url: https://github.com/MordechaiHadad/bob/releases/download/v{{ _nvim_bob_nov }}
+
+nvim_bob_archive_name: bob-{{ _nvim_bob_system }}-{{ _nvim_bob_arch }}{{ "-openssl" if nvim_bob_openssl }}.zip
+nvim_bob_release_url: "{{ nvim_bob_release_base_url }}/{{ nvim_bob_archive_name }}"
+nvim_bob_archive_download_dst: /tmp
+nvim_bob_extraction_dst: '{{ nvim_bob_archive_download_dst }}/bob-{{ nvim_bob_v }}'
+
+nvim_bob_bin_dst: /usr/local/bin
+nvim_bob_bin: bob
+
+nvim_bob_brew: false
+nvim_bob_brew_package: bob
+nvim_bob_brew_state: latest
+nvim_bob_brew_update: true
+
+### Neovim configuration deployment --------------------------------------------
+neovim_config_deploy: false
+# neovim_config_repo: https://github.com/den-is/nvim
+neovim_config_repo:
+# neovim_config_ref: HEAD
+neovim_config_dst: ~/.config/nvim

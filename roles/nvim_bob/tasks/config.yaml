@@ -1,0 +1,9 @@
+# WARN: Often fully-fledged Neovim configuration would require extra software deployed in the environment that is not managed by this role
+- name: Checkout neovim config
+  ansible.builtin.git:
+    repo: '{{ neovim_config_repo }}'
+    dest: '{{ neovim_config_dst }}'
+    version: '{{ neovim_config_ref | default("HEAD", true) }}'
+    update: true
+    force: false
+    clone: true

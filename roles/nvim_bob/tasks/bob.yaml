@@ -1,0 +1,38 @@
+- name: Install packages required for deployment
+  ansible.builtin.package:
+    name: unzip
+    state: present
+  become: true
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ nvim_bob_release_url }}'
+    dest: '{{ nvim_bob_archive_download_dst }}/{{ nvim_bob_archive_name }}'
+    mode: '0644'
+
+- name: Creating extraction dir {{ nvim_bob_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ nvim_bob_extraction_dst }}'
+    state: directory
+    mode: '0755'
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ nvim_bob_archive_download_dst }}/{{ nvim_bob_archive_name }}'
+    dest: '{{ nvim_bob_extraction_dst }}'
+    remote_src: true
+
+- name: Copying binary to {{ nvim_bob_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ nvim_bob_extraction_dst }}/bob-{{ _nvim_bob_system }}-{{ _nvim_bob_arch }}{{ "-openssl" if nvim_bob_openssl }}/bob'
+    dest: '{{ nvim_bob_bin_dst }}/{{ nvim_bob_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ nvim_bob_extraction_dst }}'
+  - '{{ nvim_bob_archive_download_dst }}/{{ nvim_bob_archive_name }}'

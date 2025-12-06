@@ -6,17 +6,17 @@
 - name: Install Bob from release archive
   ansible.builtin.include_tasks: bob.yaml
   when:
-  - _neovim_bob_nov is version(_installed_neovim_bob_v, 'ne')
-  - not neovim_bob_brew
+  - _nvim_bob_nov is version(_installed_nvim_bob_v, 'ne')
+  - not nvim_bob_brew
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
   when:
-  - neovim_brew or neovim_bob_brew
-  - not neovim_compile
-  - ansible_system == 'Darwin'
+  - nvim_bob_brew
+  - ansible_facts["system"] == 'Darwin'
 
 - name: Neovim configuration deploy from git repo
   ansible.builtin.include_tasks: config.yaml
   when:
   - neovim_config_deploy
+  - neovim_config_repo | default('', true) | trim != ''

@@ -1,8 +1,0 @@
-- name: Checkout neovim config
-  ansible.builtin.git:
-    repo: '{{ neovim_config_repo }}'
-    dest: '{{ neovim_config_dst }}'
-    version: '{{ neovim_config_ref }}'
-    update: true
-    force: false
-    clone: true

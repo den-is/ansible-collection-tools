@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: '{{ nvim_bob_brew_package }}'
+    state: '{{ nvim_bob_brew_state }}'
+    update_homebrew: '{{ nvim_bob_brew_update }}'
