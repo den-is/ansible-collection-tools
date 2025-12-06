@@ -6,14 +6,16 @@
 
 - name: Get installed version if any
   ansible.builtin.shell: sops --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+" | head -1
-  register: check_sops_v_task
+  environment:
+    SOPS_DISABLE_VERSION_CHECK: "true"
+  register: _check_sops_v_task
   ignore_errors: true
   changed_when: false
 
 - name: Register preflight facts
   ansible.builtin.set_fact:
-    installed_sops_v: "{{ 'v' + check_sops_v_task.stdout | default('v0.0.0', true) }}"
+    _installed_sops_v: "{{ _check_sops_v_task.stdout | default('0.0.0', true) }}"
 
 - name: Displaying current version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_sops_v if check_sops_v_task is success else "Not Installed" }}'
+    msg: 'Current version: {{ _installed_sops_v if _check_sops_v_task is success else "Not Installed" }}'

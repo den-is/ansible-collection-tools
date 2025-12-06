@@ -6,12 +6,12 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
-  - sops_v is version(installed_sops_v, 'ne')
+  - _sops_nov is version(_installed_sops_v, 'ne')
   - not sops_brew
 
 - name: MacOS homebrew installation
   ansible.builtin.include_tasks: brew.yaml
   when:
-  - sops_v is version(installed_sops_v, 'ne')
+  - _sops_nov is version(_installed_sops_v, 'ne')
   - sops_brew
   - ansible_facts['system'] == 'Darwin'
