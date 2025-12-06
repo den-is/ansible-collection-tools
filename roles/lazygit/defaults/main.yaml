@@ -1,4 +1,4 @@
-lazygit_v: v0.56.0
+lazygit_v: v0.57.0
 
 _lazygit_nov: "{{ lazygit_v | regex_replace('^v', '') }}"
 

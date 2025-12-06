@@ -1,4 +1,4 @@
-bat_v: v0.26.0
+bat_v: v0.26.1
 
 _bat_nov: "{{ bat_v | regex_replace('^v', '') }}"
 
