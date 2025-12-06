@@ -9,7 +9,7 @@ global
   maxconn {{ maxconn }}
   stats   timeout 30s
 {% if __haproxy_v_major_minor is version('2.5', '<') %}
-  stats   bind-process {{ ansible_processor_cores }}
+  stats   bind-process {{ ansible_facts['processor_cores'] }}
 {% endif %}
   stats   {{ haproxy_stats_socket_conf }}
 {% for global_config_line in haproxy_global_conf_extra %}

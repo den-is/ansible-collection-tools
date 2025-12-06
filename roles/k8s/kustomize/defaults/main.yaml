@@ -4,10 +4,10 @@ kustomize_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-kustomize_arch: "{{ kustomize_arch_map[ansible_architecture] }}"
+kustomize_arch: "{{ kustomize_arch_map[ansible_facts['architecture']] }}"
 
 kustomize_release_base_url: https://github.com/kubernetes-sigs/kustomize/releases/download
-kustomize_release_url: '{{ kustomize_release_base_url }}/kustomize%2F{{ kustomize_v }}/kustomize_{{ kustomize_v }}_{{ ansible_system | lower }}_{{ kustomize_arch }}.tar.gz'
+kustomize_release_url: '{{ kustomize_release_base_url }}/kustomize%2F{{ kustomize_v }}/kustomize_{{ kustomize_v }}_{{ ansible_facts["system"] | lower }}_{{ kustomize_arch }}.tar.gz'
 
 kustomize_archive_download_dst: /tmp
 kustomize_full_download_path: '{{ kustomize_archive_download_dst }}/kustomize_{{ kustomize_v }}'

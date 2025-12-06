@@ -16,12 +16,12 @@ kubectx_systems_map:
   Linux: linux
   Win32NT: windows
 
-kubectx_arch: "{{ kubectx_arch_map[ansible_architecture] }}"
-kubectx_system: "{{ kubectx_systems_map[ansible_system] }}"
+kubectx_arch: "{{ kubectx_arch_map[ansible_facts['architecture']] }}"
+kubectx_system: "{{ kubectx_systems_map[ansible_facts['system']] }}"
 
 kubectx_release_base_url: https://github.com/ahmetb/kubectx/releases/download
-kubectx_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubectx_{{ kubectx_v }}_{{ ansible_system | lower }}_{{ kubectx_arch }}.tar.gz'
-kubens_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubens_{{ kubectx_v }}_{{ ansible_system | lower }}_{{ kubectx_arch }}.tar.gz'
+kubectx_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubectx_{{ kubectx_v }}_{{ ansible_facts["system"] | lower }}_{{ kubectx_arch }}.tar.gz'
+kubens_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubens_{{ kubectx_v }}_{{ ansible_facts["system"] | lower }}_{{ kubectx_arch }}.tar.gz'
 
 kubectx_bash_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubectx'
 kubens_bash_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubens'

@@ -5,10 +5,10 @@ kubefwd_arch_map:
   i386: i386
   aarch64: arm64
 
-kubefwd_arch: "{{ kubefwd_arch_map[ansible_architecture] }}"
+kubefwd_arch: "{{ kubefwd_arch_map[ansible_facts['architecture']] }}"
 
 kubefwd_release_base_url: https://github.com/txn2/kubefwd/releases/download
-kubefwd_archive_url: "{{ kubefwd_release_base_url }}/{{ kubefwd_v }}/kubefwd_{{ ansible_system }}_{{ kubefwd_arch }}.tar.gz"
+kubefwd_archive_url: "{{ kubefwd_release_base_url }}/{{ kubefwd_v }}/kubefwd_{{ ansible_facts['system'] }}_{{ kubefwd_arch }}.tar.gz"
 
 kubefwd_full_download_path: /tmp/kubefwd_{{ kubefwd_v }}
 

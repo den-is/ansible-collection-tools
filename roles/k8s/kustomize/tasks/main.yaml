@@ -14,4 +14,4 @@
   when:
   - kustomize_v is version(installed_kustomize_v, 'ne')
   - kustomize_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

@@ -24,4 +24,4 @@
   when:
   - opentofu_v is version(installed_opentofu_v, 'ne')
   - opentofu_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

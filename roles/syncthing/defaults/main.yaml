@@ -11,8 +11,8 @@ syncthing_system_map:
   Linux: linux
   Win32NT: windows
 
-syncthing_arch: "{{ syncthing_arch_map[ansible_architecture] }}"
-syncthing_system: "{{ syncthing_system_map[ansible_system] }}"
+syncthing_arch: "{{ syncthing_arch_map[ansible_facts['architecture']] }}"
+syncthing_system: "{{ syncthing_system_map[ansible_facts['system']] }}"
 
 syncthing_release_base_url: https://github.com/syncthing/syncthing/releases/download
 syncthing_release_artifact_name: syncthing-{{ syncthing_system }}-{{ syncthing_arch }}-{{ syncthing_v }}{{ '.zip' if syncthing_system in ['windows', 'darwin'] else '.tar.gz'}}

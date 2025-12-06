@@ -13,7 +13,7 @@
     update_homebrew: true
   when:
   - kubeps1_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'
 
 - name: Instructions
   ansible.builtin.debug:

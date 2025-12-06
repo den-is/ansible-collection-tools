@@ -19,9 +19,9 @@ _prek_compiler_map:
     x86_64: ""
     aarch64: ""
 
-_prek_sys: "{{ _prek_sys_map[ansible_system] }}"
-_prek_arch: "{{ _prek_arch_map[ansible_architecture] }}"
-_prek_compiler: "{{ _prek_compiler_map[ansible_system][ansible_architecture] }}"
+_prek_sys: "{{ _prek_sys_map[ansible_facts['system']] }}"
+_prek_arch: "{{ _prek_arch_map[ansible_facts['architecture']] }}"
+_prek_compiler: "{{ _prek_compiler_map[ansible_facts['system']][ansible_facts['architecture']] }}"
 
 prek_release_base_url: https://github.com/j178/prek/releases/download/v{{ prek_v }}
 prek_release_archive_name: prek-{{ _prek_arch }}-{{ _prek_sys }}{{ _prek_compiler }}.tar.gz

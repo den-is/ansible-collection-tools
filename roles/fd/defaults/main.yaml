@@ -13,13 +13,13 @@ _fd_sys_map:
   Darwin: apple-darwin
   Win32NT: pc-windows
 
-_fd_deb_arch: "{{ _fd_deb_arch_map[ansible_architecture] }}"
-_fd_sys: "{{ _fd_sys_map[ansible_system] }}"
+_fd_deb_arch: "{{ _fd_deb_arch_map[ansible_facts['architecture']] }}"
+_fd_sys: "{{ _fd_sys_map[ansible_facts['system']] }}"
 
 fd_install_deb: true
 
 fd_release_base_url: https://github.com/sharkdp/fd/releases/download/{{ fd_v }}
-fd_release_archive_name: fd-{{ fd_v }}-{{ ansible_architecture }}-{{ _fd_sys }}-{{ 'gnu' if not fd_musl else 'musl' }}.tar.gz
+fd_release_archive_name: fd-{{ fd_v }}-{{ ansible_facts['architecture'] }}-{{ _fd_sys }}-{{ 'gnu' if not fd_musl else 'musl' }}.tar.gz
 fd_release_url: "{{ fd_release_base_url }}/{{ fd_release_archive_name }}"
 fd_deb_release_url: "{{ fd_release_base_url }}/fd{{ '-musl' if fd_musl }}_{{ _fd_nov }}_{{ _fd_deb_arch }}.deb"
 

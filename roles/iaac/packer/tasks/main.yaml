@@ -14,4 +14,4 @@
   when:
   - packer_v is version(installed_packer_v, 'ne')
   - packer_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

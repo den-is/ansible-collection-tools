@@ -14,4 +14,4 @@
   when:
   - kubeseal_v is version(installed_kubeseal_v, 'ne')
   - kubeseal_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

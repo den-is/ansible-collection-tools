@@ -14,4 +14,4 @@
   when:
   - _argonaut_nov is version(installed_argonaut_v, 'ne')
   - argonaut_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

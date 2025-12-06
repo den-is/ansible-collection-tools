@@ -5,10 +5,10 @@ vagrant_arch_map:
   i386: "386"
   aarch64: "arm64"
 
-vagrant_arch: "{{ vagrant_arch_map[ansible_architecture] }}"
+vagrant_arch: "{{ vagrant_arch_map[ansible_facts['architecture']] }}"
 
 vagrant_release_base_url: https://releases.hashicorp.com/vagrant
-vagrant_release_artifact_name: vagrant_{{ vagrant_v }}_{{ ansible_system | lower }}_{{ vagrant_arch }}.zip
+vagrant_release_artifact_name: vagrant_{{ vagrant_v }}_{{ ansible_facts['system'] | lower }}_{{ vagrant_arch }}.zip
 vagrant_release_url: '{{ vagrant_release_base_url }}/{{ vagrant_v }}/{{ vagrant_release_artifact_name }}'
 
 vagrant_archive_download_dst: /tmp

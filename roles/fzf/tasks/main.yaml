@@ -23,4 +23,4 @@
   - _fzf_nov is version(installed_fzf_v, 'ne')
   - not fzf_install_script
   - fzf_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

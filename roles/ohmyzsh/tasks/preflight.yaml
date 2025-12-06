@@ -15,4 +15,4 @@
 
 - name: Set omz_users variable if empty
   ansible.builtin.set_fact:
-    omz_users: "{{ omz_users | default([{'name': ansible_user_id}]) }}"
+    omz_users: "{{ omz_users | default([{'name': ansible_facts['user_id']}]) }}"

@@ -8,8 +8,8 @@ age_system_map:
   Darwin: darwin
   Linux: linux
 
-age_arch: "{{ age_arch_map[ansible_architecture] }}"
-age_system: "{{ age_system_map[ansible_system] }}"
+age_arch: "{{ age_arch_map[ansible_facts['architecture']] }}"
+age_system: "{{ age_system_map[ansible_facts['system']] }}"
 
 age_release_base_url: https://github.com/FiloSottile/age/releases/download
 age_archive_name: age-{{ age_v }}-{{ age_system }}-{{ age_arch }}.tar.gz

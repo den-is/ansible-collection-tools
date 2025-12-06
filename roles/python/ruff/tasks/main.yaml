@@ -14,4 +14,4 @@
   when:
   - ruff_v is version(_installed_ruff_v, 'ne')
   - ruff_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

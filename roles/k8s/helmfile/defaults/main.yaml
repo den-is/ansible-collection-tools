@@ -6,10 +6,11 @@ _helmfile_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-helmfile_arch: "{{ _helmfile_arch_map[ansible_architecture] }}"
+helmfile_arch: "{{ _helmfile_arch_map[ansible_facts['architecture']] }}"
 
 helmfile_release_base_url: https://github.com/helmfile/helmfile/releases/download
-helmfile_release_url: '{{ helmfile_release_base_url }}/{{ helmfile_v }}/helmfile_{{ helmfile_v_no_v }}_{{ ansible_system | lower }}_{{ helmfile_arch }}.tar.gz'
+helmfile_release_archive_name: helmfile_{{ helmfile_v_no_v }}_{{ ansible_facts['system'] | lower }}_{{ helmfile_arch }}.tar.gz
+helmfile_release_url: "{{ helmfile_release_base_url }}/{{ helmfile_v }}/{{ helmfile_release_archive_name }}"
 
 helmfile_bin_download_dst: /tmp
 helmfile_full_download_path: '{{ helmfile_bin_download_dst }}/helmfile_{{ helmfile_v }}'

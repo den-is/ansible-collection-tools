@@ -14,4 +14,4 @@
   when:
   - k3d_v is version(installed_k3d_v, 'ne')
   - k3d_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

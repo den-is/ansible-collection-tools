@@ -19,4 +19,4 @@
   when:
   - _lazydocker_nov is version(installed_lazydocker_v, 'ne')
   - lazydocker_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

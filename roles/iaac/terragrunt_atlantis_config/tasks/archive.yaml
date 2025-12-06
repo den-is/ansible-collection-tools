@@ -15,7 +15,7 @@
     remote_src: true
     extra_opts:
     - --strip-components=1
-  when: ansible_system == 'Linux'
+  when: ansible_facts['system'] == 'Linux'
 
 - name: Getting terragrunt_atlantis_config {{ terragrunt_atlantis_config_v }} archive and extracting it to {{ terragrunt_atlantis_config_full_download_path }}
   ansible.builtin.unarchive:
@@ -24,7 +24,7 @@
     remote_src: true
     extra_opts:
     - -j
-  when: ansible_system != 'Linux'
+  when: ansible_facts['system'] != 'Linux'
 
 - name: Copying binary to {{ terragrunt_atlantis_config_bin_dst }}
   ansible.builtin.copy:

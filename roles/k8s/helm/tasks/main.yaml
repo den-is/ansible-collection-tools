@@ -14,7 +14,7 @@
   when:
   - _helm_v_calculated is version(installed_helm_v, 'ne')
   - helm_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'
 
 - name: Helm Plugins installation
   kubernetes.core.helm_plugin:

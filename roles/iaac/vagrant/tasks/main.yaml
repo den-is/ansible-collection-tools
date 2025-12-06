@@ -14,4 +14,4 @@
   when:
   - vagrant_v is version(installed_vagrant_v, 'ne')
   - vagrant_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

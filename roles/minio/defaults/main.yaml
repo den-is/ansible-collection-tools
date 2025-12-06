@@ -13,10 +13,10 @@ minio_client_v: mc.RELEASE.2025-07-21T05-28-08Z
 __minio_server_artifact: >-
   {%- if minio_install_latest -%}
     {%- if minio_install_packages -%}
-      {%- if ansible_system == "Linux" -%}
-        {%- if ansible_os_family == "Debian" -%}
+      {%- if ansible_facts['system'] == "Linux" -%}
+        {%- if ansible_facts['os_family'] == "Debian" -%}
           minio.deb
-        {%- elif ansible_os_family == "RedHat" -%}
+        {%- elif ansible_facts['os_family'] == "RedHat" -%}
           minio.rpm
         {%- endif -%}
       {%- endif -%}
@@ -30,10 +30,10 @@ __minio_server_artifact: >-
 __minio_client_artifact: >-
   {%- if minio_install_latest -%}
     {%- if minio_install_packages -%}
-      {%- if ansible_system == "Linux" -%}
-        {%- if ansible_os_family == "Debian" -%}
+      {%- if ansible_facts['system'] == "Linux" -%}
+        {%- if ansible_facts['os_family'] == "Debian" -%}
           mc.deb
-        {%- elif ansible_os_family == "RedHat" -%}
+        {%- elif ansible_facts['os_family'] == "RedHat" -%}
           mc.rpm
         {%- endif -%}
       {%- endif -%}
@@ -55,8 +55,8 @@ minio_system_map:
   Linux: linux
   Win32NT: windows
 
-minio_arch: "{{ minio_arch_map[ansible_architecture] }}"
-minio_system: "{{ minio_system_map[ansible_system] }}"
+minio_arch: "{{ minio_arch_map[ansible_facts['architecture']] }}"
+minio_system: "{{ minio_system_map[ansible_facts['system']] }}"
 
 minio_server_url: https://dl.min.io/server/minio/release/{{ minio_system }}-{{ minio_arch }}/archive/{{ __minio_client_artifact }}
 minio_client_url: https://dl.min.io/client/mc/release/{{ minio_system }}-{{ minio_arch }}/archive/{{ __minio_client_artifact }}

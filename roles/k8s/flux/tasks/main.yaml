@@ -14,4 +14,4 @@
   when:
   - flux_nov is version(installed_flux_v, 'ne')
   - flux_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

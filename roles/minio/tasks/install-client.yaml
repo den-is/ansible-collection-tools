@@ -27,13 +27,13 @@
   ansible.builtin.shell: rpm -qp /tmp/{{ __minio_client_artifact }} --queryformat "%{VERSION}"
   when:
   - minio_install_packages
-  - ansible_os_family == "RedHat"
+  - ansible_facts['os_family'] == "RedHat"
 
 - name: Get downloaded Minio client DEB Version
   ansible.builtin.shell: dpkg-deb -f /tmp/{{ __minio_client_artifact }} Version
   when:
   - minio_install_packages
-  - ansible_os_family == "RedHat"
+  - ansible_facts['os_family'] == "RedHat"
 
 - name: Install Minio client RPM package
   ansible.builtin.dnf:
@@ -41,7 +41,7 @@
     state: present
   when:
   - minio_install_packages
-  - ansible_os_family == "RedHat"
+  - ansible_facts['os_family'] == "RedHat"
 
 - name: Install Minio client DEB package
   ansible.builtin.apt:
@@ -49,6 +49,6 @@
     state: present
   when:
   - minio_install_packages
-  - ansible_os_family == "Debian"
+  - ansible_facts['os_family'] == "Debian"
 
 ## For packages installation manage package upgrades

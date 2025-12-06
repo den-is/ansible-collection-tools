@@ -10,8 +10,8 @@ _packer_sys_map:
   Linux: linux
   Win32NT: windows
 
-_packer_arch: "{{ _packer_arch_map[ansible_architecture] }}"
-_packer_sys: "{{ _packer_sys_map[ansible_system] }}"
+_packer_arch: "{{ _packer_arch_map[ansible_facts['architecture']] }}"
+_packer_sys: "{{ _packer_sys_map[ansible_facts['system']] }}"
 
 packer_release_base_url: https://releases.hashicorp.com/packer
 packer_release_url: '{{ packer_release_base_url }}/{{ packer_v }}/packer_{{ packer_v }}_{{ _packer_sys }}_{{ _packer_arch }}.zip'

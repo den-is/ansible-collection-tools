@@ -20,13 +20,13 @@ _just_compiler_map:
     x86_64: "-msvc"
     aarch64: "-msvc"
 
-_just_sys: "{{ _just_sys_map[ansible_system] }}"
-_just_arch: "{{ _just_arch_map[ansible_architecture] }}"
-_just_compiler: "{{ _just_compiler_map[ansible_system][ansible_architecture] }}"
+_just_sys: "{{ _just_sys_map[ansible_facts['system']] }}"
+_just_arch: "{{ _just_arch_map[ansible_facts['architecture']] }}"
+_just_compiler: "{{ _just_compiler_map[ansible_facts['system']][ansible_facts['architecture']] }}"
 
 just_release_base_url: https://github.com/casey/just/releases/download
 
-just_release_archive_name: just-{{ just_v }}-{{ _just_arch }}-{{ _just_sys }}{{ _just_compiler }}.{{ 'zip' if ansible_system == 'Win32NT' else 'tar.gz' }}
+just_release_archive_name: just-{{ just_v }}-{{ _just_arch }}-{{ _just_sys }}{{ _just_compiler }}.{{ 'zip' if ansible_facts['system'] == 'Win32NT' else 'tar.gz' }}
 just_release_url: '{{ just_release_base_url }}/{{ just_v }}/{{ just_release_archive_name }}'
 
 just_checksum_verify: false

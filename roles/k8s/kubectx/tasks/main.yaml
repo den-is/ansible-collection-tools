@@ -20,4 +20,4 @@
   ansible.builtin.include_tasks: brew.yaml
   when:
   - kubectx_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

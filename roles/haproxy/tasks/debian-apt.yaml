@@ -13,7 +13,7 @@
 
 - name: Adding HAProxy repo
   ansible.builtin.apt_repository:
-    repo: deb [signed-by=/usr/share/keyrings/haproxy.debian.net.gpg] http://haproxy.debian.net {{ ansible_distribution_release | lower }}-backports-{{ __haproxy_v_major_minor }} main
+    repo: deb [signed-by=/usr/share/keyrings/haproxy.debian.net.gpg] http://haproxy.debian.net {{ ansible_facts['distribution_release'] | lower }}-backports-{{ __haproxy_v_major_minor }} main
     state: present
     filename: haproxy
 

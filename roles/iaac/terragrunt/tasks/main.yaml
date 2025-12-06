@@ -14,4 +14,4 @@
   when:
   - terragrunt_v is version(__installed_terragrunt_v, 'ne')
   - terragrunt_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

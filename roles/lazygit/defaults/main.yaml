@@ -12,8 +12,8 @@ _lazygit_system_map:
   Linux: Linux
   Win32NT: Windows
 
-lazygit_arch: "{{ _lazygit_arch_map[ansible_architecture] }}"
-lazygit_sys: "{{ _lazygit_system_map[ansible_system] }}"
+lazygit_arch: "{{ _lazygit_arch_map[ansible_facts['architecture']] }}"
+lazygit_sys: "{{ _lazygit_system_map[ansible_facts['system']] }}"
 
 lazygit_release_base_url: https://github.com/jesseduffield/lazygit/releases/download
 lazygit_archive_name: lazygit_{{ _lazygit_nov }}_{{ lazygit_sys }}_{{ lazygit_arch }}.{{ 'tar.gz' if not lazygit_sys == 'Windows' else 'zip' }}

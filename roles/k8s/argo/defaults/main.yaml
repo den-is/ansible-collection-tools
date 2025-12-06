@@ -8,8 +8,8 @@ argo_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-argo_sys: "{{ argo_sys_map[ansible_system] }}"
-argo_arch: "{{ argo_arch_map[ansible_architecture] }}"
+argo_sys: "{{ argo_sys_map[ansible_facts['system']] }}"
+argo_arch: "{{ argo_arch_map[ansible_facts['architecture']] }}"
 
 argo_release_base_url: https://github.com/argoproj/argo-workflows/releases/download
 argo_release_archive_name: argo-{{ argo_sys }}-{{ argo_arch }}.gz

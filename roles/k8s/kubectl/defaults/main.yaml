@@ -19,10 +19,10 @@ _kubectl_sys_map:
   Linux: linux
   Win32NT: windows
 
-_kubectl_arch: "{{ _kubectl_arch_map[ansible_architecture] }}"
-_kubectl_sys: "{{ _kubectl_sys_map[ansible_system] }}"
+_kubectl_arch: "{{ _kubectl_arch_map[ansible_facts['architecture']] }}"
+_kubectl_sys: "{{ _kubectl_sys_map[ansible_facts['system']] }}"
 
-kubectl_release_artifact_name: kubectl{{ '.exe' if ansible_system == 'Win32NT' }}
+kubectl_release_artifact_name: kubectl{{ '.exe' if ansible_facts['system'] == 'Win32NT' }}
 kubectl_release_url: https://dl.k8s.io/release/{{ kubectl_v }}/bin/{{ _kubectl_sys }}/{{ _kubectl_arch }}/{{ kubectl_release_artifact_name }}
 kubectl_verify_checksum256: false
 kubectl_release_sha256_url: "{{ kubectl_release_url }}.sha256"

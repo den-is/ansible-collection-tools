@@ -13,7 +13,7 @@ _atuin_arch_map:
 # for linux hosts `musl` if `false`, default `glibc`
 atuin_gnu_compiler: true
 _atuin_compiler: >-
-  {%- if ansible_system == 'Darwin' -%}
+  {%- if ansible_facts['system'] == 'Darwin' -%}
     ''
   {%- else -%}
     {%- if atuin_gnu_compiler -%}
@@ -23,8 +23,8 @@ _atuin_compiler: >-
     {%- endif -%}
   {%- endif -%}
 
-_atuin_sys: "{{ _atuin_sys_map[ansible_system] }}"
-_atuin_arch: "{{ _atuin_arch_map[ansible_architecture] }}"
+_atuin_sys: "{{ _atuin_sys_map[ansible_facts['system']] }}"
+_atuin_arch: "{{ _atuin_arch_map[ansible_facts['architecture']] }}"
 
 atuin_release_base_url: https://github.com/atuinsh/atuin/releases/download/{{ atuin_v }}
 

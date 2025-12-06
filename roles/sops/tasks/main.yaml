@@ -14,4 +14,4 @@
   when:
   - sops_v is version(installed_sops_v, 'ne')
   - sops_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

@@ -14,4 +14,4 @@
   when:
   # - ksops_v is version(installed_ksops_v, 'ne')
   - ksops_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

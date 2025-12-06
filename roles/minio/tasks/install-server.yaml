@@ -33,7 +33,7 @@
   notify: Restart minio
   when:
   - minio_install_packages
-  - ansible_os_family == "RedHat"
+  - ansible_facts['os_family'] == "RedHat"
 
 - name: Install Minio client DEB package
   ansible.builtin.apt:
@@ -42,6 +42,6 @@
   notify: Restart minio
   when:
   - minio_install_packages
-  - ansible_os_family == "Debian"
+  - ansible_facts['os_family'] == "Debian"
 
 ## For packages installation manage package upgrades

@@ -12,8 +12,8 @@ _lazydocker_system_map:
   Linux: Linux
   Win32NT: Windows
 
-lazydocker_arch: "{{ _lazydocker_arch_map[ansible_architecture] }}"
-lazydocker_sys: "{{ _lazydocker_system_map[ansible_system] }}"
+lazydocker_arch: "{{ _lazydocker_arch_map[ansible_facts['architecture']] }}"
+lazydocker_sys: "{{ _lazydocker_system_map[ansible_facts['system']] }}"
 
 lazydocker_release_base_url: https://github.com/jesseduffield/lazydocker/releases/download
 lazydocker_archive_name: lazydocker_{{ _lazydocker_nov }}_{{ lazydocker_sys }}_{{ lazydocker_arch }}.{{ 'tar.gz' if not lazydocker_sys == 'Windows' else 'zip' }}

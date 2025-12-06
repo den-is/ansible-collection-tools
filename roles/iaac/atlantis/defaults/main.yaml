@@ -9,8 +9,8 @@ _atlantis_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-_atlantis_sys: "{{ _atlantis_sys_map[ansible_system] }}"
-_atlantis_arch: "{{ _atlantis_arch_map[ansible_architecture] }}"
+_atlantis_sys: "{{ _atlantis_sys_map[ansible_facts['system']] }}"
+_atlantis_arch: "{{ _atlantis_arch_map[ansible_facts['architecture']] }}"
 
 atlantis_release_base_url: https://github.com/runatlantis/atlantis/releases/download
 atlantis_release_url: '{{ atlantis_release_base_url }}/{{ atlantis_v }}/atlantis_{{ _atlantis_sys }}_{{ _atlantis_arch }}.zip'

@@ -10,8 +10,8 @@ _terraform_arch_map:
   i386: "386"
   aarch64: "arm64"
 
-_terraform_sys: "{{ _terraform_sys_map[ansible_system] }}"
-_terraform_arch: "{{ _terraform_arch_map[ansible_architecture] }}"
+_terraform_sys: "{{ _terraform_sys_map[ansible_facts['system']] }}"
+_terraform_arch: "{{ _terraform_arch_map[ansible_facts['architecture']] }}"
 
 terraform_release_base_url: https://releases.hashicorp.com/terraform
 terraform_release_archive_name: terraform_{{ terraform_v }}_{{ _terraform_sys }}_{{ _terraform_arch }}.zip

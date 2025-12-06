@@ -9,8 +9,8 @@ mkcert_system_map:
   Linux: linux
   Win32NT: windows
 
-mkcert_arch: "{{ mkcert_arch_map[ansible_architecture] }}"
-mkcert_system: "{{ mkcert_system_map[ansible_system] }}"
+mkcert_arch: "{{ mkcert_arch_map[ansible_facts['architecture']] }}"
+mkcert_system: "{{ mkcert_system_map[ansible_facts['system']] }}"
 
 mkcert_release_base_url: https://github.com/FiloSottile/mkcert/releases/download/{{ mkcert_v }}
 mkcert_release_url: '{{ mkcert_release_base_url }}/mkcert-{{ mkcert_v }}-{{ mkcert_system }}-{{ mkcert_arch }}'

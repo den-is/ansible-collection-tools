@@ -5,10 +5,10 @@ kubecolor_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-kubecolor_arch: "{{ kubecolor_arch_map[ansible_architecture] }}"
+kubecolor_arch: "{{ kubecolor_arch_map[ansible_facts['architecture']] }}"
 
 kubecolor_release_base_url: https://github.com/kubecolor/kubecolor/releases/download
-kubecolor_release_archive_name: 'kubecolor_{{ __kubecolor_nov }}_{{ ansible_system | lower }}_{{ kubecolor_arch }}.tar.gz'
+kubecolor_release_archive_name: kubecolor_{{ __kubecolor_nov }}_{{ ansible_facts['system'] | lower }}_{{ kubecolor_arch }}.tar.gz
 kubecolor_release_url: "{{ kubecolor_release_base_url }}/{{ kubecolor_v }}/{{ kubecolor_release_archive_name }}"
 
 kubecolor_checksum_verify: false

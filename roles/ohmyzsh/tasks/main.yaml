@@ -15,4 +15,4 @@
     label: "{{ user.name }}"
   vars:
     omz_user: "{{ user }}"
-  when: ansible_system != 'Darwin'
+  when: ansible_facts['system'] != 'Darwin'

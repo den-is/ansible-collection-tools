@@ -18,11 +18,11 @@
     state: latest
   loop: '{{ __haproxy_compilation_deps }}'
   when:
-  - ansible_os_family == "Debian"
+  - ansible_facts['os_family'] == "Debian"
 
 - name: Installing required packages on RedHat
   when:
-  - ansible_os_family == 'RedHat'
+  - ansible_facts['os_family'] == 'RedHat'
   block:
   - name: Installing EPEL RPM repo
     ansible.builtin.package:

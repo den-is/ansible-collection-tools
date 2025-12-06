@@ -14,4 +14,4 @@
   when:
   - terraform_v is version(installed_terraform_v, 'ne')
   - terraform_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

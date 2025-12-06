@@ -34,7 +34,7 @@
   changed_when: false
   when:
   - minio_install_packages
-  - ansible_os_family == "RedHat"
+  - ansible_facts['os_family'] == "RedHat"
 
 - name: Query DEB for Minio Client package
   ansible.builtin.shell: dpkg-query --showformat='${Version}' --show mcli
@@ -43,7 +43,7 @@
   changed_when: false
   when:
   - minio_install_packages
-  - ansible_os_family == "Debian"
+  - ansible_facts['os_family'] == "Debian"
 
 - name: Get installed Minio Client version if any (either mc or mcli)
   ansible.builtin.shell: '{{ __minio_client_installed_cmd }} --version | head -1 | cut -d " " -f 3'

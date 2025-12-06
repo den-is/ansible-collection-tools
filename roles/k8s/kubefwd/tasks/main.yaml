@@ -14,4 +14,4 @@
   when:
   - kubefwd_v is version(current_kubefwd_v, 'ne')
   - kubefwd_brew
-  - ansible_system == 'Darwin'
+  - ansible_facts['system'] == 'Darwin'

@@ -4,10 +4,10 @@ yq_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-yq_arch: "{{ yq_arch_map[ansible_architecture] }}"
+yq_arch: "{{ yq_arch_map[ansible_facts['architecture']] }}"
 
 yq_release_base_url: https://github.com/mikefarah/yq/releases/download
-yq_release_url: '{{ yq_release_base_url }}/{{ yq_v }}/yq_{{ ansible_system | lower }}_{{ yq_arch }}'
+yq_release_url: '{{ yq_release_base_url }}/{{ yq_v }}/yq_{{ ansible_facts["system"] | lower }}_{{ yq_arch }}'
 # maybe support install from archive too? .tar.gz
 
 yq_checksum_verify: false

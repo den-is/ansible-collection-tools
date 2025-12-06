@@ -24,8 +24,8 @@ fzf_system_map:
   Linux: linux
   Win32NT: windows
 
-fzf_arch: "{{ fzf_arch_map[ansible_architecture] }}"
-fzf_system: "{{ fzf_system_map[ansible_system] }}"
+fzf_arch: "{{ fzf_arch_map[ansible_facts['architecture']] }}"
+fzf_system: "{{ fzf_system_map[ansible_facts['system']] }}"
 fzf_archive_ext: "{{ 'zip' if fzf_system in ['windows', 'darwin'] else 'tar.gz' }}"
 
 fzf_release_base_url: https://github.com/junegunn/fzf/releases/download

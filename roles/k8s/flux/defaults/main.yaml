@@ -6,10 +6,10 @@ flux_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-flux_arch: "{{ flux_arch_map[ansible_architecture] }}"
+flux_arch: "{{ flux_arch_map[ansible_facts['architecture']] }}"
 
 flux_release_base_url: https://github.com/fluxcd/flux2/releases/download
-flux_release_url: "{{ flux_release_base_url }}/v{{ flux_nov }}/flux_{{ flux_nov }}_{{ ansible_system | lower }}_{{ flux_arch }}.tar.gz"
+flux_release_url: "{{ flux_release_base_url }}/v{{ flux_nov }}/flux_{{ flux_nov }}_{{ ansible_facts['system'] | lower }}_{{ flux_arch }}.tar.gz"
 
 flux_archive_download_dst: /tmp
 flux_full_download_path: '{{ flux_archive_download_dst }}/flux_{{ flux_v }}'

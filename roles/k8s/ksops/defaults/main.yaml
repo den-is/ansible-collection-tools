@@ -14,8 +14,8 @@ _ksops_arch_map:
   i386: "i386"
   aarch64: "arm64"
 
-_ksops_sys: "{{ _ksops_sys_map[ansible_system] }}"
-_ksops_arch: "{{ _ksops_arch_map[ansible_architecture] }}"
+_ksops_sys: "{{ _ksops_sys_map[ansible_facts['system']] }}"
+_ksops_arch: "{{ _ksops_arch_map[ansible_facts['architecture']] }}"
 
 ksops_release_base_url: https://github.com/viaduct-ai/kustomize-sops/releases/download
 ksops_release_archive_name: ksops_{{ ksops_nov }}_{{ _ksops_sys }}_{{ _ksops_arch }}.tar.gz

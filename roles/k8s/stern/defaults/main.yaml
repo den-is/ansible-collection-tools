@@ -6,10 +6,10 @@ stern_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-stern_arch: "{{ stern_arch_map[ansible_architecture] }}"
+stern_arch: "{{ stern_arch_map[ansible_facts['architecture']] }}"
 
 stern_base_url: https://github.com/stern/stern/releases/download
-stern_release_url: '{{ stern_base_url }}/v{{ stern_nov_v }}/stern_{{ stern_nov_v }}_{{ ansible_system | lower }}_{{ stern_arch }}.tar.gz'
+stern_release_url: '{{ stern_base_url }}/v{{ stern_nov_v }}/stern_{{ stern_nov_v }}_{{ ansible_facts["system"] | lower }}_{{ stern_arch }}.tar.gz'
 
 stern_bin: stern
 stern_bin_dst: /usr/local/bin
