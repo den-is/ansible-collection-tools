@@ -1,27 +1,110 @@
-- name: Creating extraction dir {{ syncthing_full_download_path }}
+- name: Creating extraction dir {{ syncthing_extraction_path }}
   ansible.builtin.file:
-    path: '{{ syncthing_full_download_path }}'
+    path: '{{ syncthing_extraction_path }}'
     state: directory
+    mode: '0755'
 
-# Linux release artifact tarball extraction
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ syncthing_release_url }}'
+    dest: '{{ syncthing_archive_download_dst }}/{{ _syncthing_release_artifact_name }}'
+    checksum: "{{ '' if not syncthing_archive_sha256sum else 'sha256:' + syncthing_archive_sha256sum }}"
+    mode: '0644'
+
 - name: Getting synthing release tar artifact archive contents
   ansible.builtin.unarchive:
-    src: '{{ syncthing_release_url }}'
-    dest: '{{ syncthing_full_download_path }}'
+    src: '{{ syncthing_archive_download_dst }}/{{ _syncthing_release_artifact_name }}'
+    dest: '{{ syncthing_extraction_path }}'
     remote_src: true
     extra_opts:
     - --strip-components=1
-  when: syncthing_system not in ['windows', 'darwin']
+  when: _syncthing_system not in ['windows', 'darwin']
 
-- name: Copying syncthing to {{ syncthing_bin_dst }}
+- name: Deploying binary to {{ syncthing_bin_dst }}
   ansible.builtin.copy:
-    src: '{{ syncthing_full_download_path }}/kubefwd'
+    src: '{{ syncthing_extraction_path }}/syncthing'
     dest: '{{ syncthing_bin_dst }}/{{ syncthing_bin }}'
     mode: '0755'
     remote_src: true
 
-- name: Deleting {{ syncthing_full_download_path }} dir
+- name: Installing system service
+  ansible.builtin.copy:
+    src: '{{ syncthing_extraction_path }}/etc/linux-systemd/system/syncthing@.service'
+    dest: /usr/lib/systemd/system/syncthing@.service
+    mode: '0644'
+    remote_src: true
+  become: true
+  when: ansible_facts["service_mgr"] == "systemd"
+
+- name: Installing user service
+  ansible.builtin.copy:
+    src: '{{ syncthing_extraction_path }}/etc/linux-systemd/user/syncthing.service'
+    dest: /usr/lib/systemd/user/syncthing.service
+    mode: '0644'
+    remote_src: true
+  become: true
+  when: ansible_facts["service_mgr"] == "systemd"
+
+- name: Enabling DE integration
+  ansible.builtin.copy:
+    src: '{{ item }}'
+    dest: /usr/share/applications/
+    mode: '0644'
+    remote_src: true
+  loop:
+  - '{{ syncthing_extraction_path }}/etc/linux-desktop/syncthing-start.desktop'
+  - '{{ syncthing_extraction_path }}/etc/linux-desktop/syncthing-ui.desktop'
+  become: true
+  when: ansible_facts["service_mgr"] == "systemd"
+
+- name: Getting source code archive
+  ansible.builtin.get_url:
+    url: https://github.com/syncthing/syncthing/archive/refs/tags/v{{ _syncthing_nov }}.tar.gz
+    dest: '{{ syncthing_extraction_path }}/v{{ _syncthing_nov }}.tar.gz'
+    mode: '0644'
+  when: syncthing_deploy_man
+
+- name: Extracting man pages from source code archive
+  ansible.builtin.unarchive:
+    src: '{{ syncthing_extraction_path }}/v{{ _syncthing_nov }}.tar.gz'
+    dest: '{{ syncthing_extraction_path }}'
+    remote_src: true
+    extra_opts:
+    - --strip-components=1
+    - syncthing-{{ _syncthing_nov }}/man
+  when: syncthing_deploy_man
+
+- name: Install man pages to correct section
+  ansible.builtin.copy:
+    src: "{{ syncthing_extraction_path }}/man/{{ item }}"
+    dest: "{{ man_base_path }}/man{{ item | regex_search('\\.(\\d+)$') }}"
+    mode: '0644'
+    remote_src: true
+  become: true
+  loop:
+  - syncthing.1
+  - stdiscosrv.1
+  - strelaysrv.1
+  - syncthing-config.5
+  - syncthing-stignore.5
+  - syncthing-bep.7
+  - syncthing-device-ids.7
+  - syncthing-event-api.7
+  - syncthing-faq.7
+  - syncthing-globaldisco.7
+  - syncthing-localdisco.7
+  - syncthing-networking.7
+  - syncthing-relay.7
+  - syncthing-rest-api.7
+  - syncthing-security.7
+  - syncthing-versioning.7
+  when: syncthing_deploy_man
+
+- name: Deleting relese artifacts
   ansible.builtin.file:
-    path: '{{ syncthing_full_download_path }}'
+    path: '{{ item }}'
     state: absent
-  when: postinstall_cleanup
+  loop:
+  - '{{ syncthing_archive_download_dst }}/{{ _syncthing_release_artifact_name }}'
+  - '{{ syncthing_extraction_path }}'
+  when: syncthing_cleanup_release_artifacts

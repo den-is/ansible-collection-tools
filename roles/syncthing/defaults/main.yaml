@@ -1,28 +1,38 @@
 syncthing_v: v2.0.12
 syncthing_repo: true
 
-syncthing_arch_map:
+_syncthing_nov: "{{ syncthing_v | regex_replace('^v', '') }}"
+
+_syncthing_arch_map:
   x86_64: "amd64"
   i386: "386"
   aarch64: "arm64"
 
-syncthing_system_map:
+_syncthing_system_map:
   Darwin: darwin
   Linux: linux
   Win32NT: windows
 
-syncthing_arch: "{{ syncthing_arch_map[ansible_facts['architecture']] }}"
-syncthing_system: "{{ syncthing_system_map[ansible_facts['system']] }}"
+_syncthing_arch: "{{ _syncthing_arch_map[ansible_facts['architecture']] }}"
+_syncthing_system: "{{ _syncthing_system_map[ansible_facts['system']] }}"
 
-syncthing_release_base_url: https://github.com/syncthing/syncthing/releases/download
-syncthing_release_artifact_name: syncthing-{{ syncthing_system }}-{{ syncthing_arch }}-{{ syncthing_v }}{{ '.zip' if syncthing_system in ['windows', 'darwin'] else '.tar.gz'}}
-syncthing_release_url: '{{ syncthing_release_base_url }}/{{ syncthing_v }}/{{ syncthing_release_artifact_name }}'
+_syncthing_release_base_url: https://github.com/syncthing/syncthing/releases/download/{{ syncthing_v }}
+_syncthing_archive_ext: "{{ '.zip' if _syncthing_system in ['windows', 'darwin'] else '.tar.gz' }}"
+_syncthing_release_artifact_name: syncthing-{{ _syncthing_system }}-{{ _syncthing_arch }}-{{ syncthing_v }}{{ _syncthing_archive_ext }}
 
-syncthing_full_download_path: /tmp/syncthing_{{ syncthing_v }}
-postinstall_cleanup: true
+syncthing_release_url: '{{ _syncthing_release_base_url }}/{{ _syncthing_release_artifact_name }}'
+syncthing_archive_sha256sum: ""
+# syncthing_full_download_path: /tmp/syncthing_{{ syncthing_v }}
+
+syncthing_archive_download_dst: /tmp
+syncthing_extraction_path: '{{ syncthing_archive_download_dst }}/syncthing-{{ syncthing_v }}'
+syncthing_cleanup_release_artifacts: true
 
 syncthing_bin_dst: /usr/local/bin
 syncthing_bin: syncthing
+
+syncthing_deploy_man: true
+man_base_path: /usr/share/man
 
 syncthing_brew: false
 syncthing_brew_package: syncthing

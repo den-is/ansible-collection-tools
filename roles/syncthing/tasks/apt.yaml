@@ -2,6 +2,7 @@
   ansible.builtin.apt:
     name: "{{ item }}"
     state: present
+  become: true
   loop:
   - apt-transport-https
   - apt-utils
@@ -16,7 +17,7 @@
 
 - name: Add APT repo
   ansible.builtin.apt_repository:
-    repo: deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable
+    repo: deb [signed-by=/usr/share/keyrings/syncthing-archive-keyring.gpg] https://apt.syncthing.net/ syncthing stable-v2
     state: present
     filename: syncthing
 
@@ -32,5 +33,5 @@
     state: latest
     update_cache: true
   when:
-  - syncthing_v is version(installed_syncthing_v, 'ne')
+  - syncthing_v is version(_installed_syncthing_v, 'ne')
   - check_syncthing_v_task is success
