@@ -1,6 +1,7 @@
 nvm_v: v0.40.3
 
 _nvm_nov: "{{ nvm_v | regex_replace('^v', '') }}"
+
 nvm_deploy_cleanup: true
 nvm_install_script_dst: /tmp
 
@@ -12,4 +13,8 @@ nvm_manage_node: true
 
 # it can be in one of the formats: `node`, `22.12.0`, `22.12`, 'lts/*', `lts/argon` ...
 # installing latest version by default
-nvm_node_version: node
+nvm_node_version: --lts
+nvm_install_extras: ""
+# nvm_install_extras: --reinstall-packages-from=current
+# nvm_install_extras: --reinstall-packages-from=node
+# nvm_install_extras: --reinstall-packages-from=default --latest-npm

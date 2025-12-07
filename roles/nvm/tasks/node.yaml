@@ -1,16 +1,9 @@
-# TODO: allow upgrade of node and migration of packages
-- name: Install Node.js {{ nvm_node_version }}
+- name: Install Node.js - {{ nvm_node_version }}
   ansible.builtin.shell: >-
-    nvm install {{ nvm_node_version }}
-  args:
-    executable: /bin/bash
-  environment:
-    NVM_DIR: "{{ nvm_dir }}"
+    . {{ ansible_facts['env']['HOME'] }}/.nvm/nvm.sh
+    nvm install {{ nvm_install_extras }} {{ nvm_node_version }}
 
-- name: Use Node.js {{ nvm_node_version }}
+- name: Use Node.js - {{ nvm_node_version }}
   ansible.builtin.shell: >-
+    . {{ ansible_facts['env']['HOME'] }}/.nvm/nvm.sh
     nvm use {{ nvm_node_version }}
-  args:
-    executable: /bin/bash
-  environment:
-    NVM_DIR: "{{ nvm_dir }}"

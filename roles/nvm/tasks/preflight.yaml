@@ -1,13 +1,32 @@
-- name: Get installed version if any
-  ansible.builtin.shell: nvm --version| grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+- name: Check if nvm.sh exists
+  ansible.builtin.stat:
+    path: "{{ ansible_facts['env']['HOME'] }}/.nvm/nvm.sh"
+  register: _task_stat_nvm_sh
+
+- name: Get NVM version if installed
+  ansible.builtin.shell: |
+    . {{ ansible_facts['env']['HOME'] }}/.nvm/nvm.sh
+    nvm --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  when: _task_stat_nvm_sh.stat.exists
   register: _check_nvm_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Get node version if installed
+  ansible.builtin.shell: |
+    . {{ ansible_facts['env']['HOME'] }}/.nvm/nvm.sh
+    node --version | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_node_v_task
   ignore_errors: true
   changed_when: false
 
 - name: Register pre-flight variables
   ansible.builtin.set_fact:
     _installed_nvm_v: "{{ _check_nvm_v_task.stdout | default('0.0.0', true) }}"
+    _installed_node_v: "{{ _check_node_v_task.stdout | default('v0.0.0', true) }}"
 
 - name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Installed version: {{ _installed_nvm_v if _check_nvm_v_task is success else "Not Found" }}'
+    msg: |-
+      Installed NVM version: {{ _installed_nvm_v if _check_nvm_v_task is success else "Not installed" }}
+      Installed Node version: {{ _installed_node_v if _check_node_v_task is success else "Not installed" }}

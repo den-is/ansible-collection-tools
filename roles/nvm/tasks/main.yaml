@@ -18,4 +18,6 @@
 - name: Configure Node with NVM
   ansible.builtin.include_tasks: node.yaml
   when:
+  - _task_stat_nvm_sh.stat.exists
+  - _check_node_v_task is failed
   - nvm_manage_node

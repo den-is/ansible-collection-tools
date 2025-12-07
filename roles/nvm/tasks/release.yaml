@@ -36,5 +36,4 @@
     state: absent
   loop:
   - "{{ nvm_install_script_dst }}/nvm-install.sh"
-  when:
-  - nvm_deploy_cleanup
+  when: nvm_deploy_cleanup
