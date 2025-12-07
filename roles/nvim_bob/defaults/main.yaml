@@ -1,4 +1,4 @@
-nvim_bob_v: v4.1.5
+nvim_bob_v: v4.1.6
 nvim_bob_openssl: false
 
 _nvim_bob_nov: "{{ nvim_bob_v | regex_replace('^v', '') }}"
