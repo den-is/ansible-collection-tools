@@ -1,0 +1,17 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - starship_brew_install
+  - ansible_facts["os_family"] == "Darwin"
+
+- name: Release archive installation
+  ansible.builtin.include_tasks: release_archive.yaml
+  when:
+  - _starship_nov is version(_installed_starship_v, 'ne')
+  - not starship_brew_install
+  - not starship_uninstall

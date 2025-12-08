@@ -1,0 +1,50 @@
+- name: Get checksum
+  when: starship_checksum_verify
+  block:
+
+  - name: Registering github related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksum
+    ansible.builtin.set_fact:
+      __starship_checksum: "{{ lookup('url', starship_checksums_url, headers=_github_api_headers) }}"
+    run_once: true
+    retries: 10
+
+- name: Creating extraction dir {{ starship_extraction_path }}
+  ansible.builtin.file:
+    path: '{{ starship_extraction_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ starship_release_url }}'
+    dest: '{{ starship_archive_download_dst }}/{{ _starship_release_archive_name }}'
+    checksum: "{{ '' if not starship_checksum_verify else 'sha256:' + __starship_checksum }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ starship_extraction_path }}
+  ansible.builtin.unarchive:
+    src: '{{ starship_archive_download_dst }}/{{ _starship_release_archive_name }}'
+    dest: '{{ starship_extraction_path }}'
+    remote_src: true
+
+- name: Installing binary to {{ starship_bin_dst }}/{{ starship_bin }}
+  ansible.builtin.copy:
+    src: '{{ starship_extraction_path }}/starship'
+    dest: '{{ starship_bin_dst }}/{{ starship_bin }}'
+    mode: '0755'
+    remote_src: true
+
+## Post deploy cleanup
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ starship_archive_download_dst }}/{{ _starship_release_archive_name }}'
+  - '{{ starship_extraction_path }}'
+  when: starship_cleanup_release_artifacts

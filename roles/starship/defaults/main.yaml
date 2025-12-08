@@ -1,0 +1,41 @@
+starship_v: v1.24.1
+
+starship_musl: false
+
+_starship_nov: "{{ starship_v | regex_replace('^v', '') }}"
+
+_starship_arch_map:
+  x86_64: x86_64
+  aarch64: aarch64
+
+_starship_sys_map:
+  Linux: unknown-linux
+  Darwin: apple-darwin
+
+_starship_arch: "{{ _starship_arch_map[ansible_facts['architecture']] }}"
+_starship_sys: "{{ _starship_sys_map[ansible_facts['system']] }}"
+
+
+# https://github.com/starship/starship/releases/download/v1.24.1/starship_x86_64-unknown-linux-gnu.tar.gz
+# https://github.com/starship/starship/releases/download/v1.24.1/starship-x86_64-unknown-linux-gnu.tar.gz
+
+_starship_release_base_url: https://github.com/starship/starship/releases/download/v{{ _starship_nov }}
+_starship_release_archive_name: starship-{{ _starship_arch }}-{{ _starship_sys }}{{ '-musl' if starship_musl else '-gnu' }}.tar.gz
+starship_release_url: "{{ _starship_release_base_url }}/{{ _starship_release_archive_name }}"
+
+starship_archive_download_dst: /tmp
+starship_extraction_path: '{{ starship_archive_download_dst }}/starship-{{ _starship_nov }}'
+starship_cleanup_release_artifacts: true
+
+starship_checksum_verify: false
+starship_checksums_url: '{{ starship_release_url }}.sha256'
+
+starship_bin_dst: /usr/local/bin
+starship_bin: starship
+
+starship_brew_install: false
+starship_brew_package: starship
+starship_brew_state: latest
+starship_brew_update: true
+
+starship_uninstall: false

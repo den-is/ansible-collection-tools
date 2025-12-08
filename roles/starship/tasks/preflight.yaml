@@ -1,0 +1,13 @@
+- name: Get currently installed version if any
+  ansible.builtin.shell: starship --version | head -1 | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_starship_version_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Setting version facts
+  ansible.builtin.set_fact:
+    _installed_starship_v: "{{ _check_starship_version_task.stdout | default('0.0.0', true) }}"
+
+- name: Reporting installed version
+  ansible.builtin.debug:
+    msg: 'Installed version: {{ _installed_starship_v if _check_starship_version_task is success else "Not Found" }}'
