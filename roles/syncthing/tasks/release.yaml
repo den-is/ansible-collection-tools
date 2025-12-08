@@ -48,7 +48,7 @@
 - name: Enabling DE integration
   ansible.builtin.copy:
     src: '{{ item }}'
-    dest: /usr/share/applications/
+    dest: /usr/share/applications/{{ item | ansible.builtin.basename }}
     mode: '0644'
     remote_src: true
   loop:
@@ -57,48 +57,45 @@
   become: true
   when: ansible_facts["service_mgr"] == "systemd"
 
-- name: Getting source code archive
-  ansible.builtin.get_url:
-    url: https://github.com/syncthing/syncthing/archive/refs/tags/v{{ _syncthing_nov }}.tar.gz
-    dest: '{{ syncthing_extraction_path }}/v{{ _syncthing_nov }}.tar.gz'
-    mode: '0644'
+- name: Deploy man pages
   when: syncthing_deploy_man
+  block:
+  - name: Getting source code archive
+    ansible.builtin.get_url:
+      url: https://github.com/syncthing/syncthing/archive/refs/tags/v{{ _syncthing_nov }}.tar.gz
+      dest: '{{ syncthing_extraction_path }}/v{{ _syncthing_nov }}.tar.gz'
+      mode: '0644'
 
-- name: Extracting man pages from source code archive
-  ansible.builtin.unarchive:
-    src: '{{ syncthing_extraction_path }}/v{{ _syncthing_nov }}.tar.gz'
-    dest: '{{ syncthing_extraction_path }}'
-    remote_src: true
-    extra_opts:
-    - --strip-components=1
-    - syncthing-{{ _syncthing_nov }}/man
-  when: syncthing_deploy_man
+  - name: Extracting man pages from source code archive
+    ansible.builtin.unarchive:
+      src: '{{ syncthing_extraction_path }}/v{{ _syncthing_nov }}.tar.gz'
+      dest: '{{ syncthing_extraction_path }}'
+      remote_src: true
+      extra_opts:
+      - --strip-components=1
+      - syncthing-{{ _syncthing_nov }}/man
 
-- name: Install man pages to correct section
-  ansible.builtin.copy:
-    src: "{{ syncthing_extraction_path }}/man/{{ item }}"
-    dest: "{{ man_base_path }}/man{{ item | regex_search('\\.(\\d+)$') }}"
-    mode: '0644'
-    remote_src: true
-  become: true
-  loop:
-  - syncthing.1
-  - stdiscosrv.1
-  - strelaysrv.1
-  - syncthing-config.5
-  - syncthing-stignore.5
-  - syncthing-bep.7
-  - syncthing-device-ids.7
-  - syncthing-event-api.7
-  - syncthing-faq.7
-  - syncthing-globaldisco.7
-  - syncthing-localdisco.7
-  - syncthing-networking.7
-  - syncthing-relay.7
-  - syncthing-rest-api.7
-  - syncthing-security.7
-  - syncthing-versioning.7
-  when: syncthing_deploy_man
+  - name: Locate man pages
+    ansible.builtin.find:
+      paths: "{{ syncthing_extraction_path }}/man"
+      file_type: file
+      recurse: true
+      use_regex: true
+      patterns:
+      - '.*\.[0-9]+$'
+    register: _found_syncthing_man_pages
+    changed_when: false
+
+  - name: Install man pages
+    ansible.builtin.copy:
+      src: "{{ item.path }}"
+      dest: "{{ man_base_path }}/man{{ item.path | ansible.builtin.basename | regex_search('[0-9]+$') }}/{{ item.path | ansible.builtin.basename }}"
+      mode: '0644'
+      remote_src: true
+    become: true
+    loop: "{{ _found_syncthing_man_pages.files }}"
+    loop_control:
+      label: "{{ item.path }}"
 
 - name: Deleting relese artifacts
   ansible.builtin.file:

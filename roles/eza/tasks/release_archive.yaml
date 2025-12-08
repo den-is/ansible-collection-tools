@@ -24,7 +24,6 @@
     mode: '0755'
     remote_src: true
 
-
 ## Installing man
 - name: Deploy man pages
   when:
@@ -46,29 +45,24 @@
       - --strip-components=3
       - --show-stored-names
 
-  # todo dynamically loop over files and determine their destination
-  - name: Deploying eza.1 man page to {{ man_base_path }}/man1
-    ansible.builtin.copy:
-      src: '{{ eza_extraction_path }}/man/eza.1'
-      dest: '{{ man_base_path }}/man1/eza.1'
-      mode: '0755'
-      remote_src: true
-    when:
-    - _zsh_completions_dst_check.stat.exists
+  - name: Locate man pages
+    ansible.builtin.find:
+      paths: "{{ eza_extraction_path }}/man"
+      file_type: file
+      recurse: true
+    register: _found_eza_man_pages
+    changed_when: false
 
-  - name: Deploying eza_colors.5 man page to {{ man_base_path }}/man5
+  - name: Install man pages to correct section
     ansible.builtin.copy:
-      src: '{{ eza_extraction_path }}/man/eza_colors.5'
-      dest: '{{ man_base_path }}/man5/eza_colors.5'
-      mode: '0755'
+      src: "{{ item.path }}"
+      dest: "{{ man_base_path }}/man{{ item.path | ansible.builtin.basename | regex_search('[0-9]+$') }}/{{ item.path | ansible.builtin.basename }}"
+      mode: '0644'
       remote_src: true
-
-  - name: Deploying eza_colors-explanation.5 man page to {{ man_base_path }}/man5
-    ansible.builtin.copy:
-      src: '{{ eza_extraction_path }}/man/eza_colors-explanation.5'
-      dest: '{{ man_base_path }}/man5/eza_colors-explanation.5'
-      mode: '0755'
-      remote_src: true
+    become: true
+    loop: "{{ _found_eza_man_pages.files }}"
+    loop_control:
+      label: "{{ item.path }}"
 
 ## Installing completions
 - name: Deploy eza completions for shells

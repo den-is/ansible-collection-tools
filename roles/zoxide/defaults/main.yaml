@@ -27,7 +27,7 @@ zoxide_bin_dst: "/usr/local/bin"
 zoxide_bin: zoxide
 
 zoxide_deploy_man: true
-zoxide_man_prefix: "/usr/share"
+man_base_path: /usr/share/man
 
 zoxide_zsh_completions_install: false
 zsh_completions_path: /usr/local/share/zsh/site-functions
