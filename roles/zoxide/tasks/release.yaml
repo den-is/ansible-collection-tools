@@ -27,6 +27,7 @@
     dest: '{{ zoxide_man_prefix }}'
     mode: '0644'
     remote_src: true
+  when: zoxide_deploy_man
 
 - name: Deploying zsh completions
   ansible.builtin.copy:

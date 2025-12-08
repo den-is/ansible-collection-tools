@@ -38,7 +38,7 @@ eza_brew_update: true
 
 eza_deploy_man: true
 eza_man_url: '{{ _eza_release_base_url }}/man-{{ _eza_nov }}.tar.gz'
-man_base_path: /usr/local/share/man
+man_base_path: /usr/share/man
 
 eza_deploy_completions: true
 eza_competions_url: '{{ _eza_release_base_url }}/completions-{{ _eza_nov }}.tar.gz'

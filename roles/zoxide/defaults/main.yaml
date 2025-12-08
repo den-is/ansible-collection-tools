@@ -23,11 +23,11 @@ zoxide_release_url: '{{ zoxide_release_base_url }}/v{{ _zoxide_nov }}/{{ zoxide_
 zoxide_archive_download_dst: /tmp
 zoxide_extraction_dst: '{{ zoxide_archive_download_dst }}/zoxide-{{ _zoxide_nov }}'
 
-
-zoxide_prefix: /usr/local
-zoxide_bin_dst: "{{ zoxide_prefix }}/bin"
-zoxide_man_prefix: "{{ zoxide_prefix }}/share"
+zoxide_bin_dst: "/usr/local/bin"
 zoxide_bin: zoxide
+
+zoxide_deploy_man: true
+zoxide_man_prefix: "/usr/share"
 
 zoxide_zsh_completions_install: false
 zsh_completions_path: /usr/local/share/zsh/site-functions
