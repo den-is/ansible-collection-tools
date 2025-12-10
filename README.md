@@ -19,60 +19,7 @@ It may lack some features compared to more comprehensive roles/collections. Make
 Obviously, for me collection works well enough. I can quickly install some tool X, tool Y and ohmyzsh on some random Linux box, for my convinience, without visiting each tool's Installation docs/repo.
 
 ## Available tools
-```sh
-├── age
-├── awscli
-├── bat
-├── cfssl
-├── croc
-├── direnv
-├── eza
-├── fd
-├── fzf
-├── git_delta
-├── haproxy
-├── iaac
-│   ├── atlantis
-│   ├── opentofu
-│   ├── packer
-│   ├── terraform
-│   ├── terragrunt
-│   ├── terragrunt_atlantis_config
-│   └── vagrant
-├── k8s
-│   ├── argocd
-│   ├── flux
-│   ├── helm
-│   ├── helmfile
-│   ├── k3d
-│   ├── k9s
-│   ├── kind
-│   ├── kubecolor
-│   ├── kubectl
-│   ├── kubectx
-│   ├── kubefwd
-│   ├── kubeps1
-│   ├── kubeseal
-│   ├── kubie
-│   ├── kustomize
-│   ├── stern
-│   └── talosctl
-├── lazydocker
-├── lazygit
-├── minio
-├── mkcert
-├── neovim
-├── ohmyzsh
-├── pyenv
-├── rclone
-├── restic
-├── ripgrep
-├── sops
-├── syncthing
-├── yq
-├── zellij
-└── zoxide
-```
+You can check list of supported tools in the [roles](./roles/) directory and its sub-dirs such as [iaac](./roles/iaac/), [k8s](./roles/k8s/), [python](./roles/python/)
 
 ## Installation
 
