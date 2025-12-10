@@ -1,0 +1,5 @@
+- name: Brew install
+  community.general.homebrew:
+    name: "{{ taplo_brew_package}}"
+    state: "{{ 'absent' if taplo_uninstall else taplo_brew_state }}"
+    update_homebrew: "{{ taplo_brew_update }}"

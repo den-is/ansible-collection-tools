@@ -1,0 +1,34 @@
+taplo_v: 0.10.0
+
+taplo_musl: false
+
+_taplo_nov: "{{ taplo_v | regex_replace('^v', '') }}"
+
+_taplo_arch_map:
+  x86_64: x86_64
+  aarch64: aarch64
+
+_taplo_sys_map:
+  Linux: linux
+  Darwin: darwin
+
+_taplo_arch: "{{ _taplo_arch_map[ansible_facts['architecture']] }}"
+_taplo_sys: "{{ _taplo_sys_map[ansible_facts['system']] }}"
+
+_taplo_release_base_url: https://github.com/tamasfe/taplo/releases/download/{{ _taplo_nov }}
+_taplo_release_archive_name: taplo-{{ _taplo_sys }}-{{ _taplo_arch }}.gz
+taplo_release_url: "{{ _taplo_release_base_url }}/{{ _taplo_release_archive_name }}"
+
+taplo_archive_download_dst: /tmp
+taplo_extraction_path: '{{ taplo_archive_download_dst }}/taplo-{{ _taplo_nov }}'
+taplo_cleanup_release_artifacts: true
+
+taplo_bin_dst: /usr/local/bin
+taplo_bin: taplo
+
+taplo_brew_install: false
+taplo_brew_package: taplo
+taplo_brew_state: latest
+taplo_brew_update: true
+
+taplo_uninstall: false

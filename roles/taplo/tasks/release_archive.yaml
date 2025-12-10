@@ -1,0 +1,32 @@
+- name: Creating extraction dir {{ taplo_extraction_path }}
+  ansible.builtin.file:
+    path: '{{ taplo_extraction_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ taplo_release_url }}'
+    dest: '{{ taplo_extraction_path }}/{{ _taplo_release_archive_name }}'
+    mode: '0644'
+
+- name: Gunzip file in-place
+  ansible.builtin.command: gunzip {{ _taplo_release_archive_name }}
+  args:
+    chdir: '{{ taplo_extraction_path }}'
+
+- name: Installing binary to {{ taplo_bin_dst }}/{{ taplo_bin }}
+  ansible.builtin.copy:
+    src: '{{ taplo_extraction_path }}/taplo-{{ _taplo_sys }}-{{ _taplo_arch }}'
+    dest: '{{ taplo_bin_dst }}/{{ taplo_bin }}'
+    mode: '0755'
+    remote_src: true
+
+## Post deploy cleanup
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ taplo_extraction_path }}'
+  when: taplo_cleanup_release_artifacts
