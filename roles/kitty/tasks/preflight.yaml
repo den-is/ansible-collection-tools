@@ -1,0 +1,59 @@
+
+- name: Check status of each required directory
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  register: _kitty_required_dir_status
+  ignore_errors: true
+  changed_when: false
+  loop:
+  - ~/.local
+  - ~/.local/bin
+  - ~/.local/share
+  - ~/.local/share/applications
+  - ~/.local/share/man
+  loop_control:
+    loop_var: item
+    label: "{{ item }}"
+
+- name: Assert that all directories exist
+  ansible.builtin.assert:
+    that:
+    - item.stat.isdir | default(false)
+    fail_msg: Required directory '{{ item.item }}' does not exist or is not a directory.
+    success_msg: Directory '{{ item.item }}' exists.
+    quiet: true
+  loop: "{{ _kitty_required_dir_status.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+
+- name: Check if kitty binary already exists in $PATH
+  ansible.builtin.command: command -v kitty
+  register: _kitty_bin_exists
+  environment:
+    PATH: "{{ ansible_facts.env.PATH }}:{{ ansible_facts.env.HOME }}/.local/bin"
+  ignore_errors: true
+  changed_when: false
+
+- name: Check if kitten binary already exists in $PATH
+  ansible.builtin.command: command -v kitten
+  register: _kitten_bin_exists
+  environment:
+    PATH: "{{ ansible_facts.env.PATH }}:{{ ansible_facts.env.HOME }}/.local/bin"
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: kitty --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  environment:
+    PATH: "{{ ansible_facts.env.PATH }}:{{ ansible_facts.env.HOME }}/.local/bin"
+  register: _check_kitty_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register preflight facts
+  ansible.builtin.set_fact:
+    _installed_kitty_v: "{{ _check_kitty_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Displaying current version
+  ansible.builtin.debug:
+    msg: 'Installed version: {{ _installed_kitty_v if _check_kitty_v_task is success else "Not Available" }}'

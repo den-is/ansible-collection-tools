@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=kitty URL Launcher
+GenericName=Terminal emulator
+Comment=Open URLs with kitty
+StartupNotify=true
+TryExec={{ kitty_app_dst | regex_replace('^~', ansible_facts.env.HOME ) }}/bin/kitty
+Exec={{ kitty_app_dst | regex_replace('^~', ansible_facts.env.HOME ) }}/bin/kitty +open %U
+Icon={{ kitty_app_dst | regex_replace('^~', ansible_facts.env.HOME ) }}/share/icons/hicolor/256x256/apps/kitty.png
+Categories=System;TerminalEmulator;
+NoDisplay=true
+MimeType=image/*;application/x-sh;application/x-shellscript;inode/directory;text/*;x-scheme-handler/kitty;x-scheme-handler/ssh;

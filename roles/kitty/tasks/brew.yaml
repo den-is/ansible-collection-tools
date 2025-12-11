@@ -1,0 +1,5 @@
+- name: Brew install kitty
+  community.general.homebrew:
+    name: '{{ kitty_brew_package }}'
+    state: '{{ kitty_brew_state }}'
+    update_homebrew: true

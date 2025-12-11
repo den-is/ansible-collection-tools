@@ -1,0 +1,11 @@
+- name: Deploying kitty.desktop
+  ansible.builtin.template:
+    src: kitty.desktop.j2
+    dest: '{{ kitty_dst_base }}/share/applications/kitty.desktop'
+    mode: '0644'
+
+- name: Deploying kitty-open.desktop
+  ansible.builtin.template:
+    src: kitty-open.desktop.j2
+    dest: '{{ kitty_dst_base }}/share/applications/kitty-open.desktop'
+    mode: '0644'

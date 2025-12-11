@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=kitty
+GenericName=Terminal emulator
+Comment=Fast, feature-rich, GPU based terminal
+TryExec={{ kitty_app_dst | regex_replace('^~', ansible_facts.env.HOME ) }}/bin/kitty
+StartupNotify=true
+Exec={{ kitty_app_dst | regex_replace('^~', ansible_facts.env.HOME ) }}/bin/kitty
+Icon={{ kitty_app_dst | regex_replace('^~', ansible_facts.env.HOME ) }}/share/icons/hicolor/256x256/apps/kitty.png
+Categories=System;TerminalEmulator;
+X-TerminalArgExec=--
+X-TerminalArgTitle=--title
+X-TerminalArgAppId=--class
+X-TerminalArgDir=--working-directory
+X-TerminalArgHold=--hold

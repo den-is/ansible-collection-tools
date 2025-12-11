@@ -1,0 +1,41 @@
+- name: Getting kitty release artifact archive
+  ansible.builtin.get_url:
+    url: '{{ kitty_release_url }}'
+    dest: '{{ kitty_archive_download_dst }}/{{ _kitty_archive_name }}'
+    checksum: "{{ 'sha256:' + kitty_archive_sha256sum if kitty_archive_sha256sum is defined and kitty_archive_sha256sum | length > 0 else '' }}"
+    mode: '0644'
+
+- name: Creating Kitty app dir {{ kitty_app_dst }}
+  ansible.builtin.file:
+    path: '{{ kitty_app_dst }}'
+    state: directory
+    mode: '0750'
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ kitty_archive_download_dst }}/{{ _kitty_archive_name }}'
+    dest: '{{ kitty_app_dst }}'
+    remote_src: true
+
+- name: Creating symlink to kitty binary in ~/.local/bin
+  ansible.builtin.file:
+    src: '{{ kitty_app_dst }}/bin/kitty'
+    dest: ~/.local/bin/kitty
+    state: link
+    force: true
+  when: kitty_create_symlinks | bool
+
+- name: Creating symlink to kitten binary in ~/.local/bin
+  ansible.builtin.file:
+    src: '{{ kitty_app_dst }}/bin/kitten'
+    dest: ~/.local/bin/kitten
+    state: link
+    force: true
+  when: kitty_create_symlinks | bool
+
+# cleanup
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ kitty_archive_download_dst }}/{{ _kitty_archive_name }}'
+    state: absent
+  when: kitty_cleanup_downloaded_files | bool

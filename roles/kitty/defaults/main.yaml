@@ -1,0 +1,28 @@
+kitty_v: 0.44.0
+
+_kitty_nov: "{{ kitty_v | regex_replace('^v', '') }}"
+
+_kitty_arch_map:
+  x86_64: x86_64
+  aarch64: arm64
+
+_kitty_arch: "{{ _kitty_arch_map[ansible_facts['architecture']] }}"
+
+_kitty_release_base_url: https://github.com/kovidgoyal/kitty/releases/download/v{{ _kitty_nov }}
+_kitty_archive_name: kitty-{{ _kitty_nov }}{{ '.dmg' if ansible_facts['system'] == 'Darwin' else '-' + _kitty_arch + '.txz' }}
+
+kitty_release_url: '{{ _kitty_release_base_url }}/{{ _kitty_archive_name }}'
+
+kitty_archive_sha256sum: ''
+
+kitty_archive_download_dst: /tmp
+kitty_cleanup_downloaded_files: true
+
+kitty_dst_base: ~/.local
+kitty_app_dst: '{{ kitty_dst_base }}/kitty.app'
+kitty_create_symlinks: true
+kitty_install_dekstop_entries: true
+
+kitty_brew: false
+kitty_brew_package: kitty
+kitty_brew_state: latest
