@@ -1,0 +1,73 @@
+- name: Get checksum
+  when: crane_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __crane_checksums: "{{ lookup('url', crane_release_sha256sums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __crane_checksums is search(crane_archive_name)
+    retries: 10
+
+  - name: Get checksum of {{ crane_archive_name }}
+    ansible.builtin.set_fact:
+      __crane_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __crane_checksums }}"
+    when:
+    - crane_archive_name in item
+
+- name: Getting crane release artifact archive
+  ansible.builtin.get_url:
+    url: '{{ crane_release_url }}'
+    dest: '{{ crane_archive_download_dst }}/{{ crane_archive_name }}'
+    checksum: "{{ 'sha256:' + __crane_checksum if crane_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Creating extraction dir {{ crane_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ crane_extraction_dst }}'
+    state: directory
+    mode: '0755'
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ crane_archive_download_dst }}/{{ crane_archive_name }}'
+    dest: '{{ crane_extraction_dst }}'
+    remote_src: true
+
+- name: Deploying crane binary to {{ crane_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ crane_extraction_dst }}/crane'
+    dest: '{{ crane_bin_dst }}/{{ crane_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deploying krane binary to {{ crane_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ crane_extraction_dst }}/krane'
+    dest: '{{ crane_bin_dst }}/{{ krane_bin }}'
+    mode: '0755'
+    remote_src: true
+  when: crane_install_all_binaries
+
+- name: Deploying gcrane binary to {{ crane_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ crane_extraction_dst }}/gcrane'
+    dest: '{{ crane_bin_dst }}/{{ gcrane_bin }}'
+    mode: '0755'
+    remote_src: true
+  when: crane_install_all_binaries
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ crane_extraction_dst }}'
+  - '{{ crane_archive_download_dst }}/{{ crane_archive_name }}'
+  when: crane_cleanup | default(true)

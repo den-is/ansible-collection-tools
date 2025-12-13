@@ -1,0 +1,5 @@
+- name: Brew install crane
+  community.general.homebrew:
+    name: '{{ crane_brew_package }}'
+    state: '{{ crane_brew_state }}'
+    update_homebrew: true

@@ -1,0 +1,38 @@
+crane_v: v0.20.7
+
+_crane_nov: "{{ crane_v | regex_replace('^v', '') }}"
+
+_crane_arch_map:
+  x86_64: x86_64
+  i386: 32-bit
+  aarch64: arm64
+
+_crane_system_map:
+  Darwin: Darwin
+  Linux: Linux
+  Win32NT: Windows
+
+_crane_arch: "{{ _crane_arch_map[ansible_facts['architecture']] }}"
+_crane_sys: "{{ _crane_system_map[ansible_facts['system']] }}"
+
+crane_release_base_url: https://github.com/google/go-containerregistry/releases/download/v{{ _crane_nov }}
+crane_archive_name: go-containerregistry_{{ _crane_sys }}_{{ _crane_arch }}.tar.gz
+crane_release_url: '{{ crane_release_base_url }}/{{ crane_archive_name }}'
+
+crane_checksum_verify: false
+crane_release_sha256sums_url: '{{ crane_release_base_url }}/checksums.txt'
+
+crane_archive_download_dst: /tmp
+crane_extraction_dst: '{{ crane_archive_download_dst }}/crane-{{ crane_v }}'
+crane_cleanup: true
+
+crane_bin_dst: /usr/local/bin
+crane_bin: crane
+
+crane_install_all_binaries: true
+krane_bin: krane
+gcrane_bin: gcrane
+
+crane_brew: false
+crane_brew_package: crane
+crane_brew_state: latest
