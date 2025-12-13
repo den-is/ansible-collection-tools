@@ -1,4 +1,4 @@
-terraform_v: 1.14.1
+terraform_v: 1.14.2
 
 _terraform_sys_map:
   Darwin: darwin

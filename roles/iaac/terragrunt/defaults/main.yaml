@@ -1,4 +1,4 @@
-terragrunt_v: v0.94.0
+terragrunt_v: v0.95.1
 
 terragrunt_arch_map:
   x86_64: "amd64"
