@@ -19,4 +19,4 @@
   when:
   - _lazygit_nov is version(installed_lazygit_v, 'ne')
   - lazygit_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

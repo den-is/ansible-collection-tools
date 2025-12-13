@@ -11,8 +11,8 @@ cfssl_system_map:
   Linux: linux
   Win32NT: windows
 
-cfssl_arch: "{{ cfssl_arch_map[ansible_facts['architecture']] }}"
-cfssl_system: "{{ cfssl_system_map[ansible_facts['system']] }}"
+cfssl_arch: "{{ cfssl_arch_map[ansible_facts.architecture] }}"
+cfssl_system: "{{ cfssl_system_map[ansible_facts.system] }}"
 
 cfssl_release_base_url: https://github.com/cloudflare/cfssl/releases/download/v{{ _cfssl_nov }}
 

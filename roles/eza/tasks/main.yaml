@@ -7,13 +7,13 @@
   ansible.builtin.include_tasks: brew.yaml
   when:
   - eza_brew_install
-  - ansible_facts["os_family"] == "Darwin"
+  - ansible_facts.os_family == "Darwin"
 
 - name: Release archive installation
   ansible.builtin.include_tasks: release_archive.yaml
   when:
   - _eza_nov is version(_installed_eza_v, 'ne')
-  - ansible_facts["os_family"] != "Darwin"
+  - ansible_facts.os_family != "Darwin"
   - not eza_brew_install
   - not eza_uninstall
 

@@ -10,11 +10,11 @@ bat_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-bat_arch: "{{ bat_arch_map[ansible_facts['architecture']] }}"
+bat_arch: "{{ bat_arch_map[ansible_facts.architecture] }}"
 
 bat_install_deb: true
 bat_release_base_url: https://github.com/sharkdp/bat/releases/download
-bat_release_url: "{{ bat_release_base_url }}/v{{ _bat_nov }}/bat-v{{ _bat_nov }}-{{ ansible_facts['architecture'] }}-unknown-{{ ansible_facts['system'] | lower }}-{{ 'gnu' if bat_gnu else 'musl' }}.tar.gz"
+bat_release_url: "{{ bat_release_base_url }}/v{{ _bat_nov }}/bat-v{{ _bat_nov }}-{{ ansible_facts.architecture }}-unknown-{{ ansible_facts.system | lower }}-{{ 'gnu' if bat_gnu else 'musl' }}.tar.gz"
 bat_deb_release_url: "{{ bat_release_base_url }}/v{{ _bat_nov }}/bat{{ '-musl' if not bat_gnu }}_{{ _bat_nov }}_{{ bat_arch }}.deb"
 
 bat_archive_download_dst: /tmp

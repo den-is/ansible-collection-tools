@@ -14,4 +14,4 @@
   when:
   - age_v is version(_installed_age_v, 'ne')
   - age_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

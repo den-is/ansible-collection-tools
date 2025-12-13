@@ -20,4 +20,4 @@
   when:
   - _cfssl_nov is version(installed_cfssl_v, 'ne')
   - cfssl_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

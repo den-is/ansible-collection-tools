@@ -14,4 +14,4 @@
   when:
   - croc_v is version(installed_croc_v, 'ne')
   - croc_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

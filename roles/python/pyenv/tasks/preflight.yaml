@@ -12,7 +12,7 @@
 - name: Get current Pyenv version if any
   ansible.builtin.shell: pyenv --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
   environment:
-    PATH: "{{ ansible_facts['env']['PATH'] }}:{{ansible_facts['env']['HOME'] }}/.pyenv/bin"
+    PATH: "{{ ansible_facts.env.PATH }}:{{ansible_facts.env.HOME }}/.pyenv/bin"
   register: check_pyenv_version
   ignore_errors: true
   changed_when: false
@@ -26,8 +26,8 @@
   vars:
     params:
       files:
-      - "{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_version'] }}.yaml"
-      - "{{ ansible_facts['distribution'] | lower }}.yaml"
-      - "{{ ansible_facts['os_family'] | lower }}.yaml"
+      - "{{ ansible_facts.distribution | lower }}-{{ ansible_facts.distribution_version }}.yaml"
+      - "{{ ansible_facts.distribution | lower }}.yaml"
+      - "{{ ansible_facts.os_family | lower }}.yaml"
       paths:
       - vars

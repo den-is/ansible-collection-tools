@@ -13,8 +13,8 @@ _yazi_arch_map:
   x86_64: x86_64
   aarch64: aarch64
 
-_yazi_sys: "{{ _yazi_sys_map[ansible_facts['system']] }}"
-_yazi_arch: "{{ _yazi_arch_map[ansible_facts['architecture']] }}"
+_yazi_sys: "{{ _yazi_sys_map[ansible_facts.system] }}"
+_yazi_arch: "{{ _yazi_arch_map[ansible_facts.architecture] }}"
 
 _yazi_platform: "{{ _yazi_arch }}-{{ _yazi_sys }}"
 

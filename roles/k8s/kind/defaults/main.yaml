@@ -9,8 +9,8 @@ kind_sys_map:
   Linux: linux
   Win32NT: windows
 
-kind_arch: "{{ kind_arch_map[ansible_facts['architecture']] }}"
-kind_system: "{{ kind_sys_map[ansible_facts['system']] }}"
+kind_arch: "{{ kind_arch_map[ansible_facts.architecture] }}"
+kind_system: "{{ kind_sys_map[ansible_facts.system] }}"
 
 kind_release_base_url: https://github.com/kubernetes-sigs/kind/releases/download
 kind_release_url: '{{ kind_release_base_url }}/{{ kind_v }}/kind-{{ kind_system }}-{{ kind_arch }}'

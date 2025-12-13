@@ -14,4 +14,4 @@
   when:
   - yq_v is version(installed_yq_v, 'ne')
   - yq_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

@@ -10,8 +10,8 @@ rclone_system_map:
   Linux: linux
   Win32NT: windows
 
-rclone_arch: "{{ rclone_arch_map[ansible_facts['architecture']] }}"
-rclone_system: "{{ rclone_system_map[ansible_facts['system']] }}"
+rclone_arch: "{{ rclone_arch_map[ansible_facts.architecture] }}"
+rclone_system: "{{ rclone_system_map[ansible_facts.system] }}"
 
 rclone_release_base_url: https://github.com/rclone/rclone/releases/download
 rclone_archive_name: "rclone-{{ rclone_v }}-{{ rclone_system }}-{{ rclone_arch }}.zip"

@@ -12,8 +12,8 @@ _taplo_sys_map:
   Linux: linux
   Darwin: darwin
 
-_taplo_arch: "{{ _taplo_arch_map[ansible_facts['architecture']] }}"
-_taplo_sys: "{{ _taplo_sys_map[ansible_facts['system']] }}"
+_taplo_arch: "{{ _taplo_arch_map[ansible_facts.architecture] }}"
+_taplo_sys: "{{ _taplo_sys_map[ansible_facts.system] }}"
 
 _taplo_release_base_url: https://github.com/tamasfe/taplo/releases/download/{{ _taplo_nov }}
 _taplo_release_archive_name: taplo-{{ _taplo_sys }}-{{ _taplo_arch }}.gz

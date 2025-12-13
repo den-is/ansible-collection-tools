@@ -11,9 +11,9 @@ _chezmoi_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-_chezmoi_sys: "{{ ansible_facts['system'] | lower }}"
-_chezmoi_rpm_arch: "{{ _chezmoi_rpm_arch_map[ansible_facts['architecture']] }}"
-_chezmoi_arch: "{{ _chezmoi_arch_map[ansible_facts['architecture']] }}"
+_chezmoi_sys: "{{ ansible_facts.system | lower }}"
+_chezmoi_rpm_arch: "{{ _chezmoi_rpm_arch_map[ansible_facts.architecture] }}"
+_chezmoi_arch: "{{ _chezmoi_arch_map[ansible_facts.architecture] }}"
 
 chezmoi_install_archive: true
 chezmoi_install_binary: false

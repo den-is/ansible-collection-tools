@@ -10,11 +10,11 @@
     name: '{{ chezmoi_archive_download_dst }}/{{ _chezmoi_artifact_name }}'
     state: present
   when:
-  - ansible_facts['pkg_mgr'] == 'dnf5' or ansible_facts['pkg_mgr'] == 'dnf'
+  - ansible_facts.pkg_mgr == 'dnf5' or ansible_facts.pkg_mgr == 'dnf'
 
 - name: Install DEB package
   ansible.builtin.apt:
     deb: '{{ chezmoi_archive_download_dst }}/{{ _chezmoi_artifact_name }}'
     state: present
   when:
-  - ansible_facts['pkg_mgr'] == 'apt'
+  - ansible_facts.pkg_mgr == 'apt'

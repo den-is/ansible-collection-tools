@@ -14,4 +14,4 @@
   when:
   - argocd_v is version(installed_argocd_v, 'ne')
   - argocd_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

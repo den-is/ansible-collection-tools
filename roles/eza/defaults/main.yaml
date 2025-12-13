@@ -17,8 +17,8 @@ _eza_sys_map:
   # no releases for darwin
   # Darwin: apple-darwin
 
-_eza_arch: "{{ _eza_arch_map[ansible_facts['architecture']] }}"
-_eza_sys: "{{ _eza_sys_map[ansible_facts['system']] }}"
+_eza_arch: "{{ _eza_arch_map[ansible_facts.architecture] }}"
+_eza_sys: "{{ _eza_sys_map[ansible_facts.system] }}"
 
 _eza_release_base_url: https://github.com/eza-community/eza/releases/download/v{{ _eza_nov }}
 _eza_release_archive_name: eza_{{ _eza_arch }}-{{ _eza_sys }}{{ '-musl' if eza_musl else '-gnu' }}.tar.gz

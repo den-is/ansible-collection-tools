@@ -14,4 +14,4 @@
   when:
   - zellij_nov is version(installed_zellij_v, 'ne')
   - zellij_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

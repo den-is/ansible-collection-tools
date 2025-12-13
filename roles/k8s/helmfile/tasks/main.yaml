@@ -14,4 +14,4 @@
   when:
   - helmfile_v is version(current_helmfile_v, 'ne')
   - helmfile_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

@@ -9,8 +9,8 @@ _opentofu_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-_opentofu_sys: "{{ _opentofu_sys_map[ansible_facts['system']] }}"
-_opentofu_arch: "{{ _opentofu_arch_map[ansible_facts['architecture']] }}"
+_opentofu_sys: "{{ _opentofu_sys_map[ansible_facts.system] }}"
+_opentofu_arch: "{{ _opentofu_arch_map[ansible_facts.architecture] }}"
 
 _opentofu_nov_v: "{{ opentofu_v | regex_replace('^v', '') }}"
 opentofu_release_base_url: https://github.com/opentofu/opentofu/releases/download

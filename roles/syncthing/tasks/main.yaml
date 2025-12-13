@@ -8,7 +8,7 @@
   become: true
   when:
   - syncthing_v is version(_installed_syncthing_v, 'ne')
-  - ansible_facts['os_family'] == 'Debian'
+  - ansible_facts.os_family == 'Debian'
   - syncthing_repo
   - not syncthing_brew
 
@@ -23,4 +23,4 @@
   when:
   - syncthing_v is version(_installed_syncthing_v, 'ne')
   - syncthing_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

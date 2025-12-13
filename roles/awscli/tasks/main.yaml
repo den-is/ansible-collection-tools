@@ -6,7 +6,7 @@
 - name: Installing awscli on the Linux OS from archive
   ansible.builtin.include_tasks: linux.yaml
   when:
-  - ansible_facts['system'] == "Linux"
+  - ansible_facts.system == "Linux"
   - awscli_force_update or awscli_bin_exists is not success
   - not awscli_brew
 
@@ -14,4 +14,4 @@
   ansible.builtin.include_tasks: brew.yaml
   when:
   - awscli_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

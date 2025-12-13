@@ -16,9 +16,9 @@
       {%- elif chezmoi_install_binary -%}
       {{ chezmoi_release_binary_name }}
       {%- elif chezmoi_install_package -%}
-      {%- if ansible_facts['os_family'] == 'RedHat' -%}
+      {%- if ansible_facts.os_family == 'RedHat' -%}
       {{ chezmoi_release_rpm_name }}
-      {%- elif ansible_facts['os_family'] == 'Debian' -%}
+      {%- elif ansible_facts.os_family == 'Debian' -%}
       {{ chezmoi_release_deb_name }}
       {%- endif -%}
       {%- endif -%}

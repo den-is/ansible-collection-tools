@@ -2,7 +2,7 @@
   hosts: all
   become: false
   environment:
-    PATH: "{{ ansible_facts['env'].HOME }}/.local/bin:{{ ansible_facts['env'].PATH }}"
+    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.PATH }}"
   tasks:
 
   # user should have sudo permissions, because role will try to install git and zsh
@@ -14,7 +14,7 @@
   # after installation add to ~/.zshrc:
   #   source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   # or install by cloning https://github.com/zsh-users/zsh-syntax-highlighting.git
-  # into "{{ ansible_facts['env'].HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+  # into "{{ ansible_facts.env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
   - name: Install zsh-syntax-highlighting
     ansible.builtin.package:
       name: zsh-syntax-highlighting
@@ -32,7 +32,7 @@
   - name: Cloning fast-syntax-highlighting
     ansible.builtin.git:
       repo: https://github.com/zdharma-continuum/fast-syntax-highlighting.git
-      dest: "{{ ansible_facts['env'].HOME }}/.oh-my-zsh/custom/plugins/fast-syntax-highlighting"
+      dest: "{{ ansible_facts.env.HOME }}/.oh-my-zsh/custom/plugins/fast-syntax-highlighting"
       depth: 1
 
   # after installation run `p10k configure` to configure powerlevel10k
@@ -41,5 +41,5 @@
   - name: Installing powerlevel10k
     ansible.builtin.git:
       repo: https://github.com/romkatv/powerlevel10k.git
-      dest: "{{ ansible_facts['env'].HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
+      dest: "{{ ansible_facts.env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
       depth: 1

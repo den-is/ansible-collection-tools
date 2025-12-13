@@ -9,8 +9,8 @@ argo_rollouts_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-argo_rollouts_sys: "{{ argo_rollouts_sys_map[ansible_facts['system']] }}"
-argo_rollouts_arch: "{{ argo_rollouts_arch_map[ansible_facts['architecture']] }}"
+argo_rollouts_sys: "{{ argo_rollouts_sys_map[ansible_facts.system] }}"
+argo_rollouts_arch: "{{ argo_rollouts_arch_map[ansible_facts.architecture] }}"
 
 argo_rollouts_release_base_url: https://github.com/argoproj/argo-rollouts/releases/download
 argo_rollouts_release_binary_name: kubectl-argo-rollouts-{{ argo_rollouts_sys }}-{{ argo_rollouts_arch }}

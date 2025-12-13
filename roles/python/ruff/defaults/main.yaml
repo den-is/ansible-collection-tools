@@ -19,9 +19,9 @@ _ruff_compiler_map:
     x86_64: ""
     aarch64: ""
 
-_ruff_sys: "{{ _ruff_sys_map[ansible_facts['system']] }}"
-_ruff_arch: "{{ _ruff_arch_map[ansible_facts['architecture']] }}"
-_ruff_compiler: "{{ _ruff_compiler_map[ansible_facts['system']][ansible_facts['architecture']] }}"
+_ruff_sys: "{{ _ruff_sys_map[ansible_facts.system] }}"
+_ruff_arch: "{{ _ruff_arch_map[ansible_facts.architecture] }}"
+_ruff_compiler: "{{ _ruff_compiler_map[ansible_facts.system][ansible_facts.architecture] }}"
 
 ruff_release_base_url: https://github.com/astral-sh/ruff/releases/download
 ruff_release_archive_name: ruff-{{ _ruff_arch }}-{{ _ruff_sys }}{{ _ruff_compiler }}.tar.gz

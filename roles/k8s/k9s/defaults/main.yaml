@@ -5,10 +5,10 @@ k9s_arch_map:
   aarch64: arm64
 
 # before v0.26.8 k9s used x86_64 instead of amd64
-k9s_arch: "{{ k9s_arch_map[ansible_facts['architecture']] }}"
+k9s_arch: "{{ k9s_arch_map[ansible_facts.architecture] }}"
 
 k9s_release_base_url: https://github.com/derailed/k9s/releases/download
-k9s_release_url: "{{ k9s_release_base_url }}/{{ k9s_v }}/k9s_{{ ansible_facts['system'] }}_{{ k9s_arch }}.tar.gz"
+k9s_release_url: "{{ k9s_release_base_url }}/{{ k9s_v }}/k9s_{{ ansible_facts.system }}_{{ k9s_arch }}.tar.gz"
 
 k9s_bin: k9s
 k9s_bin_dst: /usr/local/bin

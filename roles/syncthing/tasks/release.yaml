@@ -34,7 +34,7 @@
     mode: '0644'
     remote_src: true
   become: true
-  when: ansible_facts["service_mgr"] == "systemd"
+  when: ansible_facts.service_mgr == "systemd"
 
 - name: Installing user service
   ansible.builtin.copy:
@@ -43,7 +43,7 @@
     mode: '0644'
     remote_src: true
   become: true
-  when: ansible_facts["service_mgr"] == "systemd"
+  when: ansible_facts.service_mgr == "systemd"
 
 - name: Enabling DE integration
   ansible.builtin.copy:
@@ -55,7 +55,7 @@
   - '{{ syncthing_extraction_path }}/etc/linux-desktop/syncthing-start.desktop'
   - '{{ syncthing_extraction_path }}/etc/linux-desktop/syncthing-ui.desktop'
   become: true
-  when: ansible_facts["service_mgr"] == "systemd"
+  when: ansible_facts.service_mgr == "systemd"
 
 - name: Deploy man pages
   when: syncthing_deploy_man

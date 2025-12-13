@@ -13,7 +13,7 @@
     ansible.builtin.set_fact:
       __yq_checksums: "{{ lookup('url', yq_checksums_url, headers=__github_api_headers, wantlist=True) | list }}"
     run_once: true
-    until: __yq_checksums is ansible.builtin.search("yq_" + ansible_facts['system'] | lower + "_" + yq_arch + "\s+")
+    until: __yq_checksums is ansible.builtin.search("yq_" + ansible_facts.system | lower + "_" + yq_arch + "\s+")
     retries: 10
 
   # conditional statements should not include jinja2 templating
@@ -25,7 +25,7 @@
     loop_control:
       label: "{{ item.split('  ')[0] }}"
     when:
-    - item is regex("^yq_" + ansible_facts['system'] | lower + "_" + yq_arch + "\s+")
+    - item is regex("^yq_" + ansible_facts.system | lower + "_" + yq_arch + "\s+")
 
 - name: Installing yq {{ yq_v }}
   ansible.builtin.get_url:

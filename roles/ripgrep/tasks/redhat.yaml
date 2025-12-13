@@ -1,6 +1,6 @@
 - name: Install ripgrep from EPEL packages
   when:
-  - not ansible_facts["distribution"] == "Fedora"
+  - not ansible_facts.distribution == "Fedora"
   - not ripgrep_uninstall
   block:
   - name: Install epel-release
@@ -18,7 +18,7 @@
     name: ripgrep
     state: present
   when:
-  - ansible_facts["distribution"] == "Fedora"
+  - ansible_facts.distribution == "Fedora"
   - not ripgrep_uninstall
 
 - name: Uninstall ripgrep

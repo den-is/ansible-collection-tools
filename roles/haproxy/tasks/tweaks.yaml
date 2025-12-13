@@ -1,10 +1,10 @@
 - name: Set limits.conf
   ansible.builtin.copy:
     content: |
-      *               soft    nofile  {{ maxconn * ansible_facts['processor_cores'] }}
-      *               hard    nofile  {{ maxconn * ansible_facts['processor_cores'] }}
-      root            soft    nofile  {{ maxconn * ansible_facts['processor_cores'] }}
-      root            hard    nofile  {{ maxconn * ansible_facts['processor_cores'] }}
+      *               soft    nofile  {{ maxconn * ansible_facts.processor_cores }}
+      *               hard    nofile  {{ maxconn * ansible_facts.processor_cores }}
+      root            soft    nofile  {{ maxconn * ansible_facts.processor_cores }}
+      root            hard    nofile  {{ maxconn * ansible_facts.processor_cores }}
     dest: /etc/security/limits.d/10-nofile.conf
   notify:
   - Restart host

@@ -14,4 +14,4 @@
   when:
   - __kubecolor_nov is version(installed_kubecolor_v, 'ne')
   - kubecolor_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

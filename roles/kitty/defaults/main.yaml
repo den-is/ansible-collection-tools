@@ -6,10 +6,10 @@ _kitty_arch_map:
   x86_64: x86_64
   aarch64: arm64
 
-_kitty_arch: "{{ _kitty_arch_map[ansible_facts['architecture']] }}"
+_kitty_arch: "{{ _kitty_arch_map[ansible_facts.architecture] }}"
 
 _kitty_release_base_url: https://github.com/kovidgoyal/kitty/releases/download/v{{ _kitty_nov }}
-_kitty_archive_name: kitty-{{ _kitty_nov }}{{ '.dmg' if ansible_facts['system'] == 'Darwin' else '-' + _kitty_arch + '.txz' }}
+_kitty_archive_name: kitty-{{ _kitty_nov }}{{ '.dmg' if ansible_facts.system == 'Darwin' else '-' + _kitty_arch + '.txz' }}
 
 kitty_release_url: '{{ _kitty_release_base_url }}/{{ _kitty_archive_name }}'
 

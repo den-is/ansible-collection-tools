@@ -8,7 +8,7 @@
     name: libfuse2
     state: present
   when:
-  - ansible_facts['os_family'] == 'Debian'
+  - ansible_facts.os_family == 'Debian'
 
 - name: Install fuse devel libs on RedHat based OS
   ansible.builtin.package:
@@ -18,7 +18,7 @@
   - fuse
   - fuse-devel
   when:
-  - ansible_facts['os_family'] == 'RedHat'
+  - ansible_facts.os_family == 'RedHat'
 
 - name: Creating extraction dir {{ vagrant_full_download_path }}
   ansible.builtin.file:

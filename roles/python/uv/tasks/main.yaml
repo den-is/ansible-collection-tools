@@ -14,4 +14,4 @@
   when:
   - uv_v is version(_installed_uv_v, 'ne')
   - uv_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

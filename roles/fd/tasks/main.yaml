@@ -13,7 +13,7 @@
 - name: Deb package installation
   ansible.builtin.include_tasks: deb.yaml
   when:
-  - ansible_facts["os_family"] == "Debian"
+  - ansible_facts.os_family == "Debian"
   - __fd_install_deb | bool
   - _fd_nov is version(installed_fd_v, 'ne')
   - not fd_brew | bool
@@ -23,4 +23,4 @@
   when:
   - _fd_nov is version(installed_fd_v, 'ne')
   - fd_brew | bool
-  - ansible_facts["system"] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

@@ -14,4 +14,4 @@
   when:
   - mkcert_v is version(installed_mkcert_v, 'ne')
   - mkcert_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

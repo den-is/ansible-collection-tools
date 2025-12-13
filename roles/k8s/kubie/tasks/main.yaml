@@ -14,4 +14,4 @@
   when:
   - kubie_v is version(current_kubie_v_with_v, 'ne')
   - kubie_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

@@ -19,4 +19,4 @@
   when:
   - _crane_nov is version(_installed_crane_v, 'ne')
   - crane_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

@@ -17,7 +17,7 @@
   ansible.builtin.include_tasks: homebrew.yaml
   when:
   - pyenv_brew_install
-  - ansible_facts['os_family'] == "Darwin"
+  - ansible_facts.os_family == "Darwin"
 
 # enable yaml strout callback plugin for better output
 - name: Pyenv post-installation instructions

@@ -10,8 +10,8 @@ _argonaut_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-_argonaut_sys: "{{ _argonaut_sys_map[ansible_facts['system']] }}"
-_argonaut_arch: "{{ _argonaut_arch_map[ansible_facts['architecture']] }}"
+_argonaut_sys: "{{ _argonaut_sys_map[ansible_facts.system] }}"
+_argonaut_arch: "{{ _argonaut_arch_map[ansible_facts.architecture] }}"
 
 argonaut_release_base_url: https://github.com/darksworm/argonaut/releases/download/v{{ _argonaut_nov }}
 argonaut_release_artifact_name: argonaut-{{ _argonaut_nov }}-{{ _argonaut_sys }}-{{ _argonaut_arch }}.tar.gz

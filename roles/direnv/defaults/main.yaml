@@ -12,8 +12,8 @@ direnv_system_map:
   Linux: linux
   Win32NT: windows
 
-direnv_arch: "{{ direnv_arch_map[ansible_facts['architecture']] }}"
-direnv_system: "{{ direnv_system_map[ansible_facts['system']] }}"
+direnv_arch: "{{ direnv_arch_map[ansible_facts.architecture] }}"
+direnv_system: "{{ direnv_system_map[ansible_facts.system] }}"
 
 direnv_release_base_url: https://github.com/direnv/direnv/releases/download
 direnv_release_url: '{{ direnv_release_base_url }}/v{{ _direnv_nov }}/direnv.{{ direnv_system }}-{{ direnv_arch }}'

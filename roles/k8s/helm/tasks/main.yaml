@@ -14,7 +14,7 @@
   when:
   - _helm_v_calculated is version(installed_helm_v, 'ne')
   - helm_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'
 
 - name: Helm Plugins installation
   kubernetes.core.helm_plugin:
@@ -23,4 +23,6 @@
   loop_control:
     label: "{{ item.path }}"
   loop: "{{ helm_plugins }}"
-  when: helm_plugins is defined
+  when:
+  - helm_plugins is defined
+  - helm_plugins | length > 0

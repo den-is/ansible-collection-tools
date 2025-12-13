@@ -12,9 +12,9 @@ croc_system_map:
   Linux: Linux
   Win32NT: Windows
 
-croc_arch: "{{ croc_arch_map[ansible_facts['architecture']] }}"
-croc_system: "{{ croc_system_map[ansible_facts['system']] }}"
-croc_archive_ext: "{{ 'zip' if ansible_facts['system'] == 'Win32NT' else 'tar.gz' }}"
+croc_arch: "{{ croc_arch_map[ansible_facts.architecture] }}"
+croc_system: "{{ croc_system_map[ansible_facts.system] }}"
+croc_archive_ext: "{{ 'zip' if ansible_facts.system == 'Win32NT' else 'tar.gz' }}"
 
 croc_release_base_url: https://github.com/schollz/croc/releases/download
 croc_archive_name: croc_{{ croc_v }}_{{ croc_system }}-{{ croc_arch }}.{{ croc_archive_ext }}

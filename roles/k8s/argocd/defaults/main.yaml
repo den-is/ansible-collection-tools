@@ -9,8 +9,8 @@ argocd_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-argocd_sys: "{{ argocd_sys_map[ansible_facts['system']] }}"
-argocd_arch: "{{ argocd_arch_map[ansible_facts['architecture']] }}"
+argocd_sys: "{{ argocd_sys_map[ansible_facts.system] }}"
+argocd_arch: "{{ argocd_arch_map[ansible_facts.architecture] }}"
 
 argocd_release_base_url: https://github.com/argoproj/argo-cd/releases/download
 argocd_release_binary_name: argocd-{{ argocd_sys }}-{{ argocd_arch }}{{ '.exe' if argocd_sys == 'windows' }}

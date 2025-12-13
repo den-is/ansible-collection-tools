@@ -9,8 +9,8 @@ _kubent_arch_map:
   x86_64: "amd64"
   aarch64: "arm64"
 
-_kubent_sys: "{{ _kubent_sys_map[ansible_facts['system']] }}"
-_kubent_arch: "{{ _kubent_arch_map[ansible_facts['architecture']] }}"
+_kubent_sys: "{{ _kubent_sys_map[ansible_facts.system] }}"
+_kubent_arch: "{{ _kubent_arch_map[ansible_facts.architecture] }}"
 
 kubent_release_base_url: https://github.com/doitintl/kube-no-trouble/releases/download
 kubent_release_archive_name: kubent-{{ kubent_v }}-{{ _kubent_sys }}-{{ _kubent_arch }}.tar.gz

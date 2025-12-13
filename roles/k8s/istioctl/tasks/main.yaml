@@ -14,4 +14,4 @@
   when:
   - istioctl_v is version(installed_istioctl_v, 'ne')
   - istioctl_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

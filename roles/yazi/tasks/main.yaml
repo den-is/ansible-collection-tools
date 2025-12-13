@@ -14,4 +14,4 @@
   when:
   - yazi_nov is version(installed_yazi_v, 'ne')
   - yazi_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

@@ -14,4 +14,4 @@
   when:
   - just_v is version(_installed_just_v, 'ne')
   - just_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

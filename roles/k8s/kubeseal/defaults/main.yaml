@@ -11,8 +11,8 @@ kubeseal_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-kubeseal_sys: "{{ kubeseal_sys_map[ansible_facts['system']] }}"
-kubeseal_arch: "{{ kubeseal_arch_map[ansible_facts['architecture']] }}"
+kubeseal_sys: "{{ kubeseal_sys_map[ansible_facts.system] }}"
+kubeseal_arch: "{{ kubeseal_arch_map[ansible_facts.architecture] }}"
 
 kubeseal_release_base_url: https://github.com/bitnami-labs/sealed-secrets/releases/download
 kubeseal_release_file_name: kubeseal-{{ __kubeseal_nov }}-{{ kubeseal_sys }}-{{ kubeseal_arch }}.tar.gz

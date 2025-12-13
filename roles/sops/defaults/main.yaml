@@ -13,8 +13,8 @@ sops_system_map:
 sops_install_from_package: true
 # deb or rpm
 
-sops_arch: "{{ sops_arch_map[ansible_facts['architecture']] }}"
-sops_system: "{{ sops_system_map[ansible_facts['system']] }}"
+sops_arch: "{{ sops_arch_map[ansible_facts.architecture] }}"
+sops_system: "{{ sops_system_map[ansible_facts.system] }}"
 
 sops_release_base_url: https://github.com/getsops/sops/releases/download
 

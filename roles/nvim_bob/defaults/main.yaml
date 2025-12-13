@@ -12,8 +12,8 @@ _nvim_bob_system_map:
   Linux: linux
   Win32NT: windows
 
-_nvim_bob_arch: "{{ _nvim_bob_arch_map[ansible_facts['architecture']] }}"
-_nvim_bob_system: "{{ _nvim_bob_system_map[ansible_facts['system']] }}"
+_nvim_bob_arch: "{{ _nvim_bob_arch_map[ansible_facts.architecture] }}"
+_nvim_bob_system: "{{ _nvim_bob_system_map[ansible_facts.system] }}"
 
 nvim_bob_release_base_url: https://github.com/MordechaiHadad/bob/releases/download/v{{ _nvim_bob_nov }}
 

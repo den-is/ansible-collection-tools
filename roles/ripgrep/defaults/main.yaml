@@ -22,9 +22,9 @@ _ripgrep_compiler_map:
     x86_64: ""
     aarch64: ""
 
-_ripgrep_sys: "{{ _ripgrep_sys_map[ansible_facts['system']] }}"
-_ripgrep_arch: "{{ _ripgrep_arch_map[ansible_facts['architecture']] }}"
-_ripgrep_compiler: "{{ _ripgrep_compiler_map[ansible_facts['system']][ansible_facts['architecture']] }}"
+_ripgrep_sys: "{{ _ripgrep_sys_map[ansible_facts.system] }}"
+_ripgrep_arch: "{{ _ripgrep_arch_map[ansible_facts.architecture] }}"
+_ripgrep_compiler: "{{ _ripgrep_compiler_map[ansible_facts.system][ansible_facts.architecture] }}"
 
 _ripgrep_release_base_url: https://github.com/BurntSushi/ripgrep/releases/download
 ripgrep_release_archive_name: ripgrep-{{ ripgrep_v }}-{{ _ripgrep_arch }}-{{ _ripgrep_sys }}{{ _ripgrep_compiler }}.tar.gz

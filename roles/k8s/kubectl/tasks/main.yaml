@@ -15,7 +15,7 @@
   become: true
   when:
   - kubectl_v is version(_installed_kubectl_v, 'ne')
-  - ansible_facts['os_family'] == 'Debian'
+  - ansible_facts.os_family == 'Debian'
   - kubernetes_repo
 
 - name: RPM Installation
@@ -23,7 +23,7 @@
   become: true
   when:
   # - kubectl_v is version(_installed_kubectl_v, 'ne')
-  - ansible_facts['os_family'] == 'RedHat'
+  - ansible_facts.os_family == 'RedHat'
   - kubernetes_repo
 
 - name: MacOS homebrew installation
@@ -31,4 +31,4 @@
   when:
   - kubectl_v is version(_installed_kubectl_v, 'ne')
   - kubectl_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

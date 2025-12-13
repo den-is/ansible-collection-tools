@@ -12,8 +12,8 @@ _crane_system_map:
   Linux: Linux
   Win32NT: Windows
 
-_crane_arch: "{{ _crane_arch_map[ansible_facts['architecture']] }}"
-_crane_sys: "{{ _crane_system_map[ansible_facts['system']] }}"
+_crane_arch: "{{ _crane_arch_map[ansible_facts.architecture] }}"
+_crane_sys: "{{ _crane_system_map[ansible_facts.system] }}"
 
 crane_release_base_url: https://github.com/google/go-containerregistry/releases/download/v{{ _crane_nov }}
 crane_archive_name: go-containerregistry_{{ _crane_sys }}_{{ _crane_arch }}.tar.gz

@@ -7,7 +7,7 @@
   ansible.builtin.apt:
     update_cache: true
   when:
-  - ansible_facts['os_family'] == 'Debian'
+  - ansible_facts.os_family == 'Debian'
 
 - name: Sysctl tweaks
   ansible.builtin.include_tasks: tweaks.yaml
@@ -20,13 +20,13 @@
   ansible.builtin.include_tasks: debian-apt.yaml
   when:
   - not haproxy_compile
-  - ansible_facts['distribution'] == 'Debian'
+  - ansible_facts.distribution == 'Debian'
 
 - name: Install HAProxy from package on Ubuntu
   ansible.builtin.include_tasks: ubuntu-apt.yaml
   when:
   - not haproxy_compile
-  - ansible_facts['distribution'] == 'Ubuntu'
+  - ansible_facts.distribution == 'Ubuntu'
 
 - name: Pre-compilation tasks
   ansible.builtin.include_tasks: pre-compile.yaml

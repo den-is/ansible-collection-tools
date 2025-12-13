@@ -4,8 +4,8 @@ talosctl_arch_map:
   x86_64: amd64
   aarch64: arm64
 
-talosctl_arch: "{{ talosctl_arch_map[ansible_facts['architecture']] }}"
-talosctl_system: "{{ ansible_facts['system'] | lower }}"
+talosctl_arch: "{{ talosctl_arch_map[ansible_facts.architecture] }}"
+talosctl_system: "{{ ansible_facts.system | lower }}"
 
 talosctl_release_base_url: https://github.com/siderolabs/talos/releases/download
 talosctl_binary_artifact_name: talosctl-{{ talosctl_system }}-{{ talosctl_arch }}

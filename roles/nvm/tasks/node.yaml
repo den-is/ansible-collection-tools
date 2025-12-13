@@ -1,9 +1,9 @@
 - name: Install Node.js - {{ nvm_node_version }}
   ansible.builtin.shell: >-
-    . {{ ansible_facts['env']['HOME'] }}/.nvm/nvm.sh
+    . {{ ansible_facts.env.HOME }}/.nvm/nvm.sh
     nvm install {{ nvm_install_extras }} {{ nvm_node_version }}
 
 - name: Use Node.js - {{ nvm_node_version }}
   ansible.builtin.shell: >-
-    . {{ ansible_facts['env']['HOME'] }}/.nvm/nvm.sh
+    . {{ ansible_facts.env.HOME }}/.nvm/nvm.sh
     nvm use {{ nvm_node_version }}

@@ -10,11 +10,11 @@ zellij_system_map:
   Darwin: apple-darwin
   Linux: unknown-linux
 
-zellij_arch: "{{ zellij_arch_map[ansible_facts['architecture']] }}"
-zellij_system: "{{ zellij_system_map[ansible_facts['system']] }}"
+zellij_arch: "{{ zellij_arch_map[ansible_facts.architecture] }}"
+zellij_system: "{{ zellij_system_map[ansible_facts.system] }}"
 
 zellij_release_base_url: https://github.com/zellij-org/zellij/releases/download
-zellij_archive_name: zellij-{{ zellij_arch }}-{{ zellij_system }}{{ '-musl' if ansible_facts['system'] == 'Linux' }}.tar.gz
+zellij_archive_name: zellij-{{ zellij_arch }}-{{ zellij_system }}{{ '-musl' if ansible_facts.system == 'Linux' }}.tar.gz
 
 zellij_release_url: '{{ zellij_release_base_url }}/{{ zellij_v }}/{{ zellij_archive_name }}'
 

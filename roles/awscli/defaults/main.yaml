@@ -3,8 +3,8 @@ awscli_v: latest
 # tags can be found at https://github.com/aws/aws-cli/tags
 # awscli_v: 2.17.51
 
-awscli_arch: "{{ ansible_facts['architecture'] }}"
-awscli_system: "{{ ansible_facts['system'] | lower }}"
+awscli_arch: "{{ ansible_facts.architecture }}"
+awscli_system: "{{ ansible_facts.system | lower }}"
 
 awscli_release_base_url: https://awscli.amazonaws.com
 awscli_archive_name: "awscli-exe-{{ awscli_system }}-{{ awscli_arch }}{{ '-'+ awscli_v if awscli_v != 'latest' }}.zip"

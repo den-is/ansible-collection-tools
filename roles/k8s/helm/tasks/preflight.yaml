@@ -56,7 +56,7 @@
 - name: Registering Preflight vars
   ansible.builtin.set_fact:
     installed_helm_v: "{{ _helm_check_version_task.stdout | default('v0.0.0', true) }}"
-    helm_release_artifact: helm-{{ _helm_v_calculated }}-{{ ansible_facts['system'] | lower }}-{{ _helm_arch }}.tar.gz
+    helm_release_artifact: helm-{{ _helm_v_calculated }}-{{ ansible_facts.system | lower }}-{{ _helm_arch }}.tar.gz
     helm_extraction_path: '{{ helm_archive_download_dst }}/helm-{{ _helm_v_calculated }}'
 
 - name: Set Helm release download URL

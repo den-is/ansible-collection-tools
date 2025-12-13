@@ -14,4 +14,4 @@
   when:
   - prek_v is version(_installed_prek_v, 'ne')
   - prek_brew
-  - ansible_facts['system'] == 'Darwin'
+  - ansible_facts.system == 'Darwin'

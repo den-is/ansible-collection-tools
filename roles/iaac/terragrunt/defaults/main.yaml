@@ -10,8 +10,8 @@ terragrunt_system_map:
   Linux: linux
   Win32NT: windows
 
-terragrunt_arch: "{{ terragrunt_arch_map[ansible_facts['architecture']] }}"
-terragrunt_system: "{{ terragrunt_system_map[ansible_facts['system']] }}"
+terragrunt_arch: "{{ terragrunt_arch_map[ansible_facts.architecture] }}"
+terragrunt_system: "{{ terragrunt_system_map[ansible_facts.system] }}"
 
 terragrunt_release_base_url: https://github.com/gruntwork-io/terragrunt/releases/download
 terragrunt_release_url: '{{ terragrunt_release_base_url }}/{{ terragrunt_v }}/terragrunt_{{ terragrunt_system }}_{{ terragrunt_arch }}'

@@ -12,8 +12,8 @@ _starship_sys_map:
   Linux: unknown-linux
   Darwin: apple-darwin
 
-_starship_arch: "{{ _starship_arch_map[ansible_facts['architecture']] }}"
-_starship_sys: "{{ _starship_sys_map[ansible_facts['system']] }}"
+_starship_arch: "{{ _starship_arch_map[ansible_facts.architecture] }}"
+_starship_sys: "{{ _starship_sys_map[ansible_facts.system] }}"
 
 
 # https://github.com/starship/starship/releases/download/v1.24.1/starship_x86_64-unknown-linux-gnu.tar.gz

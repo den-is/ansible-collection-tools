@@ -12,9 +12,9 @@ restic_system_map:
   Linux: linux
   Win32NT: windows
 
-restic_arch: "{{ restic_arch_map[ansible_facts['architecture']] }}"
-restic_system: "{{ restic_system_map[ansible_facts['system']] }}"
-restic_archive_ext: "{{ 'zip' if ansible_facts['system'] == 'Win32NT' else 'bz2' }}"
+restic_arch: "{{ restic_arch_map[ansible_facts.architecture] }}"
+restic_system: "{{ restic_system_map[ansible_facts.system] }}"
+restic_archive_ext: "{{ 'zip' if ansible_facts.system == 'Win32NT' else 'bz2' }}"
 
 restic_artifact_name: restic_{{ _restic_nov }}_{{ restic_system }}_{{ restic_arch }}
 restic_archive_name: "{{ restic_artifact_name }}.{{ restic_archive_ext }}"
