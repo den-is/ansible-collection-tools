@@ -1,0 +1,34 @@
+- name: Get checksum
+  when: shfmt_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __shfmt_checksums: "{{ lookup('url', shfmt_sha256sums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __shfmt_checksums is search(shfmt_release_artifact_name)
+    retries: 10
+
+  - name: Get checksum for {{ shfmt_release_artifact_name }}
+    ansible.builtin.set_fact:
+      __shfmt_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __shfmt_checksums }}"
+    when:
+    - shfmt_release_artifact_name in item
+
+- name: Installing shfmt {{ shfmt_v }}
+  ansible.builtin.get_url:
+    url: '{{ shfmt_release_url }}'
+    dest: '{{ shfmt_bin_dst }}/{{ shfmt_bin }}'
+    checksum: "{{ 'sha256:' + __shfmt_checksum if shfmt_checksum_verify else '' }}"
+    mode: '0755'
+
+- name: Ensure permissions
+  ansible.builtin.file:
+    path: '{{ shfmt_bin_dst }}/{{ shfmt_bin }}'
+    mode: '0755'

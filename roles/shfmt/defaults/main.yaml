@@ -1,0 +1,30 @@
+shfmt_v: v3.12.0
+
+_shfmt_nov: "{{ shfmt_v | regex_replace('^v', '') }}"
+
+_shfmt_arch_map:
+  x86_64: "amd64"
+  i386: "386"
+  aarch64: "arm64"
+
+_shfmt_sys_map:
+  Darwin: darwin
+  Linux: linux
+  Win32NT: windows
+
+_shfmt_arch: "{{ _shfmt_arch_map[ansible_facts.architecture] }}"
+_shfmt_system: "{{ _shfmt_sys_map[ansible_facts.system] }}"
+
+shfmt_release_base_url: https://github.com/mvdan/sh/releases/download/v{{ _shfmt_nov }}
+shfmt_release_artifact_name: shfmt_v{{ _shfmt_nov }}_{{ _shfmt_system }}_{{ _shfmt_arch }}
+shfmt_release_url: '{{ shfmt_release_base_url }}/{{ shfmt_release_artifact_name }}'
+
+shfmt_checksum_verify: false
+shfmt_sha256sums_url: '{{ shfmt_release_base_url }}/sha256sums.txt'
+
+shfmt_bin_dst: /usr/local/bin
+shfmt_bin: shfmt
+
+shfmt_brew: false
+shfmt_brew_package: shfmt
+shfmt_brew_state: latest

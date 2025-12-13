@@ -1,0 +1,17 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Binary download and installation
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - _shfmt_nov is version(__installed_shfmt_v, 'ne')
+  - not shfmt_brew
+
+- name: MacOS homebrew installation
+  ansible.builtin.include_tasks: brew.yaml
+  when:
+  - _shfmt_nov is version(__installed_shfmt_v, 'ne')
+  - shfmt_brew
+  - ansible_facts.system == 'Darwin'
