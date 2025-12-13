@@ -1,0 +1,35 @@
+- name: Getting shellcheck release artifact archive
+  ansible.builtin.get_url:
+    url: '{{ shellcheck_release_url }}'
+    dest: '{{ shellcheck_archive_download_dst }}/{{ shellcheck_archive_name }}'
+    checksum: "{{ 'sha256:' + shellcheck_sha256sum if shellcheck_sha256sum is defined and shellcheck_sha256sum | length > 0 else '' }}"
+    mode: '0644'
+
+- name: Creating extraction dir {{ shellcheck_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ shellcheck_extraction_dst }}'
+    state: directory
+    mode: '0755'
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ shellcheck_archive_download_dst }}/{{ shellcheck_archive_name }}'
+    dest: '{{ shellcheck_extraction_dst }}'
+    remote_src: true
+    extra_opts: ['--strip-components=1', '--show-stored-names']
+
+- name: Copying binary to {{ shellcheck_bin_dst }}
+  ansible.builtin.copy:
+    src: '{{ shellcheck_extraction_dst }}/shellcheck'
+    dest: '{{ shellcheck_bin_dst }}/{{ shellcheck_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ shellcheck_extraction_dst }}'
+  - '{{ shellcheck_archive_download_dst }}/{{ shellcheck_archive_name }}'
+  when: shellcheck_cleanup | default(true)

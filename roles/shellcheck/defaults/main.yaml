@@ -1,0 +1,20 @@
+shellcheck_v: v0.11.0
+
+_shellcheck_nov: "{{ shellcheck_v | regex_replace('^v', '') }}"
+
+shellcheck_release_base_url: https://github.com/koalaman/shellcheck/releases/download/v{{ _shellcheck_nov }}
+shellcheck_archive_name: shellcheck-v{{ _shellcheck_nov }}.{{ ansible_facts.system | lower }}.{{ ansible_facts.architecture }}.tar.xz
+shellcheck_release_url: '{{ shellcheck_release_base_url }}/{{ shellcheck_archive_name }}'
+
+shellcheck_sha256sum: ''
+
+shellcheck_archive_download_dst: /tmp
+shellcheck_extraction_dst: '{{ shellcheck_archive_download_dst }}/shellcheck-{{ shellcheck_v }}'
+shellcheck_cleanup: true
+
+shellcheck_bin_dst: /usr/local/bin
+shellcheck_bin: shellcheck
+
+shellcheck_brew: false
+shellcheck_brew_package: shellcheck
+shellcheck_brew_state: latest

@@ -1,0 +1,5 @@
+- name: Brew install shellcheck
+  community.general.homebrew:
+    name: '{{ shellcheck_brew_package }}'
+    state: '{{ shellcheck_brew_state }}'
+    update_homebrew: true
