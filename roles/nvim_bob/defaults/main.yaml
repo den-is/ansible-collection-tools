@@ -21,6 +21,7 @@ nvim_bob_archive_name: bob-{{ _nvim_bob_system }}-{{ _nvim_bob_arch }}{{ "-opens
 nvim_bob_release_url: "{{ nvim_bob_release_base_url }}/{{ nvim_bob_archive_name }}"
 nvim_bob_archive_download_dst: /tmp
 nvim_bob_extraction_dst: '{{ nvim_bob_archive_download_dst }}/bob-{{ nvim_bob_v }}'
+nvim_bob_cleanup_downloads: true
 
 nvim_bob_bin_dst: /usr/local/bin
 nvim_bob_bin: bob

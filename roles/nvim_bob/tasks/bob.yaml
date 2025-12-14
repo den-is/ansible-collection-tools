@@ -36,3 +36,4 @@
   loop:
   - '{{ nvim_bob_extraction_dst }}'
   - '{{ nvim_bob_archive_download_dst }}/{{ nvim_bob_archive_name }}'
+  when: nvim_bob_cleanup_downloads
