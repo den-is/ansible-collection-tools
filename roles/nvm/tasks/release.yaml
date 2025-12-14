@@ -1,14 +1,3 @@
-- name: Install packages
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-  become: true
-  loop:
-  - git
-  - curl
-  - wget
-  - ca-certificates
-
 - name: Download NVM install script
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_v }}/install.sh
