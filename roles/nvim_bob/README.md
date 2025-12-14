@@ -25,7 +25,6 @@ To deploy neovim configuration using this role:
   - name: Install bob neovim installer
     ansible.builtin.import_role:
       name: den_is.tools.nvim_bob
-    become: true # required to install bob binary in /usr/local/bin and `unzip`
     vars:
       neovim_config_deploy: true
       neovim_config_repo: https://github.com/den-is/nvim
