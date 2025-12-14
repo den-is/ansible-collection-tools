@@ -3,16 +3,6 @@
   tags:
   - always
 
-# TODO: define packages based on OS/distribution RHEL/Debian
-- name: Install requried packages
-  ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-  become: true
-  loop:
-  - gpg
-  - unzip
-
 - name: Installation from release archive
   ansible.builtin.include_tasks: archive.yaml
   when:
