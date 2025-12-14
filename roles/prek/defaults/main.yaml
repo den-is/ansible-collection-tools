@@ -1,4 +1,6 @@
-prek_v: 0.2.22
+prek_v: v0.2.22
+
+_prek_nov: "{{ prek_v | regex_replace('^v', '') }}"
 
 prek_compiler_gnu: true
 
@@ -23,7 +25,7 @@ _prek_sys: "{{ _prek_sys_map[ansible_facts.system] }}"
 _prek_arch: "{{ _prek_arch_map[ansible_facts.architecture] }}"
 _prek_compiler: "{{ _prek_compiler_map[ansible_facts.system][ansible_facts.architecture] }}"
 
-prek_release_base_url: https://github.com/j178/prek/releases/download/v{{ prek_v }}
+prek_release_base_url: https://github.com/j178/prek/releases/download/v{{ _prek_nov }}
 prek_release_archive_name: prek-{{ _prek_arch }}-{{ _prek_sys }}{{ _prek_compiler }}.tar.gz
 prek_release_url: '{{ prek_release_base_url }}/{{ prek_release_archive_name }}'
 
@@ -31,7 +33,7 @@ prek_checksum_verify: false
 prek_checksums_url: '{{ prek_release_base_url }}/{{ prek_release_archive_name }}.sha256'
 
 prek_archive_download_dst: /tmp
-prek_extraction_path: '{{ prek_archive_download_dst }}/prek-{{ prek_v }}'
+prek_extraction_path: '{{ prek_archive_download_dst }}/prek-{{ _prek_nov }}'
 
 prek_bin_dst: /usr/local/bin
 prek_bin: prek

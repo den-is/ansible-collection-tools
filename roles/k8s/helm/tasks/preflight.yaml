@@ -55,7 +55,7 @@
 
 - name: Registering Preflight vars
   ansible.builtin.set_fact:
-    installed_helm_v: "{{ _helm_check_version_task.stdout | default('v0.0.0', true) }}"
+    _installed_helm_v: "{{ _helm_check_version_task.stdout | default('v0.0.0', true) }}"
     helm_release_artifact: helm-{{ _helm_v_calculated }}-{{ ansible_facts.system | lower }}-{{ _helm_arch }}.tar.gz
     helm_extraction_path: '{{ helm_archive_download_dst }}/helm-{{ _helm_v_calculated }}'
 
@@ -71,4 +71,4 @@
 - name: Reporting installed version
   ansible.builtin.debug:
     msg: |-
-      Current Helm version: {{ installed_helm_v if _helm_check_version_task is success else "Not installed" }}
+      Current Helm version: {{ _installed_helm_v if _helm_check_version_task is success else "Not installed" }}
