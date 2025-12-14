@@ -1,0 +1,37 @@
+- name: Tools deploy
+  hosts: all
+  become: false
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+  vars:
+    # set top-level playbook variables
+    common_bin_dst: ~/.local/bin
+
+    terragrunt_v: v0.95.1
+    terragrunt_bin_dst: '{{ common_bin_dst }}'
+
+  tasks:
+
+  # requires elevated privileges
+  - name: Install helm globally using role defaults
+    ansible.builtin.import_role:
+      name: den_is.tools.k8s.helm
+    become: true
+    tags: helm
+
+  # does not require elevated privileges
+  - name: Install terragrunt in user's home
+    ansible.builtin.import_role:
+      # custom vars are set above
+      name: den_is.tools.iaac.terragrunt
+    tags: tg
+
+  # does not require elevated privileges
+  - name: Install specific OpenTofu version in user's home
+    ansible.builtin.import_role:
+      name: den_is.tools.iaac.opentofu
+    vars:
+      # set role variables "inline"
+      opentofu_v: v1.11.1
+      opentofu_bin_dst: ~/.local/bin
+    tags: tofu

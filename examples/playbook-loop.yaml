@@ -1,0 +1,29 @@
+# Dynamically iterate over roles and deploy enabled
+- name: Tools deploy globally
+  hosts: all
+  become: true
+  environment:
+    PATH: "{{ ansible_facts.env.HOME }}/.local/bin:{{ ansible_facts.env.PATH }}"
+
+  vars:
+    # these vars can go in group_vars/all.yaml or host_vars/hostname.yaml or other available ansbile variable sources
+    roles_to_deploy:
+    - role: den_is.tools.fzf
+      enabled: true
+    - role: den_is.tools.eza
+      enabled: true
+    - role: den_is.tools.k8s.crane
+      enabled: true
+
+    crane_install_all_binaries: false
+
+  tasks:
+
+  - name: Tools deploy
+    ansible.builtin.include_role:
+      name: "{{ tool_role.role }}"
+    when: tool_role.enabled | bool
+    loop: "{{ roles_to_deploy }}"
+    loop_control:
+      loop_var: tool_role
+      label: "{{ tool_role.role }}"
