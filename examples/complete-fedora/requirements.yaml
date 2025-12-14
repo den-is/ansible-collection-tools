@@ -1,0 +1,9 @@
+# ansible-galaxy collection install den_is.tools
+# ansible-galaxy collection install git+https://github.com/den-is/ansible-collection-tools.git
+# ansible-galaxy install -r requirements.yaml
+# ansible-galaxy collection install den_is.tools --upgrade
+
+collections:
+- name: den_is.tools
+# - name: https://github.com/den-is/ansible-collection-tools.git
+#   type: git

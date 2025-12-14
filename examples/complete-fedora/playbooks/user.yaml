@@ -1,0 +1,34 @@
+- name: Fedora - user
+  hosts: all
+  become: false
+  tasks:
+
+  # global packages are deployed with root playbook
+  # here we setup only user specific environment and tools
+
+  - name: Create ~/.ssh dir
+    ansible.builtin.file:
+      path: ~/.ssh
+      state: directory
+      mode: '0700'
+
+  - name: Create common dirs in $HOME
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0700'
+    loop:
+    - ~/.local
+    - ~/.local/bin
+    - ~/.local/share
+    - ~/.local/share/man
+    - ~/.config
+    - ~/.vim
+
+  - name: Deploy FZF
+    ansible.builtin.include_role:
+      name: den_is.tools.fzf
+
+  - name: Deploy NVM
+    ansible.builtin.include_role:
+      name: den_is.tools.nvm

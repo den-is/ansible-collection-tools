@@ -1,0 +1,118 @@
+default_packages:
+- dnf-plugins-core
+- ca-certificates
+- wl-clipboard
+- openssl
+- git
+- zsh
+- curl
+- wget
+- jq
+- tzdata
+- tmux
+- unzip
+- p7zip
+- gnupg2
+- p7zip-plugins
+- hwinfo
+- lm_sensors
+- bash-completions
+- vim-enhanced
+- strace
+- lsof
+- htop
+- btop
+- iftop
+- ncdu
+- duf
+- gparted
+- plocate
+- minicom
+- telnet
+- lynx # explicity asked by NeoVim copilot plugin
+- poppler # yazzi pdf preview
+- ImageMagick # for yazi and many other things
+
+virtualbox_package_name: VirtualBox-7.2
+vboxusers_group_members:
+- den
+
+included_roles:
+# NVM and FZF are installed only for the user ansible-playbook is connecting with
+- role: den_is.tools.nvm
+  enabled: true
+- role: den_is.tools.fzf
+  enabled: true
+- role: den_is.tools.eza
+  enabled: true
+- role: den_is.tools.ripgrep
+  enabled: true
+- role: den_is.tools.fd
+  enabled: true
+- role: den_is.tools.direnv
+  enabled: true
+- role: den_is.tools.zoxide
+  enabled: true
+- role: den_is.tools.yq
+  enabled: true
+- role: den_is.tools.bat
+  enabled: true
+- role: den_is.tools.yazi
+  enabled: true
+- role: den_is.tools.python.pyenv
+  enabled: true
+# after installing uv and making sure that system has python3 installed
+# you can install tools using uv itself. e.g.:
+#   uv tool install ruff`
+#   uv tool install ansible --with-executables-from ansible-core,ansible-lint
+- role: den_is.tools.python.uv
+  enabled: true
+- role: den_is.tools.git_delta
+  enabled: true
+- role: den_is.tools.lazygit
+  enabled: true
+- role: den_is.tools.sops
+  enabled: true
+- role: den_is.tools.age
+  enabled: true
+- role: den_is.tools.k8s.kubectl
+  enabled: true
+- role: den_is.tools.k8s.kubecolor
+  enabled: true
+- role: den_is.tools.k8s.stern
+  enabled: true
+- role: den_is.tools.k8s.k9s
+  enabled: true
+- role: den_is.tools.k8s.kustomize
+  enabled: true
+- role: den_is.tools.k8s.kubectx
+  enabled: true
+- role: den_is.tools.chezmoi
+  enabled: true
+- role: den_is.tools.starship
+  enabled: true
+- role: den_is.tools.taplo
+  enabled: true
+- role: den_is.tools.zellij
+  enabled: true
+- role: den_is.tools.shfmt
+  enabled: true
+- role: den_is.tools.shellcheck
+  enabled: true
+- role: den_is.tools.k8s.helm
+  enabled: true
+# nvim bob is problematic. follow instructions from here https://github.com/MordechaiHadad/bob/issues/342
+# neovim can be installed manually right after deploying `bob` with this role
+- role: den_is.tools.nvim_bob
+  enabled: true
+
+
+# bellow you can set values for roles if needed, otherwise role default values will be used
+# For example:
+
+# eza_v: v0.23.1
+#
+# opentofu_bin_dst: ~/.local/bin
+#
+# neovim_config_deploy: true
+# neovim_config_repo: https://github.com/den-is/nvim

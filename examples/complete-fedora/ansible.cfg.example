@@ -1,0 +1,14 @@
+[defaults]
+interpreter_python     = /usr/bin/python3
+retry_files_enabled    = False
+nocows                 = 1
+host_key_checking      = False
+callback_enabled       = profile_tasks
+callback_result_format = yaml
+callback_whitelist     = profile_tasks
+
+# https://github.com/ansible/ansible/issues/86122
+# to fix issue on ansible-playbook run against fedora 43:
+#        [WARNING]: Module invocation had junk after the JSON data:
+[ssh_connection]
+pipelining = True

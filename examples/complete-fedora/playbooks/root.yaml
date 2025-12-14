@@ -1,0 +1,41 @@
+- name: Fedora - setup global tools and root's home
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+
+  - name: Create ~/.ssh dir
+    ansible.builtin.file:
+      path: ~/.ssh
+      state: directory
+      mode: '0700'
+
+  - name: Create common dirs in $HOME
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0700'
+    loop:
+    - ~/.local
+    - ~/.local/bin
+    - ~/.local/share
+    - ~/.local/share/man
+    - ~/.config
+    - ~/.vim
+
+  # roles in den_is.tools may depend on some packages being present
+  # such as git, curl, wget, ca-certificates, unzip, etc.
+  - name: Install default packages
+    ansible.builtin.dnf:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ default_packages }}"
+
+  - name: Deploy tools from den_is.tools collection
+    ansible.builtin.include_role:
+      name: "{{ tools_role.role }}"
+    when: tools_role.enabled | bool
+    loop: "{{ included_roles }}"
+    loop_control:
+      loop_var: tools_role
+      label: "{{ tools_role.role }}"
