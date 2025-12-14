@@ -94,3 +94,5 @@ ansible-playbook -i '<my-host-ip>,' tools-deploy.yaml
 # or if you installing globally and need sudo/root access
 ansible-playbook -i '<my-host-ip>,' tools-deploy.yaml --ask-become-pass
 ```
+
+More in [examples](./examples/)
