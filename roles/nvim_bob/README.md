@@ -22,6 +22,11 @@ To deploy neovim configuration using this role:
 
 ```yaml
   tasks:
+  - name: Install unzip
+    ansible.builtin.package:
+      name: unzip
+      state: present
+    become: true
   - name: Install bob neovim installer
     ansible.builtin.import_role:
       name: den_is.tools.nvim_bob
