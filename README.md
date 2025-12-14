@@ -42,7 +42,7 @@ ansible-galaxy collection install ./ansible-collection-tools --upgrade
 
 # build and install from archive
 ansible-galaxy collection build
-ansible-galaxy collection install den_is-tools-0.50.0.tar.gz -p ./collections
+ansible-galaxy collection install den_is-tools-0.51.0.tar.gz -p ./collections
 ```
 
 More details can be found in the official Ansible collection [docs](https://docs.ansible.com/projects/ansible/latest/collections_guide/collections_installing.html).
