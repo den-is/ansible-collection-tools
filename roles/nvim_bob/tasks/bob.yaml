@@ -1,9 +1,3 @@
-- name: Install packages required for deployment
-  ansible.builtin.package:
-    name: unzip
-    state: present
-  become: true
-
 - name: Getting release archive
   ansible.builtin.get_url:
     url: '{{ nvim_bob_release_url }}'

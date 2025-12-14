@@ -3,6 +3,16 @@
 ## Links
 - https://github.com/MordechaiHadad/bob
 
+## Requirements
+Requires `unzip` package to be available. Make sure to install it before deploying `bob`, example task:
+```yaml
+- name: Install unzip
+  ansible.builtin.package:
+    name: unzip
+    state: present
+  become: true
+```
+
 ## Deploying neovim configuration
 Warning: Often fully-fledged Neovim configuration would require extra software deployed in the environment that is not managed by this role
 
