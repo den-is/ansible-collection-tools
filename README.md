@@ -1,4 +1,4 @@
-# den_is.tools - an Ansible collection
+# den_is.tools - an Ansible collection to deploy 70+ tools
 
 An extremely minimalistic Ansible collection to quickly automate the deployment of various open-source tools and services.
 
@@ -8,12 +8,21 @@ A **List of available tools** can be found in the [roles](./roles/) directory an
   - Require manual installation
   - Have outdated versions in OS-native package repositories
   - Are completely missing from package repositories
-- Most tools are installed by default into `/usr/local/bin`, but can also be installed into `~/.local/bin` or any custom location
-- Some roles require a `sudo|become` password, especially when deploying globally or when system packages are required
-  - Other roles do not require `sudo`, particularly when deploying into local/user directories
-- This collection is particularly useful and tested for Linux x86_64 and arm64 hosts
-  - MacOS deployments are supported by not extensively tested. First method to deploy on MacOS is `Homebrew`, then plain `binaries` can be deployed too if you indicate proper paths.
-  - Microsoft Windows is unsupported
+- **Sudo/become=true** privileges are required by default to install tools in `/usr/local/bin` or other system-wide
+locations.
+  - Installing in user directories does not require elevated privileges. For example, for Windows WSL install tools in
+  `~/.local/bin` without `sudo/become`
+  - Some roles strictly require elevated privileges, because of:
+    - installing packages via package manager
+    - adding repositories
+    - editing system files
+    - managing system services
+- This collection is particularly useful and tested for **Linux x86_64** and **arm64** hosts.
+  - MacOS deployments are supported, but not extensively tested.
+    - You can deploy tools from archives/binaries as on a Linux host
+    - Or choose to do a Homebrew deployment. TBH, in case of Homebrew deploys - you don't need to use this collection. Just
+  create a task(s) yourself.
+  - Microsoft Windows is unsupported - Windows WSL works just fine as a usual Linux environment
 - 99% of the roles in this collection perform only binary downloads and deployments:
   - Extra configuration, rc files, dotfiles, etc. are handled outside of these roles using dedicated tasks or playbooks
 
@@ -39,10 +48,6 @@ ansible-galaxy collection install git+https://github.com/den-is/ansible-collecti
 git clone https://github.com/den-is/ansible-collection-tools.git
 ansible-galaxy collection install ./ansible-collection-tools
 ansible-galaxy collection install ./ansible-collection-tools --upgrade
-
-# build and install from archive
-ansible-galaxy collection build
-ansible-galaxy collection install den_is-tools-0.51.0.tar.gz -p ./collections
 ```
 
 More details can be found in the official Ansible collection [docs](https://docs.ansible.com/projects/ansible/latest/collections_guide/collections_installing.html).
@@ -54,8 +59,6 @@ Create a playbook, e.g. `tools-deploy.yaml`
 - name: Tools deploy
   hosts: all
   become: false
-  environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   vars:
     # set top-level playbook variables
     common_bin_dst: ~/.local/bin

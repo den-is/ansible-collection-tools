@@ -1,8 +1,6 @@
 - name: Tools deploy
   hosts: all
   become: false
-  environment:
-    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
   vars:
     # set top-level playbook variables
     common_bin_dst: ~/.local/bin
