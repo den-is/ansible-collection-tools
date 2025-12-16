@@ -15,4 +15,4 @@ kubefwd_full_download_path: /tmp/kubefwd_{{ kubefwd_v }}
 kubefwd_bin_dst: /usr/local/bin
 kubefwd_bin: kubefwd
 
-postinstall_cleanup: true
+kubefwd_cleanup: true

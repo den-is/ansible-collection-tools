@@ -20,4 +20,4 @@
   ansible.builtin.file:
     path: '{{ kubefwd_full_download_path }}'
     state: absent
-  when: postinstall_cleanup
+  when: kubefwd_cleanup
