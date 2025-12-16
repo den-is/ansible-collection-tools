@@ -16,7 +16,3 @@ vagrant_full_download_path: '{{ vagrant_archive_download_dst }}/vagrant-{{ vagra
 
 vagrant_bin_dst: /usr/local/bin
 vagrant_bin: vagrant
-
-vagrant_brew: false
-vagrant_brew_package: hashicorp/tap/hashicorp-vagrant
-vagrant_brew_state: latest

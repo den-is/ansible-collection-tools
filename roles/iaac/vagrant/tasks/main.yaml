@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: archive.yaml
   when:
   - vagrant_v is version(installed_vagrant_v, 'ne')
-  - not vagrant_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - vagrant_v is version(installed_vagrant_v, 'ne')
-  - vagrant_brew
-  - ansible_facts.system == 'Darwin'
