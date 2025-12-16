@@ -53,6 +53,8 @@ ansible-galaxy collection install ./ansible-collection-tools --upgrade
 More details can be found in the official Ansible collection [docs](https://docs.ansible.com/projects/ansible/latest/collections_guide/collections_installing.html).
 
 ## Usage
+Make sure that system has required packages installed or install them early in the playbook.
+Required system packages: `unzip`, `bzip2`, `gnu-tar` from Homebrew on MacOS
 
 Create a playbook, e.g. `tools-deploy.yaml`
 ```yaml
