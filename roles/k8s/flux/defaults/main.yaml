@@ -16,7 +16,3 @@ flux_full_download_path: '{{ flux_archive_download_dst }}/flux_{{ flux_v }}'
 
 flux_bin_dst: /usr/local/bin
 flux_bin: flux
-
-flux_brew: false
-flux_brew_package: fluxcd/tap/flux
-flux_brew_state: latest

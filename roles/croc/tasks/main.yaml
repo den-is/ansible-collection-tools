@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - croc_v is version(installed_croc_v, 'ne')
-  - not croc_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - croc_v is version(installed_croc_v, 'ne')
-  - croc_brew
-  - ansible_facts.system == 'Darwin'

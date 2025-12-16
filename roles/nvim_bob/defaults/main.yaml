@@ -26,11 +26,6 @@ nvim_bob_cleanup_downloads: true
 nvim_bob_bin_dst: /usr/local/bin
 nvim_bob_bin: bob
 
-nvim_bob_brew: false
-nvim_bob_brew_package: bob
-nvim_bob_brew_state: latest
-nvim_bob_brew_update: true
-
 ### Neovim configuration deployment --------------------------------------------
 neovim_config_deploy: false
 # neovim_config_repo: https://github.com/den-is/nvim

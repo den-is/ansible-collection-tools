@@ -3,17 +3,10 @@
   tags:
   - always
 
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - chezmoi_brew
-  - ansible_facts.os_family == "Darwin"
-
 - name: Get checksum
   ansible.builtin.include_tasks: checksums.yaml
   when:
   - chezmoi_checksum_verify
-  - not chezmoi_brew
 
 - name: Install chezmoi release archive
   ansible.builtin.include_tasks: release_archive.yaml
@@ -21,7 +14,6 @@
   - chezmoi_install_archive
   - not chezmoi_install_binary
   - not chezmoi_install_package
-  - not chezmoi_brew
 
 - name: Install chezmoi binary
   ansible.builtin.include_tasks: release_binary.yaml
@@ -29,7 +21,6 @@
   - chezmoi_install_binary
   - not chezmoi_install_archive
   - not chezmoi_install_package
-  - not chezmoi_brew
 
 - name: Install chezmoi release OS package
   ansible.builtin.include_tasks: release_package.yaml
@@ -37,4 +28,3 @@
   - chezmoi_install_package
   - not chezmoi_install_archive
   - not chezmoi_install_binary
-  - not chezmoi_brew

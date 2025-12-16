@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: archive.yaml
   when:
   - helmfile_v is version(current_helmfile_v, 'ne')
-  - not helmfile_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - helmfile_v is version(current_helmfile_v, 'ne')
-  - helmfile_brew
-  - ansible_facts.system == 'Darwin'

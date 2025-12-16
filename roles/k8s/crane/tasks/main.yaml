@@ -12,11 +12,3 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - _crane_nov is version(_installed_crane_v, 'ne')
-  - not crane_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - _crane_nov is version(_installed_crane_v, 'ne')
-  - crane_brew
-  - ansible_facts.system == 'Darwin'

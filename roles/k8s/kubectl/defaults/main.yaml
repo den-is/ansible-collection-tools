@@ -32,7 +32,3 @@ kubectl_checksum_url: "{{ kubectl_release_url }}.sha256"
 
 kubectl_bin_dst: /usr/local/bin
 kubectl_bin: kubectl
-
-kubectl_brew: false
-kubectl_brew_package: kubectl
-kubectl_brew_state: latest

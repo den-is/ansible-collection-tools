@@ -23,7 +23,3 @@ sops_release_url: '{{ sops_release_base_url }}/{{ sops_v }}/{{ sops_binary_artif
 
 sops_bin_dst: /usr/local/bin
 sops_bin: sops
-
-sops_brew: false
-sops_brew_package: sops
-sops_brew_state: latest

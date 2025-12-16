@@ -12,11 +12,3 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - _lazydocker_nov is version(installed_lazydocker_v, 'ne')
-  - not lazydocker_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - _lazydocker_nov is version(installed_lazydocker_v, 'ne')
-  - lazydocker_brew
-  - ansible_facts.system == 'Darwin'

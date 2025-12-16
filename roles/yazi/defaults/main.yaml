@@ -27,7 +27,3 @@ yazi_full_download_path: '{{ yazi_archive_download_dst }}/yazi-{{ yazi_v }}'
 
 yazi_bin_dst: /usr/local/bin
 yazi_bin: yazi
-
-yazi_brew: false
-yazi_brew_package: yazi
-yazi_brew_state: latest

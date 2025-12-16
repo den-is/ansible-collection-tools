@@ -1,5 +1,0 @@
-- name: Brew install lazygit
-  community.general.homebrew:
-    name: '{{ lazygit_brew_package }}'
-    state: '{{ lazygit_brew_state }}'
-    update_homebrew: true

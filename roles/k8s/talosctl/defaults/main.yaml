@@ -16,7 +16,3 @@ talosctl_checksums_url: "{{ talosctl_release_base_url }}/{{ talosctl_v }}/sha256
 
 talosctl_bin_dst: /usr/local/bin
 talosctl_bin: talosctl
-
-talosctl_brew: false
-talosctl_brew_package: siderolabs/tap/talosctl
-talosctl_brew_state: latest

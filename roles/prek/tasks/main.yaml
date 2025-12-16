@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - _prek_nov is version(_installed_prek_v, 'ne')
-  - not prek_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - _prek_nov is version(_installed_prek_v, 'ne')
-  - prek_brew
-  - ansible_facts.system == 'Darwin'

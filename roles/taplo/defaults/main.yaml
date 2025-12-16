@@ -25,10 +25,3 @@ taplo_cleanup_release_artifacts: true
 
 taplo_bin_dst: /usr/local/bin
 taplo_bin: taplo
-
-taplo_brew_install: false
-taplo_brew_package: taplo
-taplo_brew_state: latest
-taplo_brew_update: true
-
-taplo_uninstall: false

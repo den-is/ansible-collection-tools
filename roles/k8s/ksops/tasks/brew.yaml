@@ -1,5 +1,0 @@
-- name: Brew install ksops
-  community.general.homebrew:
-    name: '{{ ksops_brew_package }}'
-    state: '{{ ksops_brew_state }}'
-    update_homebrew: true

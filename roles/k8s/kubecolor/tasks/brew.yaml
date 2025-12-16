@@ -1,5 +1,0 @@
-- name: Brew install
-  community.general.homebrew:
-    name: '{{ kubecolor_brew_package }}'
-    state: '{{ kubecolor_brew_state }}'
-    update_homebrew: true

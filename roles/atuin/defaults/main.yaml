@@ -39,7 +39,3 @@ atuin_full_download_path: '{{ atuin_archive_download_dst }}/atuin-{{ atuin_v }}'
 
 atuin_bin_dst: /usr/local/bin
 atuin_bin: atuin
-
-atuin_brew: false
-atuin_brew_package: atuin
-atuin_brew_state: latest

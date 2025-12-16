@@ -1,5 +1,0 @@
-- name: Brew install
-  community.general.homebrew:
-    name: "{{ starship_brew_package}}"
-    state: "{{ 'absent' if starship_uninstall else starship_brew_state }}"
-    update_homebrew: "{{ starship_brew_update }}"

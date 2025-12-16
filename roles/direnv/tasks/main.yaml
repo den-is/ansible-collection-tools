@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - _direnv_nov is version(installed_direnv_v, 'ne')
-  - not direnv_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - _direnv_nov is version(installed_direnv_v, 'ne')
-  - direnv_brew
-  - ansible_facts.system == 'Darwin'

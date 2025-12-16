@@ -38,10 +38,5 @@ fzf_checksum_url: '{{ fzf_release_base_url }}/{{ _fzf_nov }}/fzf_{{ _fzf_nov }}_
 fzf_archive_download_dst: /tmp
 fzf_extraction_dst: '{{ fzf_archive_download_dst }}/fzf-{{ _fzf_nov }}'
 
-# TODO: add support for windows destinations
 fzf_bin_dst: /usr/local/bin
 fzf_bin: fzf
-
-fzf_brew: false
-fzf_brew_package: fzf
-fzf_brew_state: latest

@@ -5,19 +5,9 @@
 
 - name: Install compilation dependencies
   ansible.builtin.include_tasks: deps.yaml
-  when:
-  - not pyenv_brew_install
 
 - name: Install pyenv from git repo
   ansible.builtin.include_tasks: source.yaml
-  when:
-  - not pyenv_brew_install
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: homebrew.yaml
-  when:
-  - pyenv_brew_install
-  - ansible_facts.os_family == "Darwin"
 
 # enable yaml strout callback plugin for better output
 - name: Pyenv post-installation instructions

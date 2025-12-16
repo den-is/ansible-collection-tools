@@ -2,11 +2,13 @@
   ansible.builtin.get_url:
     url: '{{ zoxide_release_url }}'
     dest: '{{ zoxide_archive_download_dst }}/{{ zoxide_archive_name }}'
+    mode: '0644'
 
 - name: Creating extraction dir {{ zoxide_extraction_dst }}
   ansible.builtin.file:
     path: '{{ zoxide_extraction_dst }}'
     state: directory
+    mode: '0755'
 
 - name: Extracting archive
   ansible.builtin.unarchive:

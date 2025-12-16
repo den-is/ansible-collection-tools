@@ -36,7 +36,3 @@ uv_extraction_path: '{{ uv_archive_download_dst }}/uv-{{ uv_v }}'
 uv_bin_dst: /usr/local/bin
 uv_bin: uv
 uvx_bin: uvx
-
-uv_brew: false
-uv_brew_package: uv
-uv_brew_state: latest

@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - age_v is version(_installed_age_v, 'ne')
-  - not age_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - age_v is version(_installed_age_v, 'ne')
-  - age_brew
-  - ansible_facts.system == 'Darwin'

@@ -7,13 +7,6 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - _nvm_nov is version(_installed_nvm_v, 'ne')
-  - not nvm_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - nvm_brew
-  - ansible_facts.system == 'Darwin'
 
 - name: Configure Node with NVM
   ansible.builtin.include_tasks: node.yaml

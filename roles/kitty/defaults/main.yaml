@@ -22,7 +22,3 @@ kitty_dst_base: ~/.local
 kitty_app_dst: '{{ kitty_dst_base }}/kitty.app'
 kitty_create_symlinks: true
 kitty_install_dekstop_entries: true
-
-kitty_brew: false
-kitty_brew_package: kitty
-kitty_brew_state: latest

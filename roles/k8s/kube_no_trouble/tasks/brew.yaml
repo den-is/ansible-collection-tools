@@ -1,5 +1,0 @@
-- name: Brew install kubent
-  community.general.homebrew:
-    name: '{{ kubent_brew_package }}'
-    state: '{{ kubent_brew_state }}'
-    update_homebrew: true

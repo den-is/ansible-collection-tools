@@ -23,7 +23,3 @@ argo_checksum_url: "{{ argo_release_base_url }}/{{ argo_v }}/argo-workflows-cli-
 
 argo_bin_dst: /usr/local/bin
 argo_bin: argo
-
-argo_brew: false
-argo_brew_package: argo
-argo_brew_state: latest

@@ -1,5 +1,0 @@
-- name: Brew install lazydocker
-  community.general.homebrew:
-    name: '{{ lazydocker_brew_package }}'
-    state: '{{ lazydocker_brew_state }}'
-    update_homebrew: true

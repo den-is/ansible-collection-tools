@@ -10,17 +10,8 @@
   - syncthing_v is version(_installed_syncthing_v, 'ne')
   - ansible_facts.os_family == 'Debian'
   - syncthing_repo
-  - not syncthing_brew
 
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
   - syncthing_v is version(_installed_syncthing_v, 'ne')
-  - not syncthing_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - syncthing_v is version(_installed_syncthing_v, 'ne')
-  - syncthing_brew
-  - ansible_facts.system == 'Darwin'

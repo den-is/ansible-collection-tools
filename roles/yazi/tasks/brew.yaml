@@ -1,5 +1,0 @@
-- name: Brew install yazi
-  community.general.homebrew:
-    name: '{{ yazi_brew_package }}'
-    state: '{{ yazi_brew_state }}'
-    update_homebrew: true

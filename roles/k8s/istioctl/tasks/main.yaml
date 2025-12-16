@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: archive.yaml
   when:
   - istioctl_v is version(installed_istioctl_v, 'ne')
-  - not istioctl_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - istioctl_v is version(installed_istioctl_v, 'ne')
-  - istioctl_brew
-  - ansible_facts.system == 'Darwin'

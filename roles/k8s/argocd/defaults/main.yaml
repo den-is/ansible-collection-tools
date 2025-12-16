@@ -21,7 +21,3 @@ argocd_checksum_url: "{{ argocd_release_base_url }}/{{ argocd_v }}/cli_checksums
 
 argocd_bin_dst: /usr/local/bin
 argocd_bin: argocd
-
-argocd_brew: false
-argocd_brew_package: argocd
-argocd_brew_state: latest

@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: archive.yaml
   when:
   - kubent_v is version(installed_kubent_v, 'ne')
-  - not kubent_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - kubent_v is version(installed_kubent_v, 'ne')
-  - kubent_brew
-  - ansible_facts.system == 'Darwin'

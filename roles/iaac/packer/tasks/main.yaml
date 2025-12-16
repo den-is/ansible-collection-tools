@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: archive.yaml
   when:
   - packer_v is version(installed_packer_v, 'ne')
-  - not packer_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - packer_v is version(installed_packer_v, 'ne')
-  - packer_brew
-  - ansible_facts.system == 'Darwin'

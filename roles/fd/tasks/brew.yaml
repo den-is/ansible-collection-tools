@@ -1,5 +1,0 @@
-- name: Brew install
-  community.general.homebrew:
-    name: '{{ fd_brew_package }}'
-    state: '{{ fd_brew_state }}'
-    update_homebrew: true

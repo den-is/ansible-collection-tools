@@ -19,7 +19,3 @@ kubecolor_extract_dst: '{{ kubecolor_archive_download_dst }}/kubecolor-{{ kubeco
 
 kubecolor_bin_dst: /usr/local/bin
 kubecolor_bin: kubecolor
-
-kubecolor_brew: false
-kubecolor_brew_package: kubecolor
-kubecolor_brew_state: latest

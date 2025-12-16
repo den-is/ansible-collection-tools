@@ -8,7 +8,6 @@
   when:
   - _bat_nov is version(installed_bat_v, 'ne')
   - not __bat_install_deb | bool
-  - not bat_brew | bool
 
 - name: Deb package installation
   ansible.builtin.include_tasks: deb.yaml
@@ -16,11 +15,3 @@
   - ansible_facts.os_family == "Debian"
   - __bat_install_deb | bool
   - _bat_nov is version(installed_bat_v, 'ne')
-  - not bat_brew | bool
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - _bat_nov is version(installed_bat_v, 'ne')
-  - bat_brew | bool
-  - ansible_facts.system == 'Darwin'

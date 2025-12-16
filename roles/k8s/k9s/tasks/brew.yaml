@@ -1,5 +1,0 @@
-- name: Installing k9s via brew
-  community.general.homebrew:
-    name: '{{ k9s_brew_package }}'
-    state: '{{ k9s_brew_state }}'
-    update_homebrew: true

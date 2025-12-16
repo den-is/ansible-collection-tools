@@ -27,7 +27,3 @@ lazydocker_extraction_dst: '{{ lazydocker_archive_download_dst }}/lazydocker-{{ 
 
 lazydocker_bin_dst: /usr/local/bin
 lazydocker_bin: lazydocker
-
-lazydocker_brew: false
-lazydocker_brew_package: lazydocker
-lazydocker_brew_state: latest

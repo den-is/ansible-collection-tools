@@ -27,7 +27,3 @@ istioctl_full_download_path: '{{ istioctl_archive_download_dst }}/istioctl-{{ is
 
 istioctl_bin_dst: /usr/local/bin
 istioctl_bin: istioctl
-
-istioctl_brew: false
-istioctl_brew_package: istioctl
-istioctl_brew_state: latest

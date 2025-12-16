@@ -27,7 +27,3 @@ restic_extraction_dst: '{{ restic_archive_download_dst }}/restic-{{ _restic_nov 
 
 restic_bin_dst: /usr/local/bin
 restic_bin: restic
-
-restic_brew: false
-restic_brew_package: restic
-restic_brew_state: latest

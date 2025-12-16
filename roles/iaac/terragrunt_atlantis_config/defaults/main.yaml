@@ -1,5 +1,5 @@
 terragrunt_atlantis_config_v: v1.21.1
-terragrunt_atlantis_config_without_v: "{{ terragrunt_atlantis_config_v | regex_replace('^v', '') }}"
+_terragrunt_atlantis_config_nov: "{{ terragrunt_atlantis_config_v | regex_replace('^v', '') }}"
 
 terragrunt_atlantis_config_arch_map:
   x86_64: amd64
@@ -15,7 +15,7 @@ terragrunt_atlantis_config_archive_ext: |-
   {%- endif -%}
 
 terragrunt_atlantis_config_release_base_url: https://github.com/transcend-io/terragrunt-atlantis-config/releases/download
-terragrunt_atlantis_config_archive_name: terragrunt-atlantis-config_{{ terragrunt_atlantis_config_without_v }}_{{ ansible_facts.system | lower }}_{{ terragrunt_atlantis_config_arch }}.{{ terragrunt_atlantis_config_archive_ext }}
+terragrunt_atlantis_config_archive_name: terragrunt-atlantis-config_{{ _terragrunt_atlantis_config_nov }}_{{ ansible_facts.system | lower }}_{{ terragrunt_atlantis_config_arch }}.{{ terragrunt_atlantis_config_archive_ext }}
 terragrunt_atlantis_config_release_url: "{{ terragrunt_atlantis_config_release_base_url }}/{{ terragrunt_atlantis_config_v }}/{{ terragrunt_atlantis_config_archive_name }}"
 
 terragrunt_atlantis_config_archive_download_dst: /tmp
@@ -23,7 +23,3 @@ terragrunt_atlantis_config_full_download_path: '{{ terragrunt_atlantis_config_ar
 
 terragrunt_atlantis_config_bin_dst: /usr/local/bin
 terragrunt_atlantis_config_bin: terragrunt_atlantis_config
-
-terragrunt_atlantis_config_brew: false
-terragrunt_atlantis_config_brew_package: terragrunt_atlantis_config
-terragrunt_atlantis_config_brew_state: latest

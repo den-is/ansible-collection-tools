@@ -1,5 +1,0 @@
-- name: Brew install
-  community.general.homebrew:
-    name: '{{ argocd_brew_package }}'
-    state: '{{ argocd_brew_state }}'
-    update_homebrew: true

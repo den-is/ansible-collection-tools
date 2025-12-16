@@ -32,7 +32,3 @@ crane_bin: crane
 crane_install_all_binaries: true
 krane_bin: krane
 gcrane_bin: gcrane
-
-crane_brew: false
-crane_brew_package: crane
-crane_brew_state: latest

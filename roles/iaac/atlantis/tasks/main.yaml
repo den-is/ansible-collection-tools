@@ -7,14 +7,6 @@
   ansible.builtin.include_tasks: archive.yaml
   when:
   - atlantis_v is version(installed_atlantis_v, 'ne')
-  - not atlantis_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - atlantis_v is version(installed_atlantis_v, 'ne')
-  - ansible_facts.system == 'Darwin'
-  - atlantis_brew
 
 - name: Atlantis server configuration
   ansible.builtin.include_tasks: config.yaml

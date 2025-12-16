@@ -24,7 +24,3 @@ shfmt_sha256sums_url: '{{ shfmt_release_base_url }}/sha256sums.txt'
 
 shfmt_bin_dst: /usr/local/bin
 shfmt_bin: shfmt
-
-shfmt_brew: false
-shfmt_brew_package: shfmt
-shfmt_brew_state: latest

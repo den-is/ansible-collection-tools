@@ -15,10 +15,6 @@ awscli_force_update: false
 awscli_archive_download_dst: /tmp
 awscli_extraction_dst: '{{ rclone_archive_download_dst }}/awscli-{{ awscli_v }}'
 
-awscli_brew: false
-awscli_brew_package: awscli
-awscli_brew_state: latest
-
 # TODO: not yet implemented
 # gpg --verify awscliv2.sig awscliv2.zip
 awscli_pgp_verify: false

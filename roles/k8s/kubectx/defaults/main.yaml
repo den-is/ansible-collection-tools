@@ -32,7 +32,3 @@ kubectx_full_download_path: "{{ kubectx_archive_download_dst }}/kubectx_{{ kubec
 kubectx_bin_dst: /usr/local/bin
 kubectx_bin: kubectx
 kubens_bin: kubens
-
-kubectx_brew: false
-kubectx_brew_package: kubectx
-kubectx_brew_state: latest

@@ -20,7 +20,3 @@ kind_full_download_path: '{{ kind_bin_download_dst }}/kind_{{ kind_v }}'
 
 kind_bin_dst: /usr/local/bin
 kind_bin: kind
-
-kind_brew: false
-kind_brew_package: kind
-kind_brew_state: latest
