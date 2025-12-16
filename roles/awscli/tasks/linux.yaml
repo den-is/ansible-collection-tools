@@ -28,7 +28,7 @@
   when:
   - awscli_force_update
   - awscli_bin_exists is success
-  - awscli_v is version(operator='>', version=installed_awscli_v)
+  - awscli_v is version(_installed_awscli_v, 'ne')
 
 - name: Deleting downloaded artifacts
   ansible.builtin.file:
