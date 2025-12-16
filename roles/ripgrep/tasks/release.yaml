@@ -21,7 +21,6 @@
     when:
     - ripgrep_release_archive_name in item
 
-
 - name: Creating extraction dir {{ ripgrep_extraction_path }}
   ansible.builtin.file:
     path: '{{ ripgrep_extraction_path }}'

@@ -3,10 +3,3 @@ pyenv_v: v2.6.16
 pyenv_git_repo: https://github.com/pyenv/pyenv.git
 # always pull pyenv updates if installing from git
 pyenv_git_latest: true
-
-pyenv_uninstall: false
-
-pyenv_brew_install: false
-pyenv_brew_name: pyenv
-pyenv_brew_state: present
-pyenv_brew_update: true

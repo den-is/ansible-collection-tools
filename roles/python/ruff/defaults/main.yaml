@@ -35,7 +35,3 @@ ruff_extraction_path: '{{ ruff_archive_download_dst }}/ruff-{{ ruff_v }}'
 
 ruff_bin_dst: /usr/local/bin
 ruff_bin: ruff
-
-ruff_brew: false
-ruff_brew_package: ruff
-ruff_brew_state: latest

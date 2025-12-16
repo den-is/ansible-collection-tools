@@ -21,7 +21,3 @@ argo_rollouts_checksum_url: "{{ argo_rollouts_release_base_url }}/{{ argo_rollou
 
 argo_rollouts_bin_dst: /usr/local/bin
 argo_rollouts_bin: kubectl-argo-rollouts
-
-argo_rollouts_brew: false
-argo_rollouts_brew_package: argoproj/tap/kubectl-argo-rollouts
-argo_rollouts_brew_state: latest

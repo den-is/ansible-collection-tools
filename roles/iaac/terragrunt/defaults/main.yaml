@@ -18,7 +18,3 @@ terragrunt_release_url: '{{ terragrunt_release_base_url }}/{{ terragrunt_v }}/te
 
 terragrunt_bin_dst: /usr/local/bin
 terragrunt_bin: terragrunt
-
-terragrunt_brew: false
-terragrunt_brew_package: terragrunt
-terragrunt_brew_state: latest

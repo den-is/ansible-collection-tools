@@ -7,10 +7,3 @@
   ansible.builtin.include_tasks: setup.yaml
   when:
   - stern_nov_v is version(installed_stern_v, 'ne')
-  - not stern_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - stern_nov_v is version(installed_stern_v, 'ne')
-  - stern_brew

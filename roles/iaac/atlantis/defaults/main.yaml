@@ -21,10 +21,6 @@ atlantis_full_download_path: '{{ atlantis_archive_download_dst }}/atlantis-{{ at
 atlantis_bin_dst: /usr/local/bin
 atlantis_bin: atlantis
 
-atlantis_brew: false
-atlantis_brew_package: atlantis
-atlantis_brew_state: latest
-
 binary_owner_user: root
 binary_owner_group: root
 
@@ -39,7 +35,6 @@ atlantis_group: atlantis
 atlantis_config_dir: /etc/atlantis
 atlantis_data_dir: /var/lib/atlantis
 
-
 # make sure file exists on the control host
 atlantis_repos_config_file: ""
 atlantis_repos_config_dst: "{{ atlantis_config_dir }}/repos.yaml"
@@ -51,5 +46,3 @@ atlantis_server_config_dst: "{{ atlantis_config_dir }}/config.yaml"
 atlantis_env_file_path: "{{ atlantis_config_dir }}/atlantis.env"
 
 atlantis_env_extra: {}
-
-# atlantis_uninstall: false

@@ -21,7 +21,3 @@ packer_full_download_path: '{{ packer_archive_download_dst }}/packer-{{ packer_v
 
 packer_bin_dst: /usr/local/bin
 packer_bin: packer
-
-packer_brew: false
-packer_brew_package: hashicorp/tap/packer
-packer_brew_state: latest

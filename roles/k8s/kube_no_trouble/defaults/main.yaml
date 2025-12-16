@@ -21,7 +21,3 @@ kubent_full_download_path: '{{ kubent_archive_download_dst }}/kubent-{{ kubent_v
 
 kubent_bin_dst: /usr/local/bin
 kubent_bin: kubent
-
-kubent_brew: false
-kubent_brew_package: kubent
-kubent_brew_state: latest

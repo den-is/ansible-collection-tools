@@ -12,10 +12,6 @@ helm_checksum_verify: false
 helm_bin: helm
 helm_bin_dst: /usr/local/bin
 
-helm_brew: false
-helm_brew_package: helm
-helm_brew_state: latest
-
 helm_plugins: []
 # helm_plugins:
 # - path: https://github.com/databus23/helm-diff

@@ -7,14 +7,6 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - _helm_v_calculated is version(_installed_helm_v, 'ne')
-  - not helm_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - _helm_v_calculated is version(_installed_helm_v, 'ne')
-  - helm_brew
-  - ansible_facts.system == 'Darwin'
 
 - name: Helm Plugins installation
   kubernetes.core.helm_plugin:

@@ -8,17 +8,9 @@
   when:
   - _kitty_nov is version(_installed_kitty_v, 'ne')
   - ansible_facts.system == 'Linux'
-  - not kitty_brew
 
 - name: Setup Linux desktop entries
   ansible.builtin.include_tasks: linux-desktop.yaml
   when:
   - ansible_facts.system == 'Linux'
   - kitty_install_dekstop_entries | bool
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - _kitty_nov is version(_installed_kitty_v, 'ne')
-  - kitty_brew
-  - ansible_facts.system == 'Darwin'

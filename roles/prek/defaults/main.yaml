@@ -37,7 +37,3 @@ prek_extraction_path: '{{ prek_archive_download_dst }}/prek-{{ _prek_nov }}'
 
 prek_bin_dst: /usr/local/bin
 prek_bin: prek
-
-prek_brew: false
-prek_brew_package: prek
-prek_brew_state: latest

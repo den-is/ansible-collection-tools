@@ -17,7 +17,3 @@ mkcert_release_url: '{{ mkcert_release_base_url }}/mkcert-{{ mkcert_v }}-{{ mkce
 
 mkcert_bin_dst: /usr/local/bin
 mkcert_bin: mkcert
-
-mkcert_brew: false
-mkcert_brew_package: mkcert
-mkcert_brew_state: latest

@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - kubie_v is version(current_kubie_v_with_v, 'ne')
-  - not kubie_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - kubie_v is version(current_kubie_v_with_v, 'ne')
-  - kubie_brew
-  - ansible_facts.system == 'Darwin'

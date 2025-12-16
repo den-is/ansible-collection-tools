@@ -20,7 +20,3 @@ age_extraction_dst: '{{ age_archive_download_dst }}/age-{{ age_v }}'
 
 age_bin_dst: /usr/local/bin
 age_bin: age
-
-age_brew: false
-age_brew_package: age
-age_brew_state: latest

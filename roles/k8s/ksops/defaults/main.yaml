@@ -29,7 +29,3 @@ ksops_full_download_path: '{{ ksops_archive_download_dst }}/ksops-{{ ksops_v }}'
 
 ksops_bin_dst: /usr/local/bin
 ksops_bin: ksops
-
-ksops_brew: false
-ksops_brew_package: ksops
-ksops_brew_state: latest

@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: archive.yaml
   when:
   - terraform_v is version(installed_terraform_v, 'ne')
-  - not terraform_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - terraform_v is version(installed_terraform_v, 'ne')
-  - terraform_brew
-  - ansible_facts.system == 'Darwin'

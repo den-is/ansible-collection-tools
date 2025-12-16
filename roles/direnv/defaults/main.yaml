@@ -20,7 +20,3 @@ direnv_release_url: '{{ direnv_release_base_url }}/v{{ _direnv_nov }}/direnv.{{ 
 
 direnv_bin_dst: /usr/local/bin
 direnv_bin: direnv
-
-direnv_brew: false
-direnv_brew_package: direnv
-direnv_brew_state: latest

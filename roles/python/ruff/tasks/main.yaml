@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - ruff_v is version(_installed_ruff_v, 'ne')
-  - not ruff_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - ruff_v is version(_installed_ruff_v, 'ne')
-  - ruff_brew
-  - ansible_facts.system == 'Darwin'

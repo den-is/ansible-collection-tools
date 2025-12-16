@@ -31,11 +31,6 @@ eza_cleanup_release_artifacts: true
 eza_bin_dst: /usr/local/bin
 eza_bin: eza
 
-eza_brew_install: false
-eza_brew_package: eza
-eza_brew_state: latest
-eza_brew_update: true
-
 eza_deploy_man: true
 eza_man_url: '{{ _eza_release_base_url }}/man-{{ _eza_nov }}.tar.gz'
 man_base_path: /usr/share/man
@@ -45,6 +40,3 @@ eza_competions_url: '{{ _eza_release_base_url }}/completions-{{ _eza_nov }}.tar.
 bash_completions_path: /usr/share/bash-completion/completions
 zsh_completions_path: /usr/share/zsh/site-functions
 fish_completions_path: /usr/share/fish/vendor_completions.d
-
-# Not yet implemented
-eza_uninstall: false

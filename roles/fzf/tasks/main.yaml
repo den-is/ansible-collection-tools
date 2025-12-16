@@ -8,19 +8,9 @@
   when:
   - _fzf_nov is version(installed_fzf_v, 'ne')
   - fzf_install_script
-  - not fzf_brew
 
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
   - _fzf_nov is version(installed_fzf_v, 'ne')
   - not fzf_install_script
-  - not fzf_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - _fzf_nov is version(installed_fzf_v, 'ne')
-  - not fzf_install_script
-  - fzf_brew
-  - ansible_facts.system == 'Darwin'

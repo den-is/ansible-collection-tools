@@ -1,5 +1,0 @@
-- name: Brew install talosctl
-  community.general.homebrew:
-    name: '{{ talosctl_brew_package }}'
-    state: '{{ talosctl_brew_state }}'
-    update_homebrew: true

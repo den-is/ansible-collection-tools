@@ -5,10 +5,6 @@ _nvm_nov: "{{ nvm_v | regex_replace('^v', '') }}"
 nvm_deploy_cleanup: true
 nvm_install_script_dst: /tmp
 
-nvm_brew: false
-nvm_brew_package: nvm
-nvm_brew_state: latest
-
 nvm_manage_node: true
 
 # it can be in one of the formats: `node`, `22.12.0`, `22.12`, 'lts/*', `lts/argon` ...

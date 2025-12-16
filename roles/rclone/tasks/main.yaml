@@ -12,11 +12,3 @@
   ansible.builtin.include_tasks: release.yaml
   when:
   - rclone_v is version(installed_rclone_v, 'ne')
-  - not rclone_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - rclone_v is version(installed_rclone_v, 'ne')
-  - rclone_brew
-  - ansible_facts.system == 'Darwin'

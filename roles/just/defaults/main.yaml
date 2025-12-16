@@ -38,12 +38,8 @@ just_full_download_path: '{{ just_archive_download_dst }}/just-{{ just_v }}'
 just_bin_dst: /usr/local/bin
 just_bin: just
 
-just_brew: false
-just_brew_package: just
-just_brew_state: latest
-
 just_man_install: false
 just_man_path: /usr/share/man
 
 just_zsh_completions_install: false
-zsh_completions_path: /usr/local/share/zsh/site-functions
+zsh_completions_path: /usr/share/zsh/site-functions

@@ -17,7 +17,3 @@ helmfile_full_download_path: '{{ helmfile_bin_download_dst }}/helmfile_{{ helmfi
 
 helmfile_bin_dst: /usr/local/bin
 helmfile_bin: helmfile
-
-helmfile_brew: false
-helmfile_brew_package: helmfile
-helmfile_brew_state: latest

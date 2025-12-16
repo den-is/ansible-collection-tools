@@ -20,7 +20,3 @@ delta_full_download_path: '{{ delta_archive_download_dst }}/delta_{{ delta_v }}'
 
 delta_bin_dst: /usr/local/bin
 delta_bin: delta
-
-delta_brew: false
-delta_brew_package: git-delta
-delta_brew_state: latest

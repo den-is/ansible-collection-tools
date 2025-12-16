@@ -13,7 +13,3 @@ k9s_release_url: "{{ k9s_release_base_url }}/{{ k9s_v }}/k9s_{{ ansible_facts.sy
 k9s_bin: k9s
 k9s_bin_dst: /usr/local/bin
 k9s_custom_config: false
-
-k9s_brew: false
-k9s_brew_package: k9s
-k9s_brew_state: latest

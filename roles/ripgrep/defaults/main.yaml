@@ -51,10 +51,4 @@ fish_completions_path: /usr/share/fish/vendor_completions.d
 ripgrep_apt_os_repo: true
 ripgrep_apt_download_url: "{{ _ripgrep_release_base_url }}/{{ ripgrep_v }}/ripgrep_{{ ripgrep_v }}-1_amd64.deb"
 
-# system: Darwin
-ripgrep_brew: false
-ripgrep_brew_package: ripgrep
-ripgrep_brew_state: latest
-ripgrep_brew_update: true
-
 ripgrep_uninstall: false

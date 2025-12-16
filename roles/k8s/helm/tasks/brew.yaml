@@ -1,5 +1,0 @@
-- name: Brew install
-  community.general.homebrew:
-    name: '{{ helm_brew_package }}'
-    state: '{{ helm_brew_state }}'
-    update_homebrew: true

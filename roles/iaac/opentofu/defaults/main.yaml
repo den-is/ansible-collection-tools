@@ -25,7 +25,3 @@ opentofu_full_download_path: '{{ opentofu_archive_download_dst }}/opentofu-{{ op
 
 opentofu_bin_dst: /usr/local/bin
 opentofu_bin: tofu
-
-opentofu_brew: false
-opentofu_brew_package: opentofu
-opentofu_brew_state: latest

@@ -26,7 +26,3 @@ kubeseal_extraction_path: '{{ kubeseal_archive_download_dst }}/kubeseal_{{ kubes
 
 kubeseal_bin_dst: /usr/local/bin
 kubeseal_bin: kubeseal
-
-kubeseal_brew: false
-kubeseal_brew_package: kubeseal
-kubeseal_brew_state: latest

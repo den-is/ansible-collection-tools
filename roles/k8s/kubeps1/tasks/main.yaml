@@ -3,17 +3,6 @@
     url: '{{ kubeps1_release_url }}'
     dest: '{{ kubeps1_bin_dst }}/{{ kubeps1_bin }}'
     force: '{{ kubeps1_force_reinstall }}'
-  when:
-  - not kubeps1_brew
-
-- name: Brew install kube-ps1
-  community.general.homebrew:
-    name: '{{ kubeps1_brew_package }}'
-    state: '{{ kubeps1_brew_state }}'
-    update_homebrew: true
-  when:
-  - kubeps1_brew
-  - ansible_facts.system == 'Darwin'
 
 - name: Instructions
   ansible.builtin.debug:

@@ -14,7 +14,3 @@ shellcheck_cleanup: true
 
 shellcheck_bin_dst: /usr/local/bin
 shellcheck_bin: shellcheck
-
-shellcheck_brew: false
-shellcheck_brew_package: shellcheck
-shellcheck_brew_state: latest

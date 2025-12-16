@@ -25,7 +25,3 @@ rclone_extraction_dst: '{{ rclone_archive_download_dst }}/rclone-{{ rclone_v }}'
 
 rclone_bin_dst: /usr/local/bin
 rclone_bin: rclone
-
-rclone_brew: false
-rclone_brew_package: rclone
-rclone_brew_state: latest

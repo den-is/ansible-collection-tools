@@ -7,17 +7,9 @@
   ansible.builtin.include_tasks: bash-release.yaml
   when:
   - not kubectx_go
-  - not kubectx_brew
 
 - name: kubectx/kubens go binaries installation
   ansible.builtin.include_tasks: go-release.yaml
   when:
   - kubectx_go
   - __kubectx_nov_v is version(installed_kubectx_v, 'ne')
-  - not kubectx_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - kubectx_brew
-  - ansible_facts.system == 'Darwin'

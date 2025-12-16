@@ -1,5 +1,0 @@
-- name: Brew install cfssl
-  community.general.homebrew:
-    name: '{{ cfssl_brew_package }}'
-    state: '{{ cfssl_brew_state }}'
-    update_homebrew: true

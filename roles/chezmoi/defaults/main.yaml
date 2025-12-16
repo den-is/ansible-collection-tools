@@ -40,12 +40,3 @@ chezmoi_deploy_completions: true
 bash_completions_path: /usr/share/bash-completion/completions
 zsh_completions_path: /usr/share/zsh/site-functions
 fish_completions_path: /usr/share/fish/vendor_completions.d
-
-# system: Darwin
-chezmoi_brew: false
-chezmoi_brew_package: chezmoi
-chezmoi_brew_state: latest
-chezmoi_brew_update: true
-
-# not yet implemented
-chezmoi_uninstall: false

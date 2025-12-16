@@ -1,5 +1,0 @@
-- name: Brew install terragrunt_atlantis_config
-  community.general.homebrew:
-    name: '{{ terragrunt_atlantis_config_brew_package }}'
-    state: '{{ terragrunt_atlantis_config_brew_state }}'
-    update_homebrew: true

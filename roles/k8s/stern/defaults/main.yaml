@@ -13,7 +13,3 @@ stern_release_url: '{{ stern_base_url }}/v{{ stern_nov_v }}/stern_{{ stern_nov_v
 
 stern_bin: stern
 stern_bin_dst: /usr/local/bin
-
-stern_brew: false
-stern_brew_package: stern
-stern_brew_state: latest

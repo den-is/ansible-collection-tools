@@ -7,11 +7,3 @@
   ansible.builtin.include_tasks: archive.yaml
   when:
   - opentofu_v is version(installed_opentofu_v, 'ne')
-  - not opentofu_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - opentofu_v is version(installed_opentofu_v, 'ne')
-  - opentofu_brew
-  - ansible_facts.system == 'Darwin'

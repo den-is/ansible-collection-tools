@@ -1,5 +1,0 @@
-- name: Installing kind via brew
-  community.general.homebrew:
-    name: '{{ kind_brew_package }}'
-    state: '{{ kind_brew_state }}'
-    update_homebrew: true

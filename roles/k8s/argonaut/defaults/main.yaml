@@ -25,9 +25,3 @@ argonaut_extract_dst: '{{ argonaut_archive_download_dst }}/argonaut-{{ _argonaut
 
 argonaut_bin_dst: /usr/local/bin
 argonaut_bin: argonaut
-
-argonaut_brew: false
-argonaut_brew_add_tap: true
-argonaut_brew_tap: darksworm/homebrew-tap
-argonaut_brew_package: argonaut
-argonaut_brew_state: latest

@@ -1,5 +1,0 @@
-- name: Brew install shfmt
-  community.general.homebrew:
-    name: '{{ shfmt_brew_package }}'
-    state: '{{ shfmt_brew_state }}'
-    update_homebrew: true

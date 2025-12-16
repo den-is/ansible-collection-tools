@@ -8,10 +8,3 @@
   when:
   - ansible_facts.system == "Linux"
   - awscli_force_update or awscli_bin_exists is not success
-  - not awscli_brew
-
-- name: MacOS homebrew installation
-  ansible.builtin.include_tasks: brew.yaml
-  when:
-  - awscli_brew
-  - ansible_facts.system == 'Darwin'

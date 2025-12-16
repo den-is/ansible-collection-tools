@@ -1,5 +1,0 @@
-- name: Brew install
-  community.general.homebrew:
-    name: '{{ nvm_brew_package }}'
-    state: '{{ nvm_brew_package }}'
-    update_homebrew: true

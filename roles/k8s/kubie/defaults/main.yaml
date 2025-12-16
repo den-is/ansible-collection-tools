@@ -11,7 +11,3 @@ kubie_release_url: "{{ kubie_release_base_url }}/{{ kubie_v }}/kubie-{{ ansible_
 
 kubie_bin_dst: /usr/local/bin
 kubie_bin: kubie
-
-kubie_brew: false
-kubie_brew_package: kubie
-kubie_brew_state: latest

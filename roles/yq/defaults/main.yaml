@@ -15,7 +15,3 @@ yq_checksums_url: "{{ yq_release_base_url }}/{{ yq_v }}/checksums"
 
 yq_bin_dst: /usr/local/bin
 yq_bin: yq
-
-yq_brew: false
-yq_brew_package: yq
-yq_brew_state: latest

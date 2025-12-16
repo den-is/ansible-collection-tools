@@ -28,7 +28,3 @@ fd_full_download_path: '{{ fd_archive_download_dst }}/fd_{{ _fd_nov }}'
 
 fd_bin_dst: /usr/local/bin
 fd_bin: fd
-
-fd_brew: false
-fd_brew_package: fd
-fd_brew_state: latest

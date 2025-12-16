@@ -1,5 +1,0 @@
-- name: Brew install
-  community.general.homebrew:
-    name: "{{ chezmoi_brew_package }}"
-    state: "{{ 'absent' if chezmoi_uninstall else chezmoi_brew_state }}"
-    update_homebrew: "{{ chezmoi_brew_update }}"
