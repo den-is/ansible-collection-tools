@@ -28,5 +28,3 @@ starship_checksums_url: '{{ starship_release_url }}.sha256'
 
 starship_bin_dst: /usr/local/bin
 starship_bin: starship
-
-starship_uninstall: false

@@ -7,4 +7,3 @@
   ansible.builtin.include_tasks: release_archive.yaml
   when:
   - _starship_nov is version(_installed_starship_v, 'ne')
-  - not starship_uninstall
