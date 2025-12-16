@@ -3,11 +3,6 @@
   tags:
   - always
 
-- name: Make sure unzip is installed
-  ansible.builtin.package:
-    name: unzip
-    state: present
-
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:

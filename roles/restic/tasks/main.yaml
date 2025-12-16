@@ -3,11 +3,6 @@
   tags:
   - always
 
-- name: Make sure bzip2 exists
-  ansible.builtin.package:
-    name: bzip2
-    state: present
-
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
