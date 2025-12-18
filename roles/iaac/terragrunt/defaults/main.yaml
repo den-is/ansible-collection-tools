@@ -1,5 +1,7 @@
 terragrunt_v: v0.96.1
 
+_terragrunt_nov: "{{ terragrunt_v | regex_replace('^v', '') }}"
+
 terragrunt_arch_map:
   x86_64: "amd64"
   i386: "386"
@@ -13,8 +15,17 @@ terragrunt_system_map:
 terragrunt_arch: "{{ terragrunt_arch_map[ansible_facts.architecture] }}"
 terragrunt_system: "{{ terragrunt_system_map[ansible_facts.system] }}"
 
-terragrunt_release_base_url: https://github.com/gruntwork-io/terragrunt/releases/download
-terragrunt_release_url: '{{ terragrunt_release_base_url }}/{{ terragrunt_v }}/terragrunt_{{ terragrunt_system }}_{{ terragrunt_arch }}'
+terragrunt_release_base_url: https://github.com/gruntwork-io/terragrunt/releases/download/v{{ _terragrunt_nov }}
+terragrunt_release_artifact_name: terragrunt_{{ terragrunt_system }}_{{ terragrunt_arch }}
+terragrunt_release_url: '{{ terragrunt_release_base_url }}/{{ terragrunt_release_artifact_name }}'
 
-terragrunt_bin_dst: /usr/local/bin
+terragrunt_checksums_verify: false
+terragrunt_checksums_url: "{{ terragrunt_release_base_url }}/SHA256SUMS"
+
 terragrunt_bin: terragrunt
+
+# terragrunt_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+terragrunt_bin_dst_default: /usr/local/bin
+terragrunt_bin_dst_effective: >-
+  {{ (terragrunt_bin_dst | default(tools_bin_dst | default(terragrunt_bin_dst_default))) }}

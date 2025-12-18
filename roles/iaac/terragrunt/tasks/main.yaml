@@ -6,4 +6,4 @@
 - name: Binary download and installation
   ansible.builtin.include_tasks: release.yaml
   when:
-  - terragrunt_v is version(__installed_terragrunt_v, 'ne')
+  - _terragrunt_nov is version(__installed_terragrunt_v, 'ne')

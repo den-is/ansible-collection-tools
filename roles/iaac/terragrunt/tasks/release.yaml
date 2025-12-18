@@ -1,9 +1,30 @@
+- name: Get checksum
+  when: terragrunt_checksums_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __terragrunt_checksums: "{{ lookup('url', terragrunt_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __terragrunt_checksums is search(terragrunt_release_artifact_name)
+    retries: 10
+
+  - name: Get checksum for {{ terragrunt_release_artifact_name }}
+    ansible.builtin.set_fact:
+      __terragrunt_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __terragrunt_checksums }}"
+    when:
+    - terragrunt_release_artifact_name in item
+
 - name: Installing terragrunt {{ terragrunt_v }}
   ansible.builtin.get_url:
     url: '{{ terragrunt_release_url }}'
-    dest: '{{ terragrunt_bin_dst }}/{{ terragrunt_bin }}'
-
-- name: Set permissions
-  ansible.builtin.file:
-    path: '{{ terragrunt_bin_dst }}/{{ terragrunt_bin }}'
+    dest: '{{ terragrunt_bin_dst_effective }}/{{ terragrunt_bin }}'
+    force: true
     mode: '0755'
+    checksum: "{{ 'sha256:' + __terragrunt_checksum if terragrunt_checksums_verify else '' }}"
