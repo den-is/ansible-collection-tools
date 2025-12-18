@@ -1,4 +1,8 @@
-kind_v: v0.30.0
+kind_v: v0.31.0
+
+_kind_nov: "{{ kind_v | regex_replace('^v', '') }}"
+
+kind_force_reinstall: false
 
 kind_arch_map:
   x86_64: amd64
@@ -13,10 +17,16 @@ kind_arch: "{{ kind_arch_map[ansible_facts.architecture] }}"
 kind_system: "{{ kind_sys_map[ansible_facts.system] }}"
 
 kind_release_base_url: https://github.com/kubernetes-sigs/kind/releases/download
-kind_release_url: '{{ kind_release_base_url }}/{{ kind_v }}/kind-{{ kind_system }}-{{ kind_arch }}'
+kind_release_binary_name: kind-{{ kind_system }}-{{ kind_arch }}
+kind_release_url: '{{ kind_release_base_url }}/{{ kind_v }}/{{ kind_release_binary_name }}'
 
-kind_bin_download_dst: /tmp
-kind_full_download_path: '{{ kind_bin_download_dst }}/kind_{{ kind_v }}'
+kind_checksum_verify: false
+kind_checksum_url: '{{ kind_release_url }}.sha256sum'
 
-kind_bin_dst: /usr/local/bin
 kind_bin: kind
+
+# kind_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+kind_bin_dst_default: /usr/local/bin
+kind_bin_dst_effective: >-
+  {{ (kind_bin_dst | default(tools_bin_dst | default(kind_bin_dst_default))) }}

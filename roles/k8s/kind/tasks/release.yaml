@@ -1,0 +1,27 @@
+- name: Get checksum
+  when: kind_checksum_verify
+  block:
+
+  - name: Github API headers
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get raw checksum text
+    ansible.builtin.set_fact:
+      __kind_checksums: "{{ lookup('url', kind_checksum_url, headers=_github_api_headers) }}"
+    until: __kind_checksums is search(kind_release_binary_name)
+    run_once: true
+    retries: 10
+
+  - name: Getting checksum
+    ansible.builtin.set_fact:
+      __kind_checksum: "{{ __kind_checksums.split(' ')[0] }}"
+
+- name: Deploying kind {{ kind_v }} to {{ kind_bin_dst_effective }}/{{ kind_bin }}
+  ansible.builtin.get_url:
+    url: '{{ kind_release_url }}'
+    dest: '{{ kind_bin_dst_effective }}/{{ kind_bin }}'
+    checksum: "{{ 'sha256:' + __kind_checksum if kind_checksum_verify else '' }}"
+    mode: '0755'
+    force: true

@@ -3,7 +3,7 @@
   tags:
   - always
 
-- name: Binary download and installation
-  ansible.builtin.include_tasks: download.yaml
+- name: Deploying github release
+  ansible.builtin.include_tasks: release.yaml
   when:
-  - kind_v is version(current_kind_v, 'ne')
+  - _kind_nov is version(_installed_kind_v, 'ne') or kind_force_reinstall

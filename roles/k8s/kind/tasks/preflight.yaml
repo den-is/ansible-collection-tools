@@ -6,14 +6,14 @@
 
 - name: Get current kind version if any
   ansible.builtin.shell: '{{ kind_bin }} version --quiet'
-  register: check_kind_v_task
+  register: _check_kind_v_task
   ignore_errors: true
   changed_when: false
 
 - name: Get current helmfile version components
   ansible.builtin.set_fact:
-    current_kind_v: "{{ check_kind_v_task.stdout | default('v0.0.0', true) }}"
+    _installed_kind_v: "{{ _check_kind_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Current kind version: {{ current_kind_v if check_kind_v_task is success else "Not Found" }}'
+    msg: 'Installed version: {{ _installed_kind_v if _check_kind_v_task is success else "Not Found" }}'
