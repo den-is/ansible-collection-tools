@@ -1,0 +1,85 @@
+- name: Get checksum
+  when: ty_checksum_verify
+  block:
+
+  - name: Github API headers
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __ty_checksums: "{{ lookup('url', ty_checksum_url, headers=_github_api_headers) }}"
+    run_once: true
+    until: __ty_checksums is search(ty_release_archive_name)
+    retries: 10
+
+  - name: Get checksum for {{ ty_release_archive_name }}
+    ansible.builtin.set_fact:
+      __ty_checksum: "{{ __ty_checksums.split(' ')[0] }}"
+
+- name: Creating extraction dir {{ ty_extraction_path }}
+  ansible.builtin.file:
+    path: '{{ ty_extraction_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ ty_release_url }}'
+    dest: '{{ ty_archive_download_dst }}/{{ ty_release_archive_name }}'
+    checksum: "{{ 'sha256:' + __ty_checksum if ty_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ ty_extraction_path }}
+  ansible.builtin.unarchive:
+    src: '{{ ty_archive_download_dst }}/{{ ty_release_archive_name }}'
+    dest: '{{ ty_extraction_path }}'
+    remote_src: true
+    extra_opts:
+    - --strip-components=1
+    - --show-stored-names
+
+- name: Deploying binary
+  ansible.builtin.copy:
+    src: '{{ ty_extraction_path }}/ty'
+    dest: '{{ ty_bin_dst_effective }}/{{ ty_bin }}'
+    mode: '0755'
+    remote_src: true
+  register: __ty_binary_deploy_task
+
+- name: Deploy completions for shells
+  when:
+  - ty_deploy_completions
+  - __ty_binary_deploy_task is changed
+  block:
+
+  - name: Installing Bash completions
+    ansible.builtin.shell: |
+      {{ ty_bin_dst_effective }}/{{ ty_bin }} generate-shell-completion bash > {{ bash_completions_path }}/{{ ty_bin }}
+      chmod 644 {{ bash_completions_path }}/{{ ty_bin }}
+    when:
+    - _bash_completions_dst_check.stat.exists
+
+  - name: Installing ZSH completions
+    ansible.builtin.shell: |
+      {{ ty_bin_dst_effective }}/{{ ty_bin }} generate-shell-completion zsh > {{ zsh_completions_path }}/_{{ ty_bin }}
+      chmod 644 {{ zsh_completions_path }}/_{{ ty_bin }}
+    when:
+    - _zsh_completions_dst_check.stat.exists
+
+  - name: Installing Fish completions
+    ansible.builtin.shell: |
+      {{ ty_bin_dst_effective }}/{{ ty_bin }} generate-shell-completion fish > {{ fish_completions_path }}/{{ ty_bin }}.fish
+      chmod 644 {{ fish_completions_path }}/{{ ty_bin }}.fish
+    when:
+    - _fish_completions_dst_check.stat.exists
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ ty_archive_download_dst }}/{{ ty_release_archive_name }}'
+  - '{{ ty_extraction_path }}'
+  when: ty_downloads_clenup

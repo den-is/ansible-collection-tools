@@ -1,0 +1,9 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - ty_v is version(_installed_ty_v, 'ne') or ty_force_reinstall

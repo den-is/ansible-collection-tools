@@ -1,0 +1,49 @@
+ty_v: 0.0.3
+
+ty_compiler_gnu: true
+ty_force_reinstall: false
+
+_ty_sys_map:
+  Linux: unknown-linux
+  Darwin: apple-darwin
+  Win32NT: pc-windows
+
+_ty_arch_map:
+  x86_64: "x86_64"
+  aarch64: "aarch64"
+
+_ty_compiler_map:
+  Linux:
+    x86_64: "{{ '-gnu' if ty_compiler_gnu else '-musl' }}"
+    aarch64: "{{ '-gnu' if ty_compiler_gnu else '-musl' }}"
+  Darwin:
+    x86_64: ""
+    aarch64: ""
+
+_ty_sys: "{{ _ty_sys_map[ansible_facts.system] }}"
+_ty_arch: "{{ _ty_arch_map[ansible_facts.architecture] }}"
+_ty_compiler: "{{ _ty_compiler_map[ansible_facts.system][ansible_facts.architecture] }}"
+
+_ty_release_base_url: https://github.com/astral-sh/ty/releases/download
+ty_release_archive_name: ty-{{ _ty_arch }}-{{ _ty_sys }}{{ _ty_compiler }}.tar.gz
+ty_release_url: '{{ _ty_release_base_url }}/{{ ty_v }}/{{ ty_release_archive_name }}'
+
+ty_checksum_verify: false
+ty_checksum_url: '{{ ty_release_url }}.sha256'
+
+ty_archive_download_dst: /tmp
+ty_extraction_path: '{{ ty_archive_download_dst }}/ty-{{ ty_v }}'
+ty_downloads_clenup: true
+
+ty_bin: ty
+
+# ty_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+ty_bin_dst_default: /usr/local/bin
+ty_bin_dst_effective: >-
+  {{ (ty_bin_dst | default(tools_bin_dst | default(ty_bin_dst_default))) }}
+
+ty_deploy_completions: false
+bash_completions_path: /usr/share/bash-completion/completions
+zsh_completions_path: /usr/share/zsh/site-functions
+fish_completions_path: /usr/share/fish/vendor_completions.d
