@@ -10,7 +10,6 @@ _crane_arch_map:
 _crane_system_map:
   Darwin: Darwin
   Linux: Linux
-  Win32NT: Windows
 
 _crane_arch: "{{ _crane_arch_map[ansible_facts.architecture] }}"
 _crane_sys: "{{ _crane_system_map[ansible_facts.system] }}"

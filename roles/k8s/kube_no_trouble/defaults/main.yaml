@@ -3,7 +3,6 @@ kubent_v: 0.7.3
 _kubent_sys_map:
   Darwin: darwin
   Linux: linux
-  Win32NT: windows
 
 _kubent_arch_map:
   x86_64: "amd64"

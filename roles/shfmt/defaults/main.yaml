@@ -10,7 +10,6 @@ _shfmt_arch_map:
 _shfmt_sys_map:
   Darwin: darwin
   Linux: linux
-  Win32NT: windows
 
 _shfmt_arch: "{{ _shfmt_arch_map[ansible_facts.architecture] }}"
 _shfmt_system: "{{ _shfmt_sys_map[ansible_facts.system] }}"

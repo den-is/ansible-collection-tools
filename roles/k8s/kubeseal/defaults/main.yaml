@@ -5,7 +5,6 @@ __kubeseal_nov: '{{ kubeseal_v | regex_replace("^v", "") }}'
 kubeseal_sys_map:
   Darwin: darwin
   Linux: linux
-  Win32NT: windows
 
 kubeseal_arch_map:
   x86_64: amd64

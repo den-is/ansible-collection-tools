@@ -7,7 +7,6 @@ mkcert_arch_map:
 mkcert_system_map:
   Darwin: darwin
   Linux: linux
-  Win32NT: windows
 
 mkcert_arch: "{{ mkcert_arch_map[ansible_facts.architecture] }}"
 mkcert_system: "{{ mkcert_system_map[ansible_facts.system] }}"

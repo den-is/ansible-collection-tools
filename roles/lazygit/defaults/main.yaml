@@ -10,7 +10,6 @@ _lazygit_arch_map:
 _lazygit_system_map:
   Darwin: Darwin
   Linux: Linux
-  Win32NT: Windows
 
 lazygit_arch: "{{ _lazygit_arch_map[ansible_facts.architecture] }}"
 lazygit_sys: "{{ _lazygit_system_map[ansible_facts.system] }}"

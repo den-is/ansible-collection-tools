@@ -5,7 +5,6 @@ istioctl_force_install: true
 _istioctl_sys_map:
   Darwin: osx
   Linux: linux
-  Win32NT: win
 
 _istioctl_arch_map:
   x86_64: -amd64
@@ -16,7 +15,7 @@ _istioctl_sys: "{{ _istioctl_sys_map[ansible_facts.system] }}"
 _istioctl_arch: "{{ _istioctl_arch_map[ansible_facts.architecture] }}"
 
 istioctl_release_base_url: https://github.com/istio/istio/releases/download
-istioctl_release_archive_name: istioctl-{{ istioctl_v }}-{{ _istioctl_sys }}{{ _istioctl_arch }}.{{ 'zip' if ansible_facts.system == 'Win32NT' else 'tar.gz' }}
+istioctl_release_archive_name: istioctl-{{ istioctl_v }}-{{ _istioctl_sys }}{{ _istioctl_arch }}.tar.gz
 istioctl_release_url: '{{ istioctl_release_base_url }}/{{ istioctl_v }}/{{ istioctl_release_archive_name }}'
 
 istioctl_checksum_verify: false

@@ -9,7 +9,6 @@ cfssl_arch_map:
 cfssl_system_map:
   Darwin: darwin
   Linux: linux
-  Win32NT: windows
 
 cfssl_arch: "{{ cfssl_arch_map[ansible_facts.architecture] }}"
 cfssl_system: "{{ cfssl_system_map[ansible_facts.system] }}"

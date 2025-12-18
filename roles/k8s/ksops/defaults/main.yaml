@@ -7,7 +7,6 @@ ksops_nov: '{{ ksops_v | regex_replace("^v", "") }}'
 _ksops_sys_map:
   Darwin: Darwin
   Linux: Linux
-  Win32NT: Windows
 
 _ksops_arch_map:
   x86_64: "x86_64"

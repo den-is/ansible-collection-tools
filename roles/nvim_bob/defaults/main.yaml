@@ -10,7 +10,6 @@ _nvim_bob_arch_map:
 _nvim_bob_system_map:
   Darwin: macos
   Linux: linux
-  Win32NT: windows
 
 _nvim_bob_arch: "{{ _nvim_bob_arch_map[ansible_facts.architecture] }}"
 _nvim_bob_system: "{{ _nvim_bob_system_map[ansible_facts.system] }}"

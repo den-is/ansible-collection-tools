@@ -8,7 +8,6 @@ _packer_arch_map:
 _packer_sys_map:
   Darwin: darwin
   Linux: linux
-  Win32NT: windows
 
 _packer_arch: "{{ _packer_arch_map[ansible_facts.architecture] }}"
 _packer_sys: "{{ _packer_sys_map[ansible_facts.system] }}"

@@ -8,7 +8,6 @@ rclone_arch_map:
 rclone_system_map:
   Darwin: osx
   Linux: linux
-  Win32NT: windows
 
 rclone_arch: "{{ rclone_arch_map[ansible_facts.architecture] }}"
 rclone_system: "{{ rclone_system_map[ansible_facts.system] }}"

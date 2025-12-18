@@ -6,7 +6,6 @@ ty_force_reinstall: false
 _ty_sys_map:
   Linux: unknown-linux
   Darwin: apple-darwin
-  Win32NT: pc-windows
 
 _ty_arch_map:
   x86_64: "x86_64"

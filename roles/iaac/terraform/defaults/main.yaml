@@ -3,7 +3,6 @@ terraform_v: 1.14.3
 _terraform_sys_map:
   Darwin: darwin
   Linux: linux
-  Win32NT: windows
 
 _terraform_arch_map:
   x86_64: "amd64"

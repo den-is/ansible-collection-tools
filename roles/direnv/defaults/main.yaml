@@ -10,7 +10,6 @@ direnv_arch_map:
 direnv_system_map:
   Darwin: darwin
   Linux: linux
-  Win32NT: windows
 
 direnv_arch: "{{ direnv_arch_map[ansible_facts.architecture] }}"
 direnv_system: "{{ direnv_system_map[ansible_facts.system] }}"

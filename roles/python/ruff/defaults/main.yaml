@@ -5,7 +5,6 @@ ruff_compiler_gnu: true
 _ruff_sys_map:
   Linux: unknown-linux
   Darwin: apple-darwin
-  Win32NT: pc-windows
 
 _ruff_arch_map:
   x86_64: "x86_64"

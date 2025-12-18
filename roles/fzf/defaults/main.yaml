@@ -22,11 +22,10 @@ fzf_arch_map:
 fzf_system_map:
   Darwin: darwin
   Linux: linux
-  Win32NT: windows
 
 fzf_arch: "{{ fzf_arch_map[ansible_facts.architecture] }}"
 fzf_system: "{{ fzf_system_map[ansible_facts.system] }}"
-fzf_archive_ext: "{{ 'zip' if fzf_system in ['windows', 'darwin'] else 'tar.gz' }}"
+fzf_archive_ext: "{{ 'zip' if fzf_system == 'darwin' else 'tar.gz' }}"
 
 fzf_release_base_url: https://github.com/junegunn/fzf/releases/download
 fzf_archive_name: fzf-{{ _fzf_nov }}-{{ fzf_system }}-{{ fzf_arch }}.{{ fzf_archive_ext }}

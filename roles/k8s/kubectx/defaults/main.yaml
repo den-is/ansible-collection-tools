@@ -14,7 +14,6 @@ kubectx_arch_map:
 kubectx_systems_map:
   Darwin: darwin
   Linux: linux
-  Win32NT: windows
 
 kubectx_arch: "{{ kubectx_arch_map[ansible_facts.architecture] }}"
 kubectx_system: "{{ kubectx_systems_map[ansible_facts.system] }}"

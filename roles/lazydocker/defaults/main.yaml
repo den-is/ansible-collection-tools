@@ -10,7 +10,6 @@ _lazydocker_arch_map:
 _lazydocker_system_map:
   Darwin: Darwin
   Linux: Linux
-  Win32NT: Windows
 
 lazydocker_arch: "{{ _lazydocker_arch_map[ansible_facts.architecture] }}"
 lazydocker_sys: "{{ _lazydocker_system_map[ansible_facts.system] }}"

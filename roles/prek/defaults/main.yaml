@@ -7,7 +7,6 @@ prek_compiler_gnu: true
 _prek_sys_map:
   Linux: unknown-linux
   Darwin: apple-darwin
-  Win32NT: pc-windows
 
 _prek_arch_map:
   x86_64: "x86_64"

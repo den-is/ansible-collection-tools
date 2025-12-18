@@ -7,7 +7,6 @@ yazi_musl: false
 _yazi_sys_map:
   Darwin: apple-darwin
   Linux: unknown-linux{{  '-gnu' if not yazi_musl else '-musl' }}
-  Win32NT: pc-windows-msvc
 
 _yazi_arch_map:
   x86_64: x86_64

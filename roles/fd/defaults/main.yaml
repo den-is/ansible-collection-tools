@@ -11,7 +11,6 @@ _fd_deb_arch_map:
 _fd_sys_map:
   Linux: unknown-linux
   Darwin: apple-darwin
-  Win32NT: pc-windows
 
 _fd_deb_arch: "{{ _fd_deb_arch_map[ansible_facts.architecture] }}"
 _fd_sys: "{{ _fd_sys_map[ansible_facts.system] }}"
