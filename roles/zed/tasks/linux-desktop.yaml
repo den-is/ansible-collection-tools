@@ -1,0 +1,5 @@
+- name: Deploying zed.desktop
+  ansible.builtin.template:
+    src: '{{ zed_desktop_file_template }}'
+    dest: '{{ zed_dst_base }}/share/applications/zed.desktop'
+    mode: '0644'

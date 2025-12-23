@@ -1,0 +1,26 @@
+zed_v: v0.217.3
+
+_zed_nov: "{{ zed_v | regex_replace('^v', '') }}"
+
+_zed_arch_map:
+  x86_64: x86_64
+  aarch64: arm64
+
+_zed_arch: "{{ _zed_arch_map[ansible_facts.architecture] }}"
+
+_zed_release_base_url: https://github.com/zed-industries/zed/releases/download/v{{ _zed_nov }}
+_zed_archive_name: zed-{{ ansible_facts.system | lower }}-{{ _zed_arch }}.tar.gz
+
+zed_release_url: '{{ _zed_release_base_url }}/{{ _zed_archive_name }}'
+
+zed_archive_sha256sum: ''
+
+zed_archive_download_dst: /tmp
+zed_cleanup_downloaded_files: true
+
+zed_dst_base: ~/.local
+zed_app_dst: '{{ zed_dst_base }}/zed.app'
+zed_create_symlinks: true
+
+zed_install_dekstop_entries: true
+zed_desktop_file_template: zed.desktop.j2

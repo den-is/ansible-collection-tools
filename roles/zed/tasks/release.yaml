@@ -1,0 +1,34 @@
+- name: Getting zed release artifact archive
+  ansible.builtin.get_url:
+    url: '{{ zed_release_url }}'
+    dest: '{{ zed_archive_download_dst }}/{{ _zed_archive_name }}'
+    checksum: "{{ 'sha256:' + zed_archive_sha256sum if zed_archive_sha256sum is defined and zed_archive_sha256sum | length > 0 else '' }}"
+    mode: '0644'
+
+- name: Creating zed app dir {{ zed_app_dst }}
+  ansible.builtin.file:
+    path: '{{ zed_app_dst }}'
+    state: directory
+    mode: '0750'
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ zed_archive_download_dst }}/{{ _zed_archive_name }}'
+    dest: '{{ zed_app_dst }}'
+    remote_src: true
+    extra_opts: ['--strip-components=1', '--show-stored-names']
+
+- name: Creating symlink to zed binary in ~/.local/bin
+  ansible.builtin.file:
+    src: '{{ zed_app_dst }}/bin/zed'
+    dest: ~/.local/bin/zed
+    state: link
+    force: true
+  when: zed_create_symlinks | bool
+
+# cleanup
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ zed_archive_download_dst }}/{{ _zed_archive_name }}'
+    state: absent
+  when: zed_cleanup_downloaded_files | bool
