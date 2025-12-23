@@ -6,4 +6,4 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: archive.yaml
   when:
-  - kubefwd_v is version(current_kubefwd_v, 'ne')
+  - _kubefwd_nov is version(current_kubefwd_v, 'ne')

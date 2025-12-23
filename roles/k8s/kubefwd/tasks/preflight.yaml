@@ -14,6 +14,6 @@
   ansible.builtin.set_fact:
     current_kubefwd_v: "{{ check_kubefwd_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current kubefwd version
+- name: Report installed version
   ansible.builtin.debug:
     msg: 'Current kubefwd version: {{ current_kubefwd_v if check_kubefwd_v_task if success else "Not Found" }}'

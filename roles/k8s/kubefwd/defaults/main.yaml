@@ -1,16 +1,18 @@
-kubefwd_v: 1.22.5
+kubefwd_v: v1.23.2
 
-kubefwd_arch_map:
+_kubefwd_nov: "{{ kubefwd_v | regex_replace('^v', '') }}"
+
+_kubefwd_arch_map:
   x86_64: x86_64
   i386: i386
   aarch64: arm64
 
-kubefwd_arch: "{{ kubefwd_arch_map[ansible_facts.architecture] }}"
+_kubefwd_arch: "{{ _kubefwd_arch_map[ansible_facts.architecture] }}"
 
-kubefwd_release_base_url: https://github.com/txn2/kubefwd/releases/download
-kubefwd_archive_url: "{{ kubefwd_release_base_url }}/{{ kubefwd_v }}/kubefwd_{{ ansible_facts.system }}_{{ kubefwd_arch }}.tar.gz"
+kubefwd_release_base_url: https://github.com/txn2/kubefwd/releases/download/v{{ _kubefwd_nov }}
+kubefwd_archive_url: "{{ kubefwd_release_base_url }}/kubefwd_{{ ansible_facts.system }}_{{ _kubefwd_arch }}.tar.gz"
 
-kubefwd_full_download_path: /tmp/kubefwd_{{ kubefwd_v }}
+kubefwd_full_download_path: /tmp/kubefwd_{{ _kubefwd_nov }}
 
 kubefwd_bin_dst: /usr/local/bin
 kubefwd_bin: kubefwd
