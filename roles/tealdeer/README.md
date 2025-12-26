@@ -1,12 +1,14 @@
-# tealdeer - A smarter cd command
+# tealdeer - Collaborative cheatsheets for console commands
 
 ## Links
-- https://github.com/ajeetdsouza/tealdeer
+- https://github.com/tealdeer-rs/tealdeer
+- https://tealdeer-rs.github.io/tealdeer
+- https://tldr.sh
 
 ## Completions
 By default shell completions installation is disabled `tealdeer_deploy_completions: false`.
-By default various shell completions installation require `root` access.
-Default path for completions:
+By default various shell completions installation require `root` privileges.
+Default paths for completions:
 
 ```yaml
 bash_completions_path: /usr/share/bash-completion/completions
