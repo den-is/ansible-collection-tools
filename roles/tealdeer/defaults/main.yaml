@@ -1,0 +1,29 @@
+tealdeer_v: 1.8.1
+
+_tealdeer_nov: "{{ tealdeer_v | regex_replace('^v', '') }}"
+
+_tealdeer_arch_map:
+  x86_64: x86_64
+  aarch64: aarch64
+
+_tealdeer_system_map:
+  Darwin: macos
+  Linux: linux
+
+_tealdeer_arch: "{{ _tealdeer_arch_map[ansible_facts.architecture] }}"
+_tealdeer_system: "{{ _tealdeer_system_map[ansible_facts.system] }}"
+
+tealdeer_release_base_url: https://github.com/tealdeer-rs/tealdeer/releases/download/v{{ _tealdeer_nov }}
+tealdeer_release_artifact_name: tealdeer-{{ _tealdeer_system }}-{{ _tealdeer_arch }}{{ "-musl" if ansible_facts.system == "Linux" }}
+tealdeer_release_url: '{{ tealdeer_release_base_url }}/{{ tealdeer_release_artifact_name }}'
+
+tealdeer_checksum_verify: false
+tealdeer_checksums_url: '{{ tealdeer_release_url }}.sha256'
+
+tealdeer_bin_dst: /usr/local/bin
+tealdeer_bin: tldr
+
+tealdeer_deploy_completions: false
+bash_completions_path: /usr/share/bash-completion/completions
+zsh_completions_path: /usr/share/zsh/site-functions
+fish_completions_path: /usr/share/fish/vendor_completions.d

@@ -1,0 +1,9 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - _tealdeer_nov is version(_installed_tealdeer_v, 'ne')

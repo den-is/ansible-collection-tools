@@ -1,0 +1,39 @@
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: command -v {{ tealdeer_bin }}
+  register: tealdeer_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: '{{ tealdeer_bin }} --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"'
+  register: _check_tealdeer_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register preflight facts
+  ansible.builtin.set_fact:
+    _installed_tealdeer_v: "{{ _check_tealdeer_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Report installed version
+  ansible.builtin.debug:
+    msg: |
+      Installed version: {{ _installed_tealdeer_v if _check_tealdeer_v_task is success else "Not Found" }}
+
+- name: Check completions destinations
+  when: tealdeer_deploy_completions
+  block:
+
+  - name: Check if Bash completions path exists
+    ansible.builtin.stat:
+      path: "{{ bash_completions_path }}"
+    register: _bash_completions_dst_check
+
+  - name: Check if ZSH completions path exists
+    ansible.builtin.stat:
+      path: "{{ zsh_completions_path }}"
+    register: _zsh_completions_dst_check
+
+  - name: Check if Fish completions path exists
+    ansible.builtin.stat:
+      path: "{{ fish_completions_path }}"
+    register: _fish_completions_dst_check

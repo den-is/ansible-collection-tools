@@ -1,0 +1,54 @@
+- name: Get checksum
+  when: tealdeer_checksum_verify
+  block:
+
+  - name: Set Github API headers
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Fetch checksums
+    ansible.builtin.set_fact:
+      __tealdeer_checksums_raw: "{{ lookup('url', tealdeer_checksums_url, headers=_github_api_headers) }}"
+    run_once: true
+    until: __tealdeer_checksums_raw is search(tealdeer_release_artifact_name)
+    retries: 10
+
+  - name: Extract checksum
+    ansible.builtin.set_fact:
+      __tealdeer_artifact_checksum: "{{ __tealdeer_checksums_raw.split(' ')[0] }}"
+
+- name: Deploying binary
+  ansible.builtin.get_url:
+    url: '{{ tealdeer_release_url }}'
+    dest: '{{ tealdeer_bin_dst }}/{{ tealdeer_bin }}'
+    checksum: "{{ '' if not __tealdeer_artifact_checksum else 'sha256:' + __tealdeer_artifact_checksum }}"
+    mode: '0755'
+
+- name: Deploy completions
+  when: tealdeer_deploy_completions
+  block:
+
+  - name: Installing ZSH completions
+    ansible.builtin.get_url:
+      url: '{{ tealdeer_release_base_url }}/completions_zsh'
+      dest: "{{ zsh_completions_path }}/_{{ tealdeer_bin }}"
+      mode: "0644"
+    when:
+    - _zsh_completions_dst_check.stat.exists
+
+  - name: Installing Bash completions
+    ansible.builtin.get_url:
+      url: '{{ tealdeer_release_base_url }}/completions_bash'
+      dest: "{{ bash_completions_path }}/{{ tealdeer_bin }}.bash"
+      mode: "0644"
+    when:
+    - _bash_completions_dst_check.stat.exists
+
+  - name: Installing Fish completions
+    ansible.builtin.get_url:
+      url: '{{ tealdeer_release_base_url }}/completions_fish'
+      dest: "{{ fish_completions_path }}/{{ tealdeer_bin }}.fish"
+      mode: "0644"
+    when:
+    - _fish_completions_dst_check.stat.exists
