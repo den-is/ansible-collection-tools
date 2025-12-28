@@ -1,4 +1,8 @@
-age_v: v1.2.1
+age_v: v1.3.0
+
+# Provide checksum for downloaded archive to verify integrity
+# Found on the Github Release page
+age_archive_checksum: ""
 
 age_arch_map:
   x86_64: amd64
