@@ -1,12 +1,12 @@
 namespace: den_is
 name: tools
-version: 0.54.0
+version: 0.55.0
 readme: README.md
 authors:
 - Denis Iskandarov <denis@cloudboom.io>
 description: Collection that automates the installation of various tools, services and environments
 license:
-- "MIT"
+- MIT
 tags: []
 dependencies: {}
 repository: https://github.com/den-is/ansible-collection-tools
