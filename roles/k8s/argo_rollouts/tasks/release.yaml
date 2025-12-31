@@ -24,6 +24,6 @@
 - name: Installing Argo Rollouts CLI binary (kubectl plugin)
   ansible.builtin.get_url:
     url: '{{ argo_rollouts_release_url }}'
-    dest: '{{ argo_rollouts_bin_dst }}/{{ argo_rollouts_bin }}'
+    dest: '{{ argo_rollouts_bin_dst_effective }}/{{ argo_rollouts_bin }}'
     checksum: "{{ 'sha256:' + __argo_rollouts_checksum if argo_rollouts_checksum_verify else '' }}"
     mode: '0755'

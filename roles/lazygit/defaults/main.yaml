@@ -24,5 +24,9 @@ lazygit_release_sha256sums_url: '{{ lazygit_release_base_url }}/v{{ _lazygit_nov
 lazygit_archive_download_dst: /tmp
 lazygit_extraction_dst: '{{ lazygit_archive_download_dst }}/lazygit-{{ lazygit_v }}'
 
-lazygit_bin_dst: /usr/local/bin
 lazygit_bin: lazygit
+# lazygit_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+lazygit_bin_dst_default: /usr/local/bin
+lazygit_bin_dst_effective: >-
+  {{ (lazygit_bin_dst | default(tools_bin_dst | default(lazygit_bin_dst_default))) }}

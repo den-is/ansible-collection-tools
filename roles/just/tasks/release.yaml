@@ -41,10 +41,10 @@
     dest: '{{ just_full_download_path }}'
     remote_src: true
 
-- name: Copying binary to {{ just_bin_dst }}
+- name: Copying binary to {{ just_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ just_full_download_path }}/just'
-    dest: '{{ just_bin_dst }}/{{ just_bin }}'
+    dest: '{{ just_bin_dst_effective }}/{{ just_bin }}'
     mode: '0755'
     remote_src: true
 

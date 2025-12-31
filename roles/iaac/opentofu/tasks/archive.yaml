@@ -40,10 +40,10 @@
     dest: '{{ opentofu_full_download_path }}'
     remote_src: true
 
-- name: Copying binary to {{ opentofu_bin_dst }}
+- name: Copying binary to {{ opentofu_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ opentofu_full_download_path }}/tofu'
-    dest: '{{ opentofu_bin_dst }}/{{ opentofu_bin }}'
+    dest: '{{ opentofu_bin_dst_effective }}/{{ opentofu_bin }}'
     mode: '0755'
     remote_src: true
 

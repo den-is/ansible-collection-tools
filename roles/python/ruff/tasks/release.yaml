@@ -47,7 +47,7 @@
 - name: Installing ruff
   ansible.builtin.copy:
     src: '{{ ruff_extraction_path }}/ruff'
-    dest: '{{ ruff_bin_dst }}/{{ ruff_bin }}'
+    dest: '{{ ruff_bin_dst_effective }}/{{ ruff_bin }}'
     mode: '0755'
     remote_src: true
 

@@ -30,11 +30,11 @@
 - name: Installing yq {{ yq_v }}
   ansible.builtin.get_url:
     url: '{{ yq_release_url }}'
-    dest: '{{ yq_bin_dst }}/{{ yq_bin }}'
+    dest: '{{ yq_bin_dst_effective }}/{{ yq_bin }}'
     checksum: '{{ "sha256:" + __yq_checksum if yq_checksum_verify else "" }}'
   retries: 3
 
-- name: Set permissions
+- name: Ensure permissions
   ansible.builtin.file:
-    path: '{{ yq_bin_dst }}/{{ yq_bin }}'
+    path: '{{ yq_bin_dst_effective }}/{{ yq_bin }}'
     mode: '0755'

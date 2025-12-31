@@ -3,5 +3,9 @@ kubeps1_force_reinstall: false
 
 kubeps1_release_url: https://github.com/jonmosco/kube-ps1/raw/{{ kubeps1_v }}/kube-ps1.sh
 
-kubeps1_bin_dst: /usr/local/bin
 kubeps1_bin: kube-ps1.sh
+# kubeps1_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+kubeps1_bin_dst_default: /usr/local/bin
+kubeps1_bin_dst_effective: >-
+  {{ (kubeps1_bin_dst | default(tools_bin_dst | default(kubeps1_bin_dst_default))) }}

@@ -13,7 +13,7 @@
 - name: Copying K9S to install dest
   ansible.builtin.copy:
     src: /tmp/k9s_{{ k9s_v }}/k9s
-    dest: '{{ k9s_bin_dst }}/{{ k9s_bin }}'
+    dest: '{{ k9s_bin_dst_effective }}/{{ k9s_bin }}'
     mode: '0755'
     remote_src: true
 

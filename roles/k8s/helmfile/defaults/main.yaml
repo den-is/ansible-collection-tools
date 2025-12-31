@@ -15,5 +15,9 @@ helmfile_release_url: "{{ helmfile_release_base_url }}/{{ helmfile_v }}/{{ helmf
 helmfile_bin_download_dst: /tmp
 helmfile_full_download_path: '{{ helmfile_bin_download_dst }}/helmfile_{{ helmfile_v }}'
 
-helmfile_bin_dst: /usr/local/bin
 helmfile_bin: helmfile
+# helmfile_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+helmfile_bin_dst_default: /usr/local/bin
+helmfile_bin_dst_effective: >-
+  {{ (helmfile_bin_dst | default(tools_bin_dst | default(helmfile_bin_dst_default))) }}

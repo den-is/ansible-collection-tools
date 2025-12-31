@@ -32,5 +32,9 @@ ruff_checksums_url: '{{ ruff_release_base_url }}/{{ ruff_v }}/sha256.sum'
 ruff_archive_download_dst: /tmp
 ruff_extraction_path: '{{ ruff_archive_download_dst }}/ruff-{{ ruff_v }}'
 
-ruff_bin_dst: /usr/local/bin
 ruff_bin: ruff
+# ruff_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+ruff_bin_dst_default: /usr/local/bin
+ruff_bin_dst_effective: >-
+  {{ (ruff_bin_dst | default(tools_bin_dst | default(ruff_bin_dst_default))) }}

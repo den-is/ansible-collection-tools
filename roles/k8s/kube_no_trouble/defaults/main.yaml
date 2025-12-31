@@ -18,5 +18,10 @@ kubent_release_url: '{{ kubent_release_base_url }}/{{ kubent_v }}/{{ kubent_rele
 kubent_archive_download_dst: /tmp
 kubent_full_download_path: '{{ kubent_archive_download_dst }}/kubent-{{ kubent_v }}'
 
-kubent_bin_dst: /usr/local/bin
 kubent_bin: kubent
+
+# kubent_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+kubent_bin_dst_default: /usr/local/bin
+kubent_bin_dst_effective: >-
+  {{ (kubent_bin_dst | default(tools_bin_dst | default(kubent_bin_dst_default))) }}

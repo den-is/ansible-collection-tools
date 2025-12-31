@@ -24,5 +24,9 @@ lazydocker_release_sha256sums_url: '{{ lazydocker_release_base_url }}/v{{ _lazyd
 lazydocker_archive_download_dst: /tmp
 lazydocker_extraction_dst: '{{ lazydocker_archive_download_dst }}/lazydocker-{{ lazydocker_v }}'
 
-lazydocker_bin_dst: /usr/local/bin
 lazydocker_bin: lazydocker
+# lazydocker_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+lazydocker_bin_dst_default: /usr/local/bin
+lazydocker_bin_dst_effective: >-
+  {{ (lazydocker_bin_dst | default(tools_bin_dst | default(lazydocker_bin_dst_default))) }}

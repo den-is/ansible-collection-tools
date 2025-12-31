@@ -21,13 +21,6 @@
     when:
     - argo_release_binary_name in item
 
-# - name: Installing Argo CD CLI
-#   ansible.builtin.get_url:
-#     url: '{{ argo_release_url }}'
-#     dest: '{{ argo_bin_dst }}/{{ argo_bin }}'
-#     checksum: "{{ 'sha256:' + __argo_checksum if argo_checksum_verify else '' }}"
-#     mode: '0755'
-
 - name: Ensure gzip is installed
   ansible.builtin.package:
     name: gzip
@@ -59,7 +52,7 @@
 - name: Installing argo-workflows CLI
   ansible.builtin.copy:
     src: '{{ argo_extraction_path }}/argo-{{ argo_sys }}-{{ argo_arch }}'
-    dest: '{{ argo_bin_dst }}/{{ argo_bin }}'
+    dest: '{{ argo_bin_dst_effective }}/{{ argo_bin }}'
     mode: '0755'
     remote_src: true
 

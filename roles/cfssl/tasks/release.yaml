@@ -4,12 +4,12 @@
   - name: Deploying cfssl
     ansible.builtin.get_url:
       url: '{{ cfssl_release_url }}'
-      dest: '{{ cfssl_bin_dst }}/{{ cfssl_bin }}'
+      dest: '{{ cfssl_bin_dst_effective }}/{{ cfssl_bin }}'
       checksum: '{{ "" if not cfssl_release_verify_checksums else __cfssl_checksum }}'
 
   - name: Set cfssl permissions
     ansible.builtin.file:
-      path: '{{ cfssl_bin_dst }}/{{ cfssl_bin }}'
+      path: '{{ cfssl_bin_dst_effective }}/{{ cfssl_bin }}'
       mode: '0755'
 
 - name: Installing cfssljson

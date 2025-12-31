@@ -28,8 +28,12 @@ eza_archive_download_dst: /tmp
 eza_extraction_path: '{{ eza_archive_download_dst }}/eza-{{ _eza_nov }}'
 eza_cleanup_release_artifacts: true
 
-eza_bin_dst: /usr/local/bin
 eza_bin: eza
+# eza_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+eza_bin_dst_default: /usr/local/bin
+eza_bin_dst_effective: >-
+  {{ (eza_bin_dst | default(tools_bin_dst | default(eza_bin_dst_default))) }}
 
 eza_deploy_man: true
 eza_man_url: '{{ _eza_release_base_url }}/man-{{ _eza_nov }}.tar.gz'

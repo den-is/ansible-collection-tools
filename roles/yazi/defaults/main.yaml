@@ -24,5 +24,9 @@ yazi_release_url: '{{ yazi_release_base_url }}/{{ yazi_v }}/{{ yazi_release_arch
 yazi_archive_download_dst: /tmp
 yazi_full_download_path: '{{ yazi_archive_download_dst }}/yazi-{{ yazi_v }}'
 
-yazi_bin_dst: /usr/local/bin
 yazi_bin: yazi
+# yazi_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+yazi_bin_dst_default: /usr/local/bin
+yazi_bin_dst_effective: >-
+  {{ (yazi_bin_dst | default(tools_bin_dst | default(yazi_bin_dst_default))) }}

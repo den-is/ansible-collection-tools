@@ -23,5 +23,9 @@ restic_checksum_verify: true
 restic_archive_download_dst: /tmp
 restic_extraction_dst: '{{ restic_archive_download_dst }}/restic-{{ _restic_nov }}'
 
-restic_bin_dst: /usr/local/bin
 restic_bin: restic
+# restic_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+restic_bin_dst_default: /usr/local/bin
+restic_bin_dst_effective: >-
+  {{ (restic_bin_dst | default(tools_bin_dst | default(restic_bin_dst_default))) }}

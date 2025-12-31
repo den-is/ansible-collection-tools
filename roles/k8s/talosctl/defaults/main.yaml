@@ -14,5 +14,9 @@ talosctl_release_url: '{{ talosctl_release_base_url }}/{{ talosctl_v }}/{{ talos
 talosctl_checksum_verify: false
 talosctl_checksums_url: "{{ talosctl_release_base_url }}/{{ talosctl_v }}/sha256sum.txt"
 
-talosctl_bin_dst: /usr/local/bin
 talosctl_bin: talosctl
+# talosctl_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+talosctl_bin_dst_default: /usr/local/bin
+talosctl_bin_dst_effective: >-
+  {{ (talosctl_bin_dst | default(tools_bin_dst | default(talosctl_bin_dst_default))) }}

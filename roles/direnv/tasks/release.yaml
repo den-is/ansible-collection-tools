@@ -1,9 +1,10 @@
 - name: Deploying direnv {{ direnv_v }}
   ansible.builtin.get_url:
     url: '{{ direnv_release_url }}'
-    dest: '{{ direnv_bin_dst }}/{{ direnv_bin }}'
-
-- name: Set permissions
-  ansible.builtin.file:
-    path: '{{ direnv_bin_dst }}/{{ direnv_bin }}'
+    dest: '{{ direnv_bin_dst_effective }}/{{ direnv_bin }}'
+    checksum: "{{ 'sha256:' + direnv_sha256sum if direnv_sha256sum is defined and (direnv_sha256sum | length > 0) else '' }}"
     mode: '0755'
+  register: __direnv_download_status
+  retries: 3
+  delay: 10
+  until: __direnv_download_status is succeeded

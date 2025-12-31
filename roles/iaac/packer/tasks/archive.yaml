@@ -14,10 +14,10 @@
     dest: '{{ packer_full_download_path }}'
     remote_src: true
 
-- name: Copying binary to {{ packer_bin_dst }}
+- name: Copying binary to {{ packer_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ packer_full_download_path }}/packer'
-    dest: '{{ packer_bin_dst }}/{{ packer_bin }}'
+    dest: '{{ packer_bin_dst_effective }}/{{ packer_bin }}'
     mode: '0755'
     remote_src: true
 

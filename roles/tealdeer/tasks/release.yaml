@@ -21,7 +21,7 @@
 - name: Deploying binary
   ansible.builtin.get_url:
     url: '{{ tealdeer_release_url }}'
-    dest: '{{ tealdeer_bin_dst }}/{{ tealdeer_bin }}'
+    dest: '{{ tealdeer_bin_dst_effective }}/{{ tealdeer_bin }}'
     checksum: "{{ '' if not __tealdeer_artifact_checksum else 'sha256:' + __tealdeer_artifact_checksum }}"
     mode: '0755'
 

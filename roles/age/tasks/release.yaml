@@ -21,14 +21,14 @@
 - name: Installing age binary
   ansible.builtin.copy:
     src: '{{ age_extraction_dst }}/age'
-    dest: '{{ age_bin_dst }}/{{ age_bin }}'
+    dest: '{{ age_bin_dst_effective }}/{{ age_bin }}'
     mode: '0755'
     remote_src: true
 
 - name: Installing age-keygen binary
   ansible.builtin.copy:
     src: '{{ age_extraction_dst }}/age-keygen'
-    dest: '{{ age_bin_dst }}/age-keygen'
+    dest: '{{ age_bin_dst_effective }}/{{ age_keygen_bin}}'
     mode: '0755'
     remote_src: true
 

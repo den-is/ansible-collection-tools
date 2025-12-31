@@ -18,10 +18,10 @@
     remote_src: true
     extra_opts: ['--strip-components=1', '--show-stored-names']
 
-- name: Copying binary to {{ shellcheck_bin_dst }}
+- name: Copying binary to {{ shellcheck_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ shellcheck_extraction_dst }}/shellcheck'
-    dest: '{{ shellcheck_bin_dst }}/{{ shellcheck_bin }}'
+    dest: '{{ shellcheck_bin_dst_effective }}/{{ shellcheck_bin }}'
     mode: '0755'
     remote_src: true
 

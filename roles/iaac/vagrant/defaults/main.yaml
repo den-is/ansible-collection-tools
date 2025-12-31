@@ -14,5 +14,9 @@ vagrant_release_url: '{{ vagrant_release_base_url }}/{{ vagrant_v }}/{{ vagrant_
 vagrant_archive_download_dst: /tmp
 vagrant_full_download_path: '{{ vagrant_archive_download_dst }}/vagrant-{{ vagrant_v }}'
 
-vagrant_bin_dst: /usr/local/bin
 vagrant_bin: vagrant
+# vagrant_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+vagrant_bin_dst_default: /usr/local/bin
+vagrant_bin_dst_effective: >-
+  {{ (vagrant_bin_dst | default(tools_bin_dst | default(vagrant_bin_dst_default))) }}

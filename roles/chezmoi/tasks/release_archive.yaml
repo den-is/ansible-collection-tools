@@ -17,10 +17,10 @@
     dest: '{{ chezmoi_extraction_path }}'
     remote_src: true
 
-- name: Installing chezmoi binary to {{ chezmoi_bin_dst }}/{{ chezmoi_bin }}
+- name: Installing chezmoi binary to {{ chezmoi_bin_dst_effective }}/{{ chezmoi_bin }}
   ansible.builtin.copy:
     src: '{{ chezmoi_extraction_path }}/chezmoi'
-    dest: '{{ chezmoi_bin_dst }}/{{ chezmoi_bin }}'
+    dest: '{{ chezmoi_bin_dst_effective }}/{{ chezmoi_bin }}'
     mode: '0755'
     remote_src: true
 

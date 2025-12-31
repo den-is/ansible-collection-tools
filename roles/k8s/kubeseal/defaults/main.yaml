@@ -23,5 +23,9 @@ kubeseal_checksum_url: "{{ kubeseal_release_base_url }}/{{ kubeseal_v }}/sealed-
 kubeseal_archive_download_dst: /tmp
 kubeseal_extraction_path: '{{ kubeseal_archive_download_dst }}/kubeseal_{{ kubeseal_v }}'
 
-kubeseal_bin_dst: /usr/local/bin
 kubeseal_bin: kubeseal
+# kubeseal_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+kubeseal_bin_dst_default: /usr/local/bin
+kubeseal_bin_dst_effective: >-
+  {{ (kubeseal_bin_dst | default(tools_bin_dst | default(kubeseal_bin_dst_default))) }}

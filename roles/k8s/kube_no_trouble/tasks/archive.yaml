@@ -16,10 +16,10 @@
     dest: '{{ kubent_full_download_path }}'
     remote_src: true
 
-- name: Copying binary to {{ kubent_bin_dst }}
+- name: Copying binary to {{ kubent_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ kubent_full_download_path }}/kubent'
-    dest: '{{ kubent_bin_dst }}/{{ kubent_bin }}'
+    dest: '{{ kubent_bin_dst_effective }}/{{ kubent_bin }}'
     mode: '0755'
     remote_src: true
 

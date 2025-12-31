@@ -40,10 +40,10 @@
     dest: '{{ argonaut_extract_dst }}'
     remote_src: true
 
-- name: Copying argonaut to {{ argonaut_bin_dst }}
+- name: Copying argonaut to {{ argonaut_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ argonaut_extract_dst }}/argonaut'
-    dest: '{{ argonaut_bin_dst }}/{{ argonaut_bin }}'
+    dest: '{{ argonaut_bin_dst_effective }}/{{ argonaut_bin }}'
     mode: '0755'
     remote_src: true
 

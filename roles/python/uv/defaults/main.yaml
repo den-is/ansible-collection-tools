@@ -32,6 +32,10 @@ uv_checksums_url: '{{ uv_release_base_url }}/{{ uv_v }}/sha256.sum'
 uv_archive_download_dst: /tmp
 uv_extraction_path: '{{ uv_archive_download_dst }}/uv-{{ uv_v }}'
 
-uv_bin_dst: /usr/local/bin
 uv_bin: uv
 uvx_bin: uvx
+# uv_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+uv_bin_dst_default: /usr/local/bin
+uv_bin_dst_effective: >-
+  {{ (uv_bin_dst | default(tools_bin_dst | default(uv_bin_dst_default))) }}

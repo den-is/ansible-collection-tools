@@ -14,7 +14,7 @@
 - name: Copy stern binary to install dest
   ansible.builtin.copy:
     src: /tmp/stern_{{ stern_v }}/stern
-    dest: '{{ stern_bin_dst }}/{{ stern_bin }}'
+    dest: '{{ stern_bin_dst_effective }}/{{ stern_bin }}'
     mode: '0755'
     remote_src: true
 

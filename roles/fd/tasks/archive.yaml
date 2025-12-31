@@ -11,10 +11,10 @@
     extra_opts: ['--strip-components=1', '--show-stored-names']
     remote_src: true
 
-- name: Copying fd to {{ fd_bin_dst }}
+- name: Copying fd to {{ fd_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ fd_full_download_path }}/fd'
-    dest: '{{ fd_bin_dst }}/{{ fd_bin }}'
+    dest: '{{ fd_bin_dst_effective }}/{{ fd_bin }}'
     mode: '0755'
     remote_src: true
 

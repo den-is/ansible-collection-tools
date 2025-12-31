@@ -23,8 +23,12 @@ zoxide_release_url: '{{ zoxide_release_base_url }}/v{{ _zoxide_nov }}/{{ zoxide_
 zoxide_archive_download_dst: /tmp
 zoxide_extraction_dst: '{{ zoxide_archive_download_dst }}/zoxide-{{ _zoxide_nov }}'
 
-zoxide_bin_dst: /usr/local/bin
 zoxide_bin: zoxide
+# zoxide_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+zoxide_bin_dst_default: /usr/local/bin
+zoxide_bin_dst_effective: >-
+  {{ (zoxide_bin_dst | default(tools_bin_dst | default(zoxide_bin_dst_default))) }}
 
 zoxide_deploy_man: true
 man_base_path: /usr/share/man

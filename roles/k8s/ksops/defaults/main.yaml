@@ -26,5 +26,10 @@ ksops_checksums_url: '{{ ksops_release_base_url }}/{{ ksops_v }}/checksums.txt'
 ksops_archive_download_dst: /tmp
 ksops_full_download_path: '{{ ksops_archive_download_dst }}/ksops-{{ ksops_v }}'
 
-ksops_bin_dst: /usr/local/bin
 ksops_bin: ksops
+
+# ksops_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+ksops_bin_dst_default: /usr/local/bin
+ksops_bin_dst_effective: >-
+  {{ (ksops_bin_dst | default(tools_bin_dst | default(ksops_bin_dst_default))) }}

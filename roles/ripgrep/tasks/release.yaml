@@ -43,10 +43,10 @@
     - --strip-components=1
     - --show-stored-names
 
-- name: Installing ripgrep binary to {{ ripgrep_bin_dst }}/{{ ripgrep_bin }}
+- name: Installing ripgrep binary to {{ ripgrep_bin_dst_effective }}/{{ ripgrep_bin }}
   ansible.builtin.copy:
     src: '{{ ripgrep_extraction_path }}/rg'
-    dest: '{{ ripgrep_bin_dst }}/{{ ripgrep_bin }}'
+    dest: '{{ ripgrep_bin_dst_effective }}/{{ ripgrep_bin }}'
     mode: '0755'
     remote_src: true
 

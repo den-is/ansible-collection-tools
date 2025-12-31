@@ -40,10 +40,10 @@
     dest: '{{ lazydocker_extraction_dst }}'
     remote_src: true
 
-- name: Copying binary to {{ lazydocker_bin_dst }}
+- name: Copying binary to {{ lazydocker_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ lazydocker_extraction_dst }}/lazydocker'
-    dest: '{{ lazydocker_bin_dst }}/{{ lazydocker_bin }}'
+    dest: '{{ lazydocker_bin_dst_effective }}/{{ lazydocker_bin }}'
     mode: '0755'
     remote_src: true
 

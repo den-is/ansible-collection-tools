@@ -40,25 +40,25 @@
     dest: '{{ crane_extraction_dst }}'
     remote_src: true
 
-- name: Deploying crane binary to {{ crane_bin_dst }}
+- name: Deploying crane binary to {{ crane_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ crane_extraction_dst }}/crane'
-    dest: '{{ crane_bin_dst }}/{{ crane_bin }}'
+    dest: '{{ crane_bin_dst_effective }}/{{ crane_bin }}'
     mode: '0755'
     remote_src: true
 
-- name: Deploying krane binary to {{ crane_bin_dst }}
+- name: Deploying krane binary to {{ crane_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ crane_extraction_dst }}/krane'
-    dest: '{{ crane_bin_dst }}/{{ krane_bin }}'
+    dest: '{{ crane_bin_dst_effective }}/{{ krane_bin }}'
     mode: '0755'
     remote_src: true
   when: crane_install_all_binaries
 
-- name: Deploying gcrane binary to {{ crane_bin_dst }}
+- name: Deploying gcrane binary to {{ crane_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ crane_extraction_dst }}/gcrane'
-    dest: '{{ crane_bin_dst }}/{{ gcrane_bin }}'
+    dest: '{{ crane_bin_dst_effective }}/{{ gcrane_bin }}'
     mode: '0755'
     remote_src: true
   when: crane_install_all_binaries

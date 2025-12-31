@@ -23,5 +23,9 @@ taplo_archive_download_dst: /tmp
 taplo_extraction_path: '{{ taplo_archive_download_dst }}/taplo-{{ _taplo_nov }}'
 taplo_cleanup_release_artifacts: true
 
-taplo_bin_dst: /usr/local/bin
 taplo_bin: taplo
+# taplo_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+taplo_bin_dst_default: /usr/local/bin
+taplo_bin_dst_effective: >-
+  {{ (taplo_bin_dst | default(tools_bin_dst | default(taplo_bin_dst_default))) }}

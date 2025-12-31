@@ -21,5 +21,9 @@ sops_release_base_url: https://github.com/getsops/sops/releases/download
 sops_binary_artifact_name: sops-{{ sops_v }}.{{ sops_system }}.{{ sops_arch }}
 sops_release_url: '{{ sops_release_base_url }}/{{ sops_v }}/{{ sops_binary_artifact_name }}'
 
-sops_bin_dst: /usr/local/bin
 sops_bin: sops
+# sops_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+sops_bin_dst_default: /usr/local/bin
+sops_bin_dst_effective: >-
+  {{ (sops_bin_dst | default(tools_bin_dst | default(sops_bin_dst_default))) }}

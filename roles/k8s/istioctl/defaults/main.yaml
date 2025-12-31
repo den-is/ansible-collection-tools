@@ -24,5 +24,9 @@ istioctl_checksums_url: '{{ istioctl_release_base_url }}/{{ istioctl_v }}/{{ ist
 istioctl_archive_download_dst: /tmp
 istioctl_full_download_path: '{{ istioctl_archive_download_dst }}/istioctl-{{ istioctl_v }}'
 
-istioctl_bin_dst: /usr/local/bin
 istioctl_bin: istioctl
+# istioctl_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+istioctl_bin_dst_default: /usr/local/bin
+istioctl_bin_dst_effective: >-
+  {{ (istioctl_bin_dst | default(tools_bin_dst | default(istioctl_bin_dst_default))) }}

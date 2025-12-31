@@ -10,10 +10,10 @@
     dest: '{{ zellij_extraction_dst }}'
     remote_src: true
 
-- name: Copying binary to {{ zellij_bin_dst }}
+- name: Copying binary to {{ zellij_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ zellij_extraction_dst }}/zellij'
-    dest: '{{ zellij_bin_dst }}/{{ zellij_bin }}'
+    dest: '{{ zellij_bin_dst_effective }}/{{ zellij_bin }}'
     mode: '0755'
     remote_src: true
 

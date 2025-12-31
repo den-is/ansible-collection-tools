@@ -40,10 +40,10 @@
     dest: '{{ kubeseal_extraction_path }}'
     remote_src: true
 
-- name: Copying kubeseal to {{ kubeseal_bin_dst }}
+- name: Copying kubeseal to {{ kubeseal_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ kubeseal_extraction_path }}/kubeseal'
-    dest: '{{ kubeseal_bin_dst }}/{{ kubeseal_bin }}'
+    dest: '{{ kubeseal_bin_dst_effective }}/{{ kubeseal_bin }}'
     mode: '0755'
     remote_src: true
 

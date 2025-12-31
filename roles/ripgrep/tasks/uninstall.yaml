@@ -4,7 +4,7 @@
 
   - name: Removing ripgrep binary
     ansible.builtin.file:
-      path: "{{ ripgrep_bin_dst }}/{{ ripgrep_bin}}"
+      path: "{{ ripgrep_bin_dst_effective }}/{{ ripgrep_bin}}"
       state: absent
 
   - name: Removing ripgrep man pages

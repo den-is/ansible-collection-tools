@@ -10,7 +10,7 @@
 - name: Downloading and installing kubectl {{ kubectl_v }}
   ansible.builtin.get_url:
     url: '{{ kubectl_release_url }}'
-    dest: '{{ kubectl_bin_dst }}/{{ kubectl_bin }}'
+    dest: '{{ kubectl_bin_dst_effective }}/{{ kubectl_bin }}'
     checksum: '{{ "sha256:" + __kubectl_checksum if kubectl_checksum_verify else "" }}'
   when:
   - not kubectl_upload
@@ -18,12 +18,12 @@
 - name: Upload kubectl binary from control host
   ansible.builtin.copy:
     src: '{{ kubectl_bin_path_on_control_host }}'
-    dest: '{{ kubectl_bin_dst }}/{{ kubectl_bin }}'
+    dest: '{{ kubectl_bin_dst_effective }}/{{ kubectl_bin }}'
     mode: '0755'
   when:
   - kubectl_upload
 
-- name: Set correct binary permissions
+- name: Enforce file permissions
   ansible.builtin.file:
-    path: '{{ kubectl_bin_dst }}/{{ kubectl_bin }}'
+    path: '{{ kubectl_bin_dst_effective }}/{{ kubectl_bin }}'
     mode: '0755'

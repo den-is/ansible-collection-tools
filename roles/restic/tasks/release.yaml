@@ -38,10 +38,10 @@
     dest: '{{ restic_extraction_dst }}'
     remote_src: true
 
-- name: Copying binary to {{ restic_bin_dst }}
+- name: Copying binary to {{ restic_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ restic_extraction_dst }}/{{ restic_artifact_name }}'
-    dest: '{{ restic_bin_dst }}/{{ restic_bin }}'
+    dest: '{{ restic_bin_dst_effective }}/{{ restic_bin }}'
     mode: '0755'
     remote_src: true
 

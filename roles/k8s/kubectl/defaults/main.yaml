@@ -29,5 +29,9 @@ kubectl_release_url: https://dl.k8s.io/release/{{ kubectl_v }}/bin/{{ _kubectl_s
 kubectl_checksum_verify: false
 kubectl_checksum_url: "{{ kubectl_release_url }}.sha256"
 
-kubectl_bin_dst: /usr/local/bin
 kubectl_bin: kubectl
+# kubectl_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+kubectl_bin_dst_default: /usr/local/bin
+kubectl_bin_dst_effective: >-
+  {{ (kubectl_bin_dst | default(tools_bin_dst | default(kubectl_bin_dst_default))) }}

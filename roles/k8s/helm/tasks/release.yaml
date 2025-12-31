@@ -34,10 +34,10 @@
     extra_opts:
     - --strip-components=1
 
-- name: Copying helm binary to {{ helm_bin_dst }}
+- name: Copying helm binary to {{ helm_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ helm_extraction_path }}/helm'
-    dest: '{{ helm_bin_dst }}/helm'
+    dest: '{{ helm_bin_dst_effective }}/helm'
     mode: '0755'
     remote_src: true
 

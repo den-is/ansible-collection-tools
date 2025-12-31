@@ -9,10 +9,10 @@
     dest: '{{ flux_full_download_path }}'
     remote_src: true
 
-- name: Copying flux to {{ flux_bin_dst }}
+- name: Copying flux to {{ flux_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ flux_full_download_path }}/flux'
-    dest: '{{ flux_bin_dst }}/{{ flux_bin }}'
+    dest: '{{ flux_bin_dst_effective }}/{{ flux_bin }}'
     mode: '0755'
     remote_src: true
 

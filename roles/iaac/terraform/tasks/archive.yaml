@@ -46,10 +46,10 @@
     dest: '{{ terraform_full_download_path }}'
     remote_src: true
 
-- name: Copying binary to {{ terraform_bin_dst }}
+- name: Copying binary to {{ terraform_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ terraform_full_download_path }}/terraform'
-    dest: '{{ terraform_bin_dst }}/{{ terraform_bin }}'
+    dest: '{{ terraform_bin_dst_effective }}/{{ terraform_bin }}'
     mode: '0755'
     remote_src: true
 

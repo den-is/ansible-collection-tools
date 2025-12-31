@@ -18,5 +18,9 @@ argocd_release_url: "{{ argocd_release_base_url }}/{{ argocd_release_binary_name
 argocd_checksum_verify: false
 argocd_checksum_url: "{{ argocd_release_base_url }}/cli_checksums.txt"
 
-argocd_bin_dst: /usr/local/bin
 argocd_bin: argocd
+# argocd_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+argocd_bin_dst_default: /usr/local/bin
+argocd_bin_dst_effective: >-
+  {{ (argocd_bin_dst | default(tools_bin_dst | default(argocd_bin_dst_default))) }}

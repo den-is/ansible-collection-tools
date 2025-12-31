@@ -22,5 +22,9 @@ terraform_checksums_url: '{{ terraform_release_base_url }}/{{ terraform_v }}/ter
 terraform_archive_download_dst: /tmp
 terraform_full_download_path: '{{ terraform_archive_download_dst }}/terraform-{{ terraform_v }}'
 
-terraform_bin_dst: /usr/local/bin
 terraform_bin: terraform
+# terraform_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+terraform_bin_dst_default: /usr/local/bin
+terraform_bin_dst_effective: >-
+  {{ (terraform_bin_dst | default(tools_bin_dst | default(terraform_bin_dst_default))) }}

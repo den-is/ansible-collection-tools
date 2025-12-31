@@ -47,14 +47,14 @@
 - name: Installing uv
   ansible.builtin.copy:
     src: '{{ uv_extraction_path }}/uv'
-    dest: '{{ uv_bin_dst }}/{{ uv_bin }}'
+    dest: '{{ uv_bin_dst_effective }}/{{ uv_bin }}'
     mode: '0755'
     remote_src: true
 
 - name: Installing uvx
   ansible.builtin.copy:
     src: '{{ uv_extraction_path }}/uvx'
-    dest: '{{ uv_bin_dst }}/{{ uvx_bin }}'
+    dest: '{{ uv_bin_dst_effective }}/{{ uvx_bin }}'
     mode: '0755'
     remote_src: true
 

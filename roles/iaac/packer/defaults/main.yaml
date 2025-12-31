@@ -18,5 +18,9 @@ packer_release_url: '{{ packer_release_base_url }}/{{ packer_v }}/packer_{{ pack
 packer_archive_download_dst: /tmp
 packer_full_download_path: '{{ packer_archive_download_dst }}/packer-{{ packer_v }}'
 
-packer_bin_dst: /usr/local/bin
 packer_bin: packer
+# packer_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+packer_bin_dst_default: /usr/local/bin
+packer_bin_dst_effective: >-
+  {{ (packer_bin_dst | default(tools_bin_dst | default(packer_bin_dst_default))) }}

@@ -37,5 +37,10 @@ atuin_checksums_url: '{{ atuin_release_base_url }}/sha256.sum'
 atuin_archive_download_dst: /tmp
 atuin_full_download_path: '{{ atuin_archive_download_dst }}/atuin-{{ atuin_v }}'
 
-atuin_bin_dst: /usr/local/bin
 atuin_bin: atuin
+
+# atuin_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+atuin_bin_dst_default: /usr/local/bin
+atuin_bin_dst_effective: >-
+  {{ (atuin_bin_dst | default(tools_bin_dst | default(atuin_bin_dst_default))) }}

@@ -12,4 +12,8 @@ stern_base_url: https://github.com/stern/stern/releases/download
 stern_release_url: '{{ stern_base_url }}/v{{ stern_nov_v }}/stern_{{ stern_nov_v }}_{{ ansible_facts.system | lower }}_{{ stern_arch }}.tar.gz'
 
 stern_bin: stern
-stern_bin_dst: /usr/local/bin
+# stern_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+stern_bin_dst_default: /usr/local/bin
+stern_bin_dst_effective: >-
+  {{ (stern_bin_dst | default(tools_bin_dst | default(stern_bin_dst_default))) }}

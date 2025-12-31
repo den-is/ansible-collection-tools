@@ -31,10 +31,10 @@
     dest: '{{ vagrant_full_download_path }}'
     remote_src: true
 
-- name: Copying binary to {{ vagrant_bin_dst }}
+- name: Copying binary to {{ vagrant_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ vagrant_full_download_path }}/vagrant'
-    dest: '{{ vagrant_bin_dst }}/{{ vagrant_bin }}'
+    dest: '{{ vagrant_bin_dst_effective }}/{{ vagrant_bin }}'
     mode: '0755'
     remote_src: true
 

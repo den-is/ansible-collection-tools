@@ -11,5 +11,11 @@ k9s_release_base_url: https://github.com/derailed/k9s/releases/download
 k9s_release_url: "{{ k9s_release_base_url }}/{{ k9s_v }}/k9s_{{ ansible_facts.system }}_{{ k9s_arch }}.tar.gz"
 
 k9s_bin: k9s
-k9s_bin_dst: /usr/local/bin
+
+# k9s_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+k9s_bin_dst_default: /usr/local/bin
+k9s_bin_dst_effective: >-
+  {{ (k9s_bin_dst | default(tools_bin_dst | default(k9s_bin_dst_default))) }}
+
 k9s_custom_config: false

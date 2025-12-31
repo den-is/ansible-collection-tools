@@ -1,6 +1,6 @@
 - name: Downloading kubie
   ansible.builtin.get_url:
     url: '{{ kubie_release_url }}'
-    dest: '{{ kubie_bin_dst }}/{{ kubie_bin }}'
+    dest: '{{ kubie_bin_dst_effective }}/{{ kubie_bin }}'
     mode: '0755'
     force: true

@@ -33,8 +33,12 @@ chezmoi_archive_download_dst: /tmp
 chezmoi_extraction_path: '{{ chezmoi_archive_download_dst }}/chezmoi-{{ chezmoi_v }}'
 chezmoi_cleanup_release_artifacts: true
 
-chezmoi_bin_dst: /usr/local/bin
 chezmoi_bin: chezmoi
+# chezmoi_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+chezmoi_bin_dst_default: /usr/local/bin
+chezmoi_bin_dst_effective: >-
+  {{ (chezmoi_bin_dst | default(tools_bin_dst | default(chezmoi_bin_dst_default))) }}
 
 chezmoi_deploy_completions: true
 bash_completions_path: /usr/share/bash-completion/completions

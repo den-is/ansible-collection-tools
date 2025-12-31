@@ -14,5 +14,9 @@ mkcert_system: "{{ mkcert_system_map[ansible_facts.system] }}"
 mkcert_release_base_url: https://github.com/FiloSottile/mkcert/releases/download/{{ mkcert_v }}
 mkcert_release_url: '{{ mkcert_release_base_url }}/mkcert-{{ mkcert_v }}-{{ mkcert_system }}-{{ mkcert_arch }}'
 
-mkcert_bin_dst: /usr/local/bin
 mkcert_bin: mkcert
+# mkcert_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+mkcert_bin_dst_default: /usr/local/bin
+mkcert_bin_dst_effective: >-
+  {{ (mkcert_bin_dst | default(tools_bin_dst | default(mkcert_bin_dst_default))) }}

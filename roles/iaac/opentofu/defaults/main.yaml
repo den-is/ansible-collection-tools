@@ -22,5 +22,9 @@ opentofu_checksums_url: '{{ opentofu_release_base_url }}/{{ opentofu_v }}/tofu_{
 opentofu_archive_download_dst: /tmp
 opentofu_full_download_path: '{{ opentofu_archive_download_dst }}/opentofu-{{ opentofu_v }}'
 
-opentofu_bin_dst: /usr/local/bin
 opentofu_bin: tofu
+# opentofu_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+opentofu_bin_dst_default: /usr/local/bin
+opentofu_bin_dst_effective: >-
+  {{ (opentofu_bin_dst | default(tools_bin_dst | default(opentofu_bin_dst_default))) }}

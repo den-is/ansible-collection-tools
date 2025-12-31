@@ -9,5 +9,9 @@ kubie_arch: "{{ kubie_arch_map[ansible_facts.architecture] }}"
 kubie_release_base_url: https://github.com/sbstp/kubie/releases/download
 kubie_release_url: "{{ kubie_release_base_url }}/{{ kubie_v }}/kubie-{{ ansible_facts.system | lower }}-{{ kubie_arch }}"
 
-kubie_bin_dst: /usr/local/bin
 kubie_bin: kubie
+# kubie_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+kubie_bin_dst_default: /usr/local/bin
+kubie_bin_dst_effective: >-
+  {{ (kubie_bin_dst | default(tools_bin_dst | default(kubie_bin_dst_default))) }}

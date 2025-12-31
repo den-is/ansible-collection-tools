@@ -1,5 +1,7 @@
 direnv_v: v2.37.1
 
+direnv_sha256sum: ""
+
 _direnv_nov: "{{ direnv_v | regex_replace('^v', '') }}"
 
 direnv_arch_map:
@@ -17,5 +19,9 @@ direnv_system: "{{ direnv_system_map[ansible_facts.system] }}"
 direnv_release_base_url: https://github.com/direnv/direnv/releases/download
 direnv_release_url: '{{ direnv_release_base_url }}/v{{ _direnv_nov }}/direnv.{{ direnv_system }}-{{ direnv_arch }}'
 
-direnv_bin_dst: /usr/local/bin
 direnv_bin: direnv
+# direnv_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+direnv_bin_dst_default: /usr/local/bin
+direnv_bin_dst_effective: >-
+  {{ (direnv_bin_dst | default(tools_bin_dst | default(direnv_bin_dst_default))) }}

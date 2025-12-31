@@ -16,10 +16,10 @@
     dest: '{{ zoxide_extraction_dst }}'
     remote_src: true
 
-- name: Deploying binary to {{ zoxide_bin_dst }}
+- name: Deploying binary to {{ zoxide_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ zoxide_extraction_dst }}/zoxide'
-    dest: '{{ zoxide_bin_dst }}/{{ zoxide_bin }}'
+    dest: '{{ zoxide_bin_dst_effective }}/{{ zoxide_bin }}'
     mode: '0755'
     remote_src: true
 

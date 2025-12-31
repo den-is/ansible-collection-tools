@@ -12,10 +12,10 @@
     - --strip-components=1
     - --show-stored-names
 
-- name: Copying binary to {{ delta_bin_dst }}
+- name: Copying binary to {{ delta_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ delta_full_download_path }}/delta'
-    dest: '{{ delta_bin_dst }}/{{ delta_bin }}'
+    dest: '{{ delta_bin_dst_effective }}/{{ delta_bin }}'
     mode: '0755'
     remote_src: true
 

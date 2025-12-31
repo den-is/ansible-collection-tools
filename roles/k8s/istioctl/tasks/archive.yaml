@@ -51,10 +51,10 @@
   when:
   - _istioctl_archive_download_status is succeeded
 
-- name: Copying binary to {{ istioctl_bin_dst }}
+- name: Copying binary to {{ istioctl_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ istioctl_full_download_path }}/istioctl'
-    dest: '{{ istioctl_bin_dst }}/{{ istioctl_bin }}'
+    dest: '{{ istioctl_bin_dst_effective }}/{{ istioctl_bin }}'
     mode: '0755'
     remote_src: true
     force: '{{ istioctl_force_install }}'

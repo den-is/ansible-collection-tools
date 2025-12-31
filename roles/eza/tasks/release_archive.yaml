@@ -17,10 +17,10 @@
     dest: '{{ eza_extraction_path }}'
     remote_src: true
 
-- name: Installing binary to {{ eza_bin_dst }}/{{ eza_bin }}
+- name: Installing binary to {{ eza_bin_dst_effective }}/{{ eza_bin }}
   ansible.builtin.copy:
     src: '{{ eza_extraction_path }}/eza'
-    dest: '{{ eza_bin_dst }}/{{ eza_bin }}'
+    dest: '{{ eza_bin_dst_effective }}/{{ eza_bin }}'
     mode: '0755'
     remote_src: true
 

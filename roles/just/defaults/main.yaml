@@ -31,8 +31,12 @@ just_checksums_url: '{{ just_release_base_url }}/{{ just_v }}/SHA256SUMS'
 just_archive_download_dst: /tmp
 just_full_download_path: '{{ just_archive_download_dst }}/just-{{ just_v }}'
 
-just_bin_dst: /usr/local/bin
 just_bin: just
+# just_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+just_bin_dst_default: /usr/local/bin
+just_bin_dst_effective: >-
+  {{ (just_bin_dst | default(tools_bin_dst | default(just_bin_dst_default))) }}
 
 just_man_install: false
 just_man_path: /usr/share/man

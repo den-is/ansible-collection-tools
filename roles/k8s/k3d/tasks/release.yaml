@@ -1,5 +1,6 @@
 # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
 - name: Get checksum
+  when: k3d_checksum_verify | bool
   block:
   - name: Registering checksums related vars
     ansible.builtin.set_fact:
@@ -23,10 +24,10 @@
 - name: Getting release binary artifact
   ansible.builtin.get_url:
     url: '{{ k3d_release_url }}'
-    dest: '{{ k3d_bin_dst }}/{{ k3d_bin }}'
-    checksum: 'sha256:{{ __k3d_checksum }}'
+    dest: '{{ k3d_bin_dst_effective }}/{{ k3d_bin }}'
+    checksum: "{{ 'sha256:' + __k3d_checksum if k3d_checksum_verify else '' }}"
 
 - name: Set permissions
   ansible.builtin.file:
-    path: '{{ k3d_bin_dst }}/{{ k3d_bin }}'
+    path: '{{ k3d_bin_dst_effective }}/{{ k3d_bin }}'
     mode: '0755'

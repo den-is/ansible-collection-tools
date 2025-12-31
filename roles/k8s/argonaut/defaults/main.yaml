@@ -23,5 +23,9 @@ argonaut_checksum_url: "{{ argonaut_release_base_url }}/checksums.txt"
 argonaut_archive_download_dst: /tmp
 argonaut_extract_dst: '{{ argonaut_archive_download_dst }}/argonaut-{{ _argonaut_nov }}'
 
-argonaut_bin_dst: /usr/local/bin
 argonaut_bin: argonaut
+# argonaut_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+argonaut_bin_dst_default: /usr/local/bin
+argonaut_bin_dst_effective: >-
+  {{ (argonaut_bin_dst | default(tools_bin_dst | default(argonaut_bin_dst_default))) }}

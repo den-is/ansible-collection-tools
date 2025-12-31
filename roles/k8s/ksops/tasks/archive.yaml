@@ -51,10 +51,10 @@
   when:
   - _ksops_archive_download_status is succeeded
 
-- name: Copying binary to {{ ksops_bin_dst }}
+- name: Copying binary to {{ ksops_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ ksops_full_download_path }}/ksops'
-    dest: '{{ ksops_bin_dst }}/{{ ksops_bin }}'
+    dest: '{{ ksops_bin_dst_effective }}/{{ ksops_bin }}'
     mode: '0755'
     remote_src: true
     force: '{{ ksops_force_install }}'

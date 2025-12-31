@@ -18,5 +18,9 @@ delta_deb_release_url: "{{ delta_release_base_url }}/{{ delta_v }}/git-delta{{ '
 delta_archive_download_dst: /tmp
 delta_full_download_path: '{{ delta_archive_download_dst }}/delta_{{ delta_v }}'
 
-delta_bin_dst: /usr/local/bin
 delta_bin: delta
+# delta_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+delta_bin_dst_default: /usr/local/bin
+delta_bin_dst_effective: >-
+  {{ (delta_bin_dst | default(tools_bin_dst | default(delta_bin_dst_default))) }}

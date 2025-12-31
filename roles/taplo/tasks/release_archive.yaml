@@ -15,10 +15,10 @@
   args:
     chdir: '{{ taplo_extraction_path }}'
 
-- name: Installing binary to {{ taplo_bin_dst }}/{{ taplo_bin }}
+- name: Installing binary to {{ taplo_bin_dst_effective }}/{{ taplo_bin }}
   ansible.builtin.copy:
     src: '{{ taplo_extraction_path }}/taplo-{{ _taplo_sys }}-{{ _taplo_arch }}'
-    dest: '{{ taplo_bin_dst }}/{{ taplo_bin }}'
+    dest: '{{ taplo_bin_dst_effective }}/{{ taplo_bin }}'
     mode: '0755'
     remote_src: true
 

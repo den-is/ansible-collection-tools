@@ -1,9 +1,10 @@
 - name: Installing sops {{ sops_v }}
   ansible.builtin.get_url:
     url: '{{ sops_release_url }}'
-    dest: '{{ sops_bin_dst }}/{{ sops_bin }}'
+    dest: '{{ sops_bin_dst_effective }}/{{ sops_bin }}'
+    mode: '0755'
 
-- name: Set permissions
+- name: Ensure permissions
   ansible.builtin.file:
-    path: '{{ sops_bin_dst }}/{{ sops_bin }}'
+    path: '{{ sops_bin_dst_effective }}/{{ sops_bin }}'
     mode: '0755'

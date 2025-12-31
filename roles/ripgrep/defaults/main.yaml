@@ -37,8 +37,12 @@ ripgrep_archive_download_dst: /tmp
 ripgrep_extraction_path: '{{ ripgrep_archive_download_dst }}/ripgrep-{{ ripgrep_v }}'
 ripgrep_cleanup_release_artifacts: true
 
-ripgrep_bin_dst: /usr/local/bin
 ripgrep_bin: rg
+# ripgrep_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+ripgrep_bin_dst_default: /usr/local/bin
+ripgrep_bin_dst_effective: >-
+  {{ (ripgrep_bin_dst | default(tools_bin_dst | default(ripgrep_bin_dst_default))) }}
 
 ripgrep_deploy_man: true
 ripgrep_man_path: /usr/share/man

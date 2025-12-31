@@ -22,5 +22,9 @@ rclone_release_sha256sums_url: "{{ rclone_release_base_url }}/{{ rclone_v }}/SHA
 rclone_archive_download_dst: /tmp
 rclone_extraction_dst: '{{ rclone_archive_download_dst }}/rclone-{{ rclone_v }}'
 
-rclone_bin_dst: /usr/local/bin
 rclone_bin: rclone
+# rclone_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+rclone_bin_dst_default: /usr/local/bin
+rclone_bin_dst_effective: >-
+  {{ (rclone_bin_dst | default(tools_bin_dst | default(rclone_bin_dst_default))) }}

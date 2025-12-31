@@ -21,5 +21,9 @@ argo_extraction_path: '{{ argo_archive_download_dst }}/argo-{{ argo_v }}'
 argo_checksum_verify: false
 argo_checksum_url: "{{ argo_release_base_url }}/{{ argo_v }}/argo-workflows-cli-checksums.txt"
 
-argo_bin_dst: /usr/local/bin
 argo_bin: argo
+# argo_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+argo_bin_dst_default: /usr/local/bin
+argo_bin_dst_effective: >-
+  {{ (argo_bin_dst | default(tools_bin_dst | default(argo_bin_dst_default))) }}

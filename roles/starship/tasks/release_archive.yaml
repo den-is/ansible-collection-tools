@@ -32,10 +32,10 @@
     dest: '{{ starship_extraction_path }}'
     remote_src: true
 
-- name: Installing binary to {{ starship_bin_dst }}/{{ starship_bin }}
+- name: Installing binary to {{ starship_bin_dst_effective }}/{{ starship_bin }}
   ansible.builtin.copy:
     src: '{{ starship_extraction_path }}/starship'
-    dest: '{{ starship_bin_dst }}/{{ starship_bin }}'
+    dest: '{{ starship_bin_dst_effective }}/{{ starship_bin }}'
     mode: '0755'
     remote_src: true
 

@@ -24,10 +24,10 @@
 - name: Getting talosctl {{ talosctl_v }} binary
   ansible.builtin.get_url:
     url: '{{ talosctl_release_url }}'
-    dest: '{{ talosctl_bin_dst }}/{{ talosctl_bin }}'
+    dest: '{{ talosctl_bin_dst_effective }}/{{ talosctl_bin }}'
     checksum: '{{ "sha256:" + __talosctl_checksum if talosctl_checksum_verify else "" }}'
 
 - name: Set permissions
   ansible.builtin.file:
-    path: '{{ talosctl_bin_dst }}/{{ talosctl_bin }}'
+    path: '{{ talosctl_bin_dst_effective }}/{{ talosctl_bin }}'
     mode: '0755'

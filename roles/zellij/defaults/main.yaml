@@ -21,5 +21,9 @@ zellij_release_url: '{{ zellij_release_base_url }}/{{ zellij_v }}/{{ zellij_arch
 zellij_archive_download_dst: /tmp
 zellij_extraction_dst: '{{ zellij_archive_download_dst }}/zellij-{{ zellij_v }}'
 
-zellij_bin_dst: /usr/local/bin
 zellij_bin: zellij
+# zellij_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+zellij_bin_dst_default: /usr/local/bin
+zellij_bin_dst_effective: >-
+  {{ (zellij_bin_dst | default(tools_bin_dst | default(zellij_bin_dst_default))) }}

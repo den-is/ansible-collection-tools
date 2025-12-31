@@ -28,6 +28,11 @@ kubens_bash_release_url: '{{ kubectx_release_base_url }}/{{ kubectx_v }}/kubens'
 kubectx_archive_download_dst: /tmp
 kubectx_full_download_path: "{{ kubectx_archive_download_dst }}/kubectx_{{ kubectx_v }}"
 
-kubectx_bin_dst: /usr/local/bin
 kubectx_bin: kubectx
 kubens_bin: kubens
+
+# kubectx_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+kubectx_bin_dst_default: /usr/local/bin
+kubectx_bin_dst_effective: >-
+  {{ (kubectx_bin_dst | default(tools_bin_dst | default(kubectx_bin_dst_default))) }}

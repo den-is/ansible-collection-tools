@@ -10,10 +10,10 @@
     extra_opts: ['--strip-components=1', '--show-stored-names']
     remote_src: true
 
-- name: Copying bat to {{ bat_bin_dst }}
+- name: Copying bat to {{ bat_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ bat_full_download_path }}/bat'
-    dest: '{{ bat_bin_dst }}/{{ bat_bin }}'
+    dest: '{{ bat_bin_dst_effective }}/{{ bat_bin }}'
     mode: '0755'
     remote_src: true
 

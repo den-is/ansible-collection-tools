@@ -9,10 +9,10 @@
     dest: '{{ kustomize_full_download_path }}'
     remote_src: true
 
-- name: Copying kustomize to {{ kustomize_bin_dst }}
+- name: Copying kustomize to {{ kustomize_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ kustomize_full_download_path }}/kustomize'
-    dest: '{{ kustomize_bin_dst }}/{{ kustomize_bin }}'
+    dest: '{{ kustomize_bin_dst_effective }}/{{ kustomize_bin }}'
     mode: '0755'
     remote_src: true
 

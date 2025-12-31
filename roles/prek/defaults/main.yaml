@@ -34,5 +34,9 @@ prek_checksums_url: '{{ prek_release_base_url }}/{{ prek_release_archive_name }}
 prek_archive_download_dst: /tmp
 prek_extraction_path: '{{ prek_archive_download_dst }}/prek-{{ _prek_nov }}'
 
-prek_bin_dst: /usr/local/bin
 prek_bin: prek
+# prek_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+prek_bin_dst_default: /usr/local/bin
+prek_bin_dst_effective: >-
+  {{ (prek_bin_dst | default(tools_bin_dst | default(prek_bin_dst_default))) }}

@@ -20,8 +20,12 @@ tealdeer_release_url: '{{ tealdeer_release_base_url }}/{{ tealdeer_release_artif
 tealdeer_checksum_verify: false
 tealdeer_checksums_url: '{{ tealdeer_release_url }}.sha256'
 
-tealdeer_bin_dst: /usr/local/bin
 tealdeer_bin: tldr
+# tealdeer_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+tealdeer_bin_dst_default: /usr/local/bin
+tealdeer_bin_dst_effective: >-
+  {{ (tealdeer_bin_dst | default(tools_bin_dst | default(tealdeer_bin_dst_default))) }}
 
 tealdeer_deploy_completions: false
 bash_completions_path: /usr/share/bash-completion/completions

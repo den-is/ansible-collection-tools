@@ -22,8 +22,12 @@ nvim_bob_archive_download_dst: /tmp
 nvim_bob_extraction_dst: '{{ nvim_bob_archive_download_dst }}/bob-{{ nvim_bob_v }}'
 nvim_bob_cleanup_downloads: true
 
-nvim_bob_bin_dst: /usr/local/bin
 nvim_bob_bin: bob
+# nvim_bob_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+nvim_bob_bin_dst_default: /usr/local/bin
+nvim_bob_bin_dst_effective: >-
+  {{ (nvim_bob_bin_dst | default(tools_bin_dst | default(nvim_bob_bin_dst_default))) }}
 
 ### Neovim configuration deployment --------------------------------------------
 neovim_config_deploy: false

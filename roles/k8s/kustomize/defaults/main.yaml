@@ -12,5 +12,9 @@ kustomize_release_url: '{{ kustomize_release_base_url }}/kustomize%2F{{ kustomiz
 kustomize_archive_download_dst: /tmp
 kustomize_full_download_path: '{{ kustomize_archive_download_dst }}/kustomize_{{ kustomize_v }}'
 
-kustomize_bin_dst: /usr/local/bin
 kustomize_bin: kustomize
+# kustomize_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+kustomize_bin_dst_default: /usr/local/bin
+kustomize_bin_dst_effective: >-
+  {{ (kustomize_bin_dst | default(tools_bin_dst | default(kustomize_bin_dst_default))) }}

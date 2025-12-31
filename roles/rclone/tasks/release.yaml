@@ -39,10 +39,10 @@
     dest: '{{ rclone_extraction_dst }}'
     remote_src: true
 
-- name: Copying binary to {{ rclone_bin_dst }}
+- name: Copying binary to {{ rclone_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ rclone_extraction_dst }}/rclone'
-    dest: '{{ rclone_bin_dst }}/{{ rclone_bin }}'
+    dest: '{{ rclone_bin_dst_effective }}/{{ rclone_bin }}'
     mode: '0755'
     remote_src: true
 

@@ -24,6 +24,6 @@
 - name: Installing Argo CD CLI
   ansible.builtin.get_url:
     url: '{{ argocd_release_url }}'
-    dest: '{{ argocd_bin_dst }}/{{ argocd_bin }}'
+    dest: '{{ argocd_bin_dst_effective }}/{{ argocd_bin }}'
     checksum: "{{ 'sha256:' + __argocd_checksum if argocd_checksum_verify else '' }}"
     mode: '0755'

@@ -10,7 +10,11 @@ helm_cleanup: true
 helm_checksum_verify: false
 
 helm_bin: helm
-helm_bin_dst: /usr/local/bin
+# helm_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+helm_bin_dst_default: /usr/local/bin
+helm_bin_dst_effective: >-
+  {{ (helm_bin_dst | default(tools_bin_dst | default(helm_bin_dst_default))) }}
 
 helm_plugins: []
 # helm_plugins:

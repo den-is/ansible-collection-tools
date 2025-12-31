@@ -37,10 +37,10 @@
     dest: '{{ croc_extraction_dst }}'
     remote_src: true
 
-- name: Copying binary to {{ croc_bin_dst }}
+- name: Copying binary to {{ croc_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ croc_extraction_dst }}/croc'
-    dest: '{{ croc_bin_dst }}/{{ croc_bin }}'
+    dest: '{{ croc_bin_dst_effective }}/{{ croc_bin }}'
     mode: '0755'
     remote_src: true
 

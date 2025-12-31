@@ -18,5 +18,9 @@ argo_rollouts_release_url: "{{ argo_rollouts_release_base_url }}/{{ argo_rollout
 argo_rollouts_checksum_verify: false
 argo_rollouts_checksum_url: "{{ argo_rollouts_release_base_url }}/{{ argo_rollouts_v }}/argo-rollouts-checksums.txt"
 
-argo_rollouts_bin_dst: /usr/local/bin
 argo_rollouts_bin: kubectl-argo-rollouts
+# argo_rollouts_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+argo_rollouts_bin_dst_default: /usr/local/bin
+argo_rollouts_bin_dst_effective: >-
+  {{ (argo_rollouts_bin_dst | default(tools_bin_dst | default(argo_rollouts_bin_dst_default))) }}

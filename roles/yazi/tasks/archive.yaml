@@ -21,17 +21,17 @@
     dest: '{{ yazi_full_download_path }}'
     remote_src: true
 
-- name: Copying yazi binary to {{ yazi_bin_dst }}
+- name: Copying yazi binary to {{ yazi_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ yazi_full_download_path }}/yazi-{{ _yazi_arch }}-{{ _yazi_sys }}/yazi'
-    dest: '{{ yazi_bin_dst }}/{{ yazi_bin }}'
+    dest: '{{ yazi_bin_dst_effective }}/{{ yazi_bin }}'
     mode: '0755'
     remote_src: true
 
-- name: Copying ya binary to {{ yazi_bin_dst }}
+- name: Copying ya binary to {{ yazi_bin_dst_effective }}
   ansible.builtin.copy:
     src: '{{ yazi_full_download_path }}/yazi-{{ _yazi_arch }}-{{ _yazi_sys }}/ya'
-    dest: '{{ yazi_bin_dst }}/ya'
+    dest: '{{ yazi_bin_dst_effective }}/ya'
     mode: '0755'
     remote_src: true
 

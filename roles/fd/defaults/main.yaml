@@ -25,5 +25,9 @@ fd_deb_release_url: "{{ fd_release_base_url }}/fd{{ '-musl' if fd_musl }}_{{ _fd
 fd_archive_download_dst: /tmp
 fd_full_download_path: '{{ fd_archive_download_dst }}/fd_{{ _fd_nov }}'
 
-fd_bin_dst: /usr/local/bin
 fd_bin: fd
+# fd_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+fd_bin_dst_default: /usr/local/bin
+fd_bin_dst_effective: >-
+  {{ (fd_bin_dst | default(tools_bin_dst | default(fd_bin_dst_default))) }}

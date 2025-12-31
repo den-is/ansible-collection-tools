@@ -20,8 +20,13 @@ bat_deb_release_url: "{{ bat_release_base_url }}/v{{ _bat_nov }}/bat{{ '-musl' i
 bat_archive_download_dst: /tmp
 bat_full_download_path: '{{ bat_archive_download_dst }}/bat_{{ _bat_nov }}'
 
-bat_bin_dst: /usr/local/bin
 bat_bin: bat
+
+# bat_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+bat_bin_dst_default: /usr/local/bin
+bat_bin_dst_effective: >-
+  {{ (bat_bin_dst | default(tools_bin_dst | default(bat_bin_dst_default))) }}
 
 bat_man_install: true
 bat_man_path: /usr/share/man

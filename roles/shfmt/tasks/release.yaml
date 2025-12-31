@@ -24,11 +24,11 @@
 - name: Installing shfmt {{ shfmt_v }}
   ansible.builtin.get_url:
     url: '{{ shfmt_release_url }}'
-    dest: '{{ shfmt_bin_dst }}/{{ shfmt_bin }}'
+    dest: '{{ shfmt_bin_dst_effective }}/{{ shfmt_bin }}'
     checksum: "{{ 'sha256:' + __shfmt_checksum if shfmt_checksum_verify else '' }}"
     mode: '0755'
 
 - name: Ensure permissions
   ansible.builtin.file:
-    path: '{{ shfmt_bin_dst }}/{{ shfmt_bin }}'
+    path: '{{ shfmt_bin_dst_effective }}/{{ shfmt_bin }}'
     mode: '0755'

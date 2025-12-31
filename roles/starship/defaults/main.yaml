@@ -1,4 +1,4 @@
-starship_v: v1.24.1
+starship_v: v1.24.2
 
 starship_musl: false
 
@@ -26,5 +26,9 @@ starship_cleanup_release_artifacts: true
 starship_checksum_verify: false
 starship_checksums_url: '{{ starship_release_url }}.sha256'
 
-starship_bin_dst: /usr/local/bin
 starship_bin: starship
+# starship_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+starship_bin_dst_default: /usr/local/bin
+starship_bin_dst_effective: >-
+  {{ (starship_bin_dst | default(tools_bin_dst | default(starship_bin_dst_default))) }}

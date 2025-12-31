@@ -21,6 +21,9 @@ croc_release_url: '{{ croc_release_base_url }}/{{ croc_v }}/{{ croc_archive_name
 croc_archive_download_dst: /tmp
 croc_extraction_dst: '{{ croc_archive_download_dst }}/croc-{{ croc_v }}'
 
-# TODO: add support for windows destinations
-croc_bin_dst: /usr/local/bin
 croc_bin: croc
+# croc_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+croc_bin_dst_default: /usr/local/bin
+croc_bin_dst_effective: >-
+  {{ (croc_bin_dst | default(tools_bin_dst | default(croc_bin_dst_default))) }}

@@ -1,9 +1,5 @@
 - name: Deploying mkcert {{ mkcert_v }}
   ansible.builtin.get_url:
     url: '{{ mkcert_release_url }}'
-    dest: '{{ mkcert_bin_dst }}/{{ mkcert_bin }}'
-
-- name: Set permissions
-  ansible.builtin.file:
-    path: '{{ mkcert_bin_dst }}/{{ mkcert_bin }}'
+    dest: '{{ mkcert_bin_dst_effective }}/{{ mkcert_bin }}'
     mode: '0755'

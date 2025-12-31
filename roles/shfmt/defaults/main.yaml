@@ -21,5 +21,9 @@ shfmt_release_url: '{{ shfmt_release_base_url }}/{{ shfmt_release_artifact_name 
 shfmt_checksum_verify: false
 shfmt_sha256sums_url: '{{ shfmt_release_base_url }}/sha256sums.txt'
 
-shfmt_bin_dst: /usr/local/bin
 shfmt_bin: shfmt
+# shfmt_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+shfmt_bin_dst_default: /usr/local/bin
+shfmt_bin_dst_effective: >-
+  {{ (shfmt_bin_dst | default(tools_bin_dst | default(shfmt_bin_dst_default))) }}
