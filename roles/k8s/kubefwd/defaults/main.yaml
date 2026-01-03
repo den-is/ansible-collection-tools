@@ -1,4 +1,4 @@
-kubefwd_v: v1.25.6
+kubefwd_v: v1.25.7
 
 _kubefwd_nov: "{{ kubefwd_v | regex_replace('^v', '') }}"
 
@@ -10,11 +10,20 @@ _kubefwd_arch_map:
 _kubefwd_arch: "{{ _kubefwd_arch_map[ansible_facts.architecture] }}"
 
 kubefwd_release_base_url: https://github.com/txn2/kubefwd/releases/download/v{{ _kubefwd_nov }}
-kubefwd_archive_url: "{{ kubefwd_release_base_url }}/kubefwd_{{ ansible_facts.system }}_{{ _kubefwd_arch }}.tar.gz"
+kubefwd_release_archive_name: kubefwd_{{ ansible_facts.system }}_{{ _kubefwd_arch }}.tar.gz
+kubefwd_release_url: "{{ kubefwd_release_base_url }}/{{ kubefwd_release_archive_name }}"
 
-kubefwd_full_download_path: /tmp/kubefwd_{{ _kubefwd_nov }}
+kubefwd_archive_download_dst: /tmp
+kubefwd_extraction_path: '{{ kubefwd_archive_download_dst }}/kubefwd-{{ _kubefwd_nov }}'
 
-kubefwd_bin_dst: /usr/local/bin
+kubefwd_checksum_verify: false
+kubefwd_checksums_url: '{{ kubefwd_release_base_url }}/kubefwd_checksums.txt'
+
 kubefwd_bin: kubefwd
+# kubefwd_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+kubefwd_bin_dst_default: /usr/local/bin
+kubefwd_bin_dst_effective: >-
+  {{ (kubefwd_bin_dst | default(tools_bin_dst | default(kubefwd_bin_dst_default))) }}
 
 kubefwd_cleanup: true

@@ -1,23 +1,58 @@
-- name: Creating kubefwd extraction dir {{ kubefwd_full_download_path }}
-  ansible.builtin.file:
-    path: '{{ kubefwd_full_download_path }}'
-    state: directory
+- name: Get checksum
+  when: kubefwd_checksum_verify
+  block:
 
-- name: Getting kubefwd {{ kubefwd_v }} archive and extracting it to {{ kubefwd_full_download_path }}
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __kubefwd_checksums: "{{ lookup('url', kubefwd_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __kubefwd_checksums is search(kubefwd_release_archive_name)
+    retries: 10
+
+  - name: Get checksum for {{ kubefwd_release_archive_name }}
+    ansible.builtin.set_fact:
+      __kubefwd_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __kubefwd_checksums }}"
+    when:
+    - kubefwd_release_archive_name in item
+
+
+- name: Creating extraction dir {{ kubefwd_extraction_path }}
+  ansible.builtin.file:
+    path: '{{ kubefwd_extraction_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ kubefwd_release_url }}'
+    dest: '{{ kubefwd_archive_download_dst }}/{{ kubefwd_release_archive_name }}'
+    checksum: "{{ 'sha256:' + __kubefwd_checksum if kubefwd_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ kubefwd_extraction_path }}
   ansible.builtin.unarchive:
-    src: '{{ kubefwd_archive_url }}'
-    dest: '{{ kubefwd_full_download_path }}'
+    src: '{{ kubefwd_archive_download_dst }}/{{ kubefwd_release_archive_name }}'
+    dest: '{{ kubefwd_extraction_path }}'
     remote_src: true
 
-- name: Copying kubefwd to {{ kubefwd_bin_dst }}
+- name: Deploying binary to {{ kubefwd_bin_dst_effective }}
   ansible.builtin.copy:
-    src: '{{ kubefwd_full_download_path }}/kubefwd'
-    dest: '{{ kubefwd_bin_dst }}/{{ kubefwd_bin }}'
+    src: '{{ kubefwd_extraction_path }}/kubefwd'
+    dest: '{{ kubefwd_bin_dst_effective }}/{{ kubefwd_bin }}'
     mode: '0755'
     remote_src: true
 
-- name: Deleting {{ kubefwd_full_download_path }} dir
+- name: Deleting release artifacts
   ansible.builtin.file:
-    path: '{{ kubefwd_full_download_path }}'
+    path: '{{ item }}'
     state: absent
   when: kubefwd_cleanup
+  loop:
+  - '{{ kubefwd_archive_download_dst }}/{{ kubefwd_release_archive_name }}'
+  - '{{ kubefwd_extraction_path }}'
