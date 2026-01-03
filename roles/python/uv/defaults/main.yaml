@@ -1,14 +1,14 @@
-uv_v: 0.9.20
+uv_v: 0.9.21
+
+uv_compiler_gnu: true
 
 _uv_sys_map:
   Linux: unknown-linux
   Darwin: apple-darwin
 
 _uv_arch_map:
-  x86_64: "x86_64"
-  aarch64: "aarch64"
-
-uv_compiler_gnu: true
+  x86_64: x86_64
+  aarch64: aarch64
 
 _uv_compiler_map:
   Linux:
