@@ -62,11 +62,14 @@ Create a playbook, e.g. `tools-deploy.yaml`
   hosts: all
   become: false
   vars:
-    # set top-level playbook variables
-    common_bin_dst: ~/.local/bin
+
+    # many roles in the colleciton accept `tools_bin_dst` variable to set common path for all tools
+    # useful if you want to install all tools, for example in `~/.local/bin`
+    # by default most roles install binaries into `/usr/local/bin`
+    tools_bin_dst: ~/.local/bin
 
     terragrunt_v: v0.95.1
-    terragrunt_bin_dst: '{{ common_bin_dst }}'
+    terragrunt_bin_dst: '~/test-bin-dst/should/exist'
 
   tasks:
 
@@ -101,3 +104,17 @@ ansible-playbook -i '<my-host-ip>,' tools-deploy.yaml --ask-become-pass
 ```
 
 More in [examples](./examples/)
+
+### Binaries destination
+By default most roles deploy downloaded binaries to `/usr/local/bin`.  
+Roles such as `haproxy`, `nvm`, `pyenv`, `golang`, `ohmyzsh`, and some others, are exclusions.
+Because paths for this roles are defined by specific installation instructions.
+
+Use `tools_bin_dst` to bulk change binaries deployment destination for the most roles. For example to deploy binaries to `~/.local/bin` to avoid escalated root privileges, insted of default `/usr/local/bin`
+
+If you set custom binary path make sure to add it to `PATH` env variable for the remote_host, so ansible's able to find binaries in the custom destination. Example:
+```yaml
+  # https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_environment.html#working-with-language-specific-version-managers
+  environment:
+    PATH: "{{ ansible_env.PATH }}:{{ ansible_env.HOME }}/.local/bin"
+```
