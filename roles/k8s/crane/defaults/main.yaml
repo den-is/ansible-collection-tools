@@ -26,12 +26,13 @@ crane_extraction_dst: '{{ crane_archive_download_dst }}/crane-{{ crane_v }}'
 crane_cleanup: true
 
 crane_bin: crane
+
+crane_install_all_binaries: true
+krane_bin: krane
+gcrane_bin: gcrane
+
 # crane_bin_dst: /usr/local/bin
 # tools_bin_dst: /usr/local/bin
 crane_bin_dst_default: /usr/local/bin
 crane_bin_dst_effective: >-
   {{ (crane_bin_dst | default(tools_bin_dst | default(crane_bin_dst_default))) }}
-
-crane_install_all_binaries: true
-krane_bin: krane
-gcrane_bin: gcrane
