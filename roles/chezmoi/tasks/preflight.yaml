@@ -6,7 +6,7 @@
 
 - name: Setting version facts
   ansible.builtin.set_fact:
-    _current_chezmoi_v: "{{ _check_current_chezmoi_version_task.stdout | default('0.0.0', true) }}"
+    _installed_chezmoi_v: "{{ _check_current_chezmoi_version_task.stdout | default('0.0.0', true) }}"
 
 - name: Set final artifact name
   ansible.builtin.set_fact:

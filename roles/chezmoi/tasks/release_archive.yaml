@@ -24,35 +24,35 @@
     mode: '0755'
     remote_src: true
 
-- name: Installing ZSH completions
-  ansible.builtin.copy:
-    src: "{{ chezmoi_extraction_path }}/completions/chezmoi.zsh"
-    dest: "{{ zsh_completions_path }}/_chezmoi"
-    mode: "0644"
-    remote_src: true
-  when:
-  - chezmoi_deploy_completions
-  - _zsh_completions_dst_check.stat.exists
+- name: Deploy shell completions
+  when: chezmoi_deploy_completions
+  block:
+  - name: Installing ZSH completions
+    ansible.builtin.copy:
+      src: "{{ chezmoi_extraction_path }}/completions/chezmoi.zsh"
+      dest: "{{ zsh_completions_path }}/_chezmoi"
+      mode: "0644"
+      remote_src: true
+    when:
+    - _zsh_completions_dst_check.stat.exists
 
-- name: Installing Bash completions
-  ansible.builtin.copy:
-    src: "{{ chezmoi_extraction_path }}/completions/chezmoi-completion.bash"
-    dest: "{{ bash_completions_path }}/chezmoi.bash"
-    mode: "0644"
-    remote_src: true
-  when:
-  - chezmoi_deploy_completions
-  - _bash_completions_dst_check.stat.exists
+  - name: Installing Bash completions
+    ansible.builtin.copy:
+      src: "{{ chezmoi_extraction_path }}/completions/chezmoi-completion.bash"
+      dest: "{{ bash_completions_path }}/chezmoi.bash"
+      mode: "0644"
+      remote_src: true
+    when:
+    - _bash_completions_dst_check.stat.exists
 
-- name: Installing Fish completions
-  ansible.builtin.copy:
-    src: "{{ chezmoi_extraction_path }}/completions/chezmoi.fish"
-    dest: "{{ fish_completions_path }}/chezmoi.fish"
-    mode: "0644"
-    remote_src: true
-  when:
-  - chezmoi_deploy_completions
-  - _fish_completions_dst_check.stat.exists
+  - name: Installing Fish completions
+    ansible.builtin.copy:
+      src: "{{ chezmoi_extraction_path }}/completions/chezmoi.fish"
+      dest: "{{ fish_completions_path }}/chezmoi.fish"
+      mode: "0644"
+      remote_src: true
+    when:
+    - _fish_completions_dst_check.stat.exists
 
 ## Post deploy cleanup
 - name: Deleting release artifacts

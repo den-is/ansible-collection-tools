@@ -7,6 +7,7 @@
   ansible.builtin.include_tasks: checksums.yaml
   when:
   - chezmoi_checksum_verify
+  - _chezmoi_nov is version(_installed_chezmoi_v, 'ne')
 
 - name: Install chezmoi release archive
   ansible.builtin.include_tasks: release_archive.yaml
@@ -14,6 +15,7 @@
   - chezmoi_install_archive
   - not chezmoi_install_binary
   - not chezmoi_install_package
+  - _chezmoi_nov is version(_installed_chezmoi_v, 'ne')
 
 - name: Install chezmoi binary
   ansible.builtin.include_tasks: release_binary.yaml
@@ -21,6 +23,7 @@
   - chezmoi_install_binary
   - not chezmoi_install_archive
   - not chezmoi_install_package
+  - _chezmoi_nov is version(_installed_chezmoi_v, 'ne')
 
 - name: Install chezmoi release OS package
   ansible.builtin.include_tasks: release_package.yaml
@@ -28,3 +31,4 @@
   - chezmoi_install_package
   - not chezmoi_install_archive
   - not chezmoi_install_binary
+  - _chezmoi_nov is version(_installed_chezmoi_v, 'ne')
