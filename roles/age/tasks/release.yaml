@@ -2,7 +2,7 @@
   ansible.builtin.get_url:
     url: '{{ age_release_url }}'
     dest: '{{ age_archive_download_dst }}/{{ age_archive_name }}'
-    checksum: "{{ '' if not age_archive_checksum is defined and not (age_archive_checksum | length > 0) else 'sha256:' +  age_archive_checksum }}"
+    checksum: "{{ '' if age_archive_checksum is not defined or (age_archive_checksum | length <= 0) else 'sha256:' + age_archive_checksum }}"
     mode: '0644'
 
 - name: Creating extraction dir {{ age_extraction_dst }}
