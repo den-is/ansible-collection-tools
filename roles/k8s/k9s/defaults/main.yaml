@@ -1,5 +1,7 @@
 k9s_v: v0.50.16
 
+_k9s_nov: "{{ k9s_v | regex_replace('^v', '') }}"
+
 k9s_arch_map:
   x86_64: amd64
   aarch64: arm64
@@ -8,7 +10,7 @@ k9s_arch_map:
 k9s_arch: "{{ k9s_arch_map[ansible_facts.architecture] }}"
 
 k9s_release_base_url: https://github.com/derailed/k9s/releases/download
-k9s_release_url: "{{ k9s_release_base_url }}/{{ k9s_v }}/k9s_{{ ansible_facts.system }}_{{ k9s_arch }}.tar.gz"
+k9s_release_url: "{{ k9s_release_base_url }}/v{{ _k9s_nov }}/k9s_{{ ansible_facts.system }}_{{ k9s_arch }}.tar.gz"
 
 k9s_bin: k9s
 

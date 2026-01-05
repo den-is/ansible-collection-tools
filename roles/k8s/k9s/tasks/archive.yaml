@@ -1,23 +1,24 @@
 - name: Creating extraction dir
   ansible.builtin.file:
-    path: /tmp/k9s_{{ k9s_v }}
+    path: /tmp/k9s_{{ _k9s_nov }}
     state: directory
+    mode: '0755'
 
 - name: Getting release archive
   ansible.builtin.unarchive:
     src: '{{ k9s_release_url }}'
-    dest: /tmp/k9s_{{ k9s_v }}
+    dest: /tmp/k9s_{{ _k9s_nov }}
     remote_src: true
     mode: '0755'
 
-- name: Copying K9S to install dest
+- name: Deploying binary
   ansible.builtin.copy:
-    src: /tmp/k9s_{{ k9s_v }}/k9s
+    src: /tmp/k9s_{{ _k9s_nov }}/k9s
     dest: '{{ k9s_bin_dst_effective }}/{{ k9s_bin }}'
     mode: '0755'
     remote_src: true
 
 - name: Deleting extraction dir
   ansible.builtin.file:
-    path: /tmp/k9s_{{ k9s_v }}
+    path: /tmp/k9s_{{ _k9s_nov }}
     state: absent
