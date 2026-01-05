@@ -14,7 +14,7 @@
 
 - name: Check binary destination directory
   ansible.builtin.stat:
-    path: "{{ helm_bin_dst }}"
+    path: "{{ helm_bin_dst_effective }}"
   register: _helm_binary_dir_check
   ignore_errors: true
   changed_when: false
@@ -24,11 +24,17 @@
     that:
     - _helm_binary_dir_check.stat.exists
     - _helm_binary_dir_check.stat.isdir
-    fail_msg: "Directory '{{ helm_bin_dst }}' does not exist or is not a directory."
+    fail_msg: "Directory '{{ helm_bin_dst_effective }}' does not exist or is not a directory."
+
+- name: Check if "{{ helm_bin }}" binary already exists in $PATH
+  ansible.builtin.command: command -v {{ helm_bin }}
+  register: __task_check_helm_cmd
+  ignore_errors: true
+  changed_when: false
 
 - name: Get current Helm version if any
-  # shell: '{{ helm_bin_dst }}/{{ helm_bin }} version -c --short | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"'
-  ansible.builtin.shell: "{{ helm_bin_dst }}/{{ helm_bin }} version --template='{{ '{{' }}.Version{{ '}}' }}'"
+  # shell: '{{ helm_bin_dst_effective }}/{{ helm_bin }} version -c --short | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"'
+  ansible.builtin.shell: "{{ helm_bin_dst_effective }}/{{ helm_bin }} version --template='{{ '{{' }}.Version{{ '}}' }}'"
   register: _helm_check_version_task
   ignore_errors: true
   changed_when: false
@@ -59,6 +65,11 @@
     helm_release_artifact: helm-{{ _helm_v_calculated }}-{{ ansible_facts.system | lower }}-{{ _helm_arch }}.tar.gz
     helm_extraction_path: '{{ helm_archive_download_dst }}/helm-{{ _helm_v_calculated }}'
 
+- name: Reporting installed version
+  ansible.builtin.debug:
+    msg: |-
+      Current Helm version: {{ _installed_helm_v if _helm_check_version_task is success else "Not Found" }}
+
 - name: Set Helm release download URL
   ansible.builtin.set_fact:
     helm_release_url: https://get.helm.sh/{{ helm_release_artifact }}
@@ -67,8 +78,3 @@
   ansible.builtin.set_fact:
     helm_checksum_url: "{{ helm_release_url }}.sha256"
   when: helm_checksum_verify
-
-- name: Reporting installed version
-  ansible.builtin.debug:
-    msg: |-
-      Current Helm version: {{ _installed_helm_v if _helm_check_version_task is success else "Not installed" }}
