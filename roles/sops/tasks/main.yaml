@@ -6,4 +6,4 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
-  - _sops_nov is version(_installed_sops_v, 'ne')
+  - _sops_nov is version(__installed_sops_v, 'ne')
