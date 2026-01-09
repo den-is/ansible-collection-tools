@@ -16,6 +16,7 @@
   ansible.builtin.set_fact:
     _installed_sops_v: "{{ _check_sops_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Current version: {{ _installed_sops_v if _check_sops_v_task is success else "Not Installed" }}'
+    msg: >-
+      Installed version: {{ _installed_sops_v if _check_sops_v_task is success else "Not Installed" }}
