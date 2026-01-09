@@ -1,5 +1,5 @@
 - name: Check if binary already exists in $PATH
-  ansible.builtin.shell: 'command -v {{ fzf_bin }}'
+  ansible.builtin.shell: command -v {{ fzf_bin }}
   environment:
     PATH: "{{ ansible_facts.env.PATH }}:{{ansible_facts.env.HOME }}/.fzf/bin"
   register: fzf_bin_exists
@@ -10,15 +10,15 @@
   ansible.builtin.shell: fzf --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
   environment:
     PATH: "{{ ansible_facts.env.PATH }}:{{ansible_facts.env.HOME }}/.fzf/bin"
-  register: _check_fzf_v_task
+  register: __check_fzf_v_task
   ignore_errors: true
   changed_when: false
 
 - name: Register installed version fact
   ansible.builtin.set_fact:
-    installed_fzf_v: "{{ _check_fzf_v_task.stdout | default('0.0.0', true) }}"
+    __installed_fzf_v: "{{ __check_fzf_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Reporting installed version
   ansible.builtin.debug:
     msg: |-
-      Installed version: {{ installed_fzf_v if _check_fzf_v_task is succeeded else "Not Found" }}
+      Installed version: {{ __installed_fzf_v if __check_fzf_v_task is succeeded else "Not Found" }}

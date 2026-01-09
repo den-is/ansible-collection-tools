@@ -6,11 +6,11 @@
 - name: Installation using "install" script
   ansible.builtin.include_tasks: script-install.yaml
   when:
-  - _fzf_nov is version(installed_fzf_v, 'ne')
+  - _fzf_nov is version(__installed_fzf_v, 'ne')
   - fzf_install_script
 
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
-  - _fzf_nov is version(installed_fzf_v, 'ne')
+  - _fzf_nov is version(__installed_fzf_v, 'ne')
   - not fzf_install_script

@@ -6,14 +6,15 @@
 
 - name: Get installed version if any
   ansible.builtin.shell: zellij --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
-  register: check_zellij_v_task
+  register: __check_zellij_v_task
   ignore_errors: true
   changed_when: false
 
 - name: Register preflight facts
   ansible.builtin.set_fact:
-    installed_zellij_v: "{{ check_zellij_v_task.stdout | default('0.0.0', true) }}"
+    __installed_zellij_v: "{{ __check_zellij_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_zellij_v if check_zellij_v_task is success else "Not Installed" }}'
+    msg: >-
+      Installed version: {{ __installed_zellij_v if __check_zellij_v_task is success else "Not Installed" }}

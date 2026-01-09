@@ -6,4 +6,4 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
-  - zellij_nov is version(installed_zellij_v, 'ne')
+  - zellij_nov is version(__installed_zellij_v, 'ne')

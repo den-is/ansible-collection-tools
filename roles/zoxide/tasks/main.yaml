@@ -6,4 +6,4 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: release.yaml
   when:
-  - _zoxide_nov is version(installed_zoxide_v, 'ne')
+  - _zoxide_nov is version(__installed_zoxide_v, 'ne')

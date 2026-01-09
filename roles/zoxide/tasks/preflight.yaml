@@ -6,14 +6,15 @@
 
 - name: Get installed version if any
   ansible.builtin.shell: zoxide --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
-  register: check_zoxide_v_task
+  register: __check_zoxide_v_task
   ignore_errors: true
   changed_when: false
 
 - name: Register preflight facts
   ansible.builtin.set_fact:
-    installed_zoxide_v: "{{ check_zoxide_v_task.stdout | default('0.0.0', true) }}"
+    __installed_zoxide_v: "{{ __check_zoxide_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Installed version: {{ installed_zoxide_v if check_zoxide_v_task is success else "Not Found" }}'
+    msg: >-
+      Installed version: {{ __installed_zoxide_v if __check_zoxide_v_task is success else "Not Found" }}
