@@ -6,4 +6,4 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: archive.yaml
   when:
-  - yq_v is version(installed_yq_v, 'ne')
+  - yq_v is version(__installed_yq_v, 'ne')

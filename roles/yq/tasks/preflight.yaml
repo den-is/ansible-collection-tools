@@ -6,14 +6,15 @@
 
 - name: Get installed version if any
   ansible.builtin.shell: '{{ yq_bin }} --version | grep -E -o "v[0-9]+\.[0-9]+\.[0-9]+"'
-  register: check_yq_v_task
+  register: __check_yq_v_task
   ignore_errors: true
   changed_when: false
 
 - name: Register preflight fact
   ansible.builtin.set_fact:
-    installed_yq_v: "{{ check_yq_v_task.stdout | default('v0.0.0', true) }}"
+    __installed_yq_v: "{{ __check_yq_v_task.stdout | default('v0.0.0', true) }}"
 
-- name: Report installed version
+- name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_yq_v if check_yq_v_task is success else "Not installed" }}'
+    msg: >-
+      Installed version: {{ __installed_yq_v if __check_yq_v_task is success else "Not installed" }}
