@@ -1,13 +1,14 @@
 - name: Get current kubie version if any
-  ansible.builtin.shell: '{{ kubie_bin_dst }}/{{ kubie_bin }} --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"'
+  ansible.builtin.shell: '{{ kubie_bin_dst_effective }}/{{ kubie_bin }} --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"'
   register: kubie_check_version_task
   ignore_errors: true
   changed_when: false
 
 - name: Set installed kubie version fact
   ansible.builtin.set_fact:
-    current_kubie_v_with_v: 'v{{ kubie_check_version_task.stdout | default("0.0.0", true) }}'
+    _installed_kubie_v: '{{ kubie_check_version_task.stdout | default("0.0.0", true) }}'
 
-- name: Displaying current kubie version
+- name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Installed version: {{ current_kubie_v_with_v if kubie_check_version_task is success else "Not Found" }}'
+    msg: >-
+      Installed version: {{ _installed_kubie_v if kubie_check_version_task is success else "Not Found" }}

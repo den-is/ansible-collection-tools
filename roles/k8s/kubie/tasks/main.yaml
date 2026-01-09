@@ -6,4 +6,4 @@
 - name: Installation from github release
   ansible.builtin.include_tasks: release.yaml
   when:
-  - kubie_v is version(current_kubie_v_with_v, 'ne')
+  - _kubie_nov is version(_installed_kubie_v, 'ne')
