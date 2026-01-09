@@ -3,4 +3,5 @@
 ## Links
 - https://github.com/sharkdp/bat
 
-Supports Linux/MacOS hosts only
+## Post deploy
+Run `bat cache --build` to update bat cache (to update themes and stuff)
