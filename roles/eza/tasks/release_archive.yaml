@@ -56,7 +56,7 @@
   - name: Install man pages to correct section
     ansible.builtin.copy:
       src: "{{ item.path }}"
-      dest: "{{ man_base_path }}/man{{ item.path | ansible.builtin.basename | regex_search('[0-9]+$') }}/{{ item.path | ansible.builtin.basename }}"
+      dest: "{{ _man_base_dir_check.stat.path }}/man{{ item.path | ansible.builtin.basename | regex_search('[0-9]+$') }}/{{ item.path | ansible.builtin.basename }}"
       mode: '0644'
       remote_src: true
     become: true

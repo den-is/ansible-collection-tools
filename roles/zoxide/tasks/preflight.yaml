@@ -18,3 +18,28 @@
   ansible.builtin.debug:
     msg: >-
       Installed version: {{ __installed_zoxide_v if __check_zoxide_v_task is success else "Not Found" }}
+
+- name: Check if man path exists
+  ansible.builtin.stat:
+    path: "{{ man_base_path }}"
+  register: _man_base_dir_check
+  when: zoxide_deploy_man
+
+- name: Check completions destinations
+  when: zoxide_deploy_completions_zsh
+  block:
+
+  - name: Check if Bash completions path exists
+    ansible.builtin.stat:
+      path: "{{ bash_completions_path }}"
+    register: _bash_completions_dst_check
+
+  - name: Check if ZSH completions path exists
+    ansible.builtin.stat:
+      path: "{{ zsh_completions_path }}"
+    register: _zsh_completions_dst_check
+
+  - name: Check if Fish completions path exists
+    ansible.builtin.stat:
+      path: "{{ fish_completions_path }}"
+    register: _fish_completions_dst_check

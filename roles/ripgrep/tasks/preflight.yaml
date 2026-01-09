@@ -12,20 +12,26 @@
   ansible.builtin.debug:
     msg: "Installed version: {{ _installed_ripgrep_v if _check_installed_ripgrep_version_task is success else 'Not installed' }}"
 
-- name: Check if Bash completions path exists
+- name: Check if man path exists
   ansible.builtin.stat:
-    path: "{{ bash_completions_path }}"
-  register: _bash_completions_dst_check
-  when: ripgrep_deploy_completions
+    path: "{{ man_base_path }}"
+  register: _man_base_dir_check
+  when: ripgrep_deploy_man
 
-- name: Check if ZSH completions path exists
-  ansible.builtin.stat:
-    path: "{{ zsh_completions_path }}"
-  register: _zsh_completions_dst_check
+- name: Check completions destinations
   when: ripgrep_deploy_completions
+  block:
+  - name: Check if Bash completions path exists
+    ansible.builtin.stat:
+      path: "{{ bash_completions_path }}"
+    register: _bash_completions_dst_check
 
-- name: Check if Fish completions path exists
-  ansible.builtin.stat:
-    path: "{{ fish_completions_path }}"
-  register: _fish_completions_dst_check
-  when: ripgrep_deploy_completions
+  - name: Check if ZSH completions path exists
+    ansible.builtin.stat:
+      path: "{{ zsh_completions_path }}"
+    register: _zsh_completions_dst_check
+
+  - name: Check if Fish completions path exists
+    ansible.builtin.stat:
+      path: "{{ fish_completions_path }}"
+    register: _fish_completions_dst_check

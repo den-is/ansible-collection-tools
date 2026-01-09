@@ -58,7 +58,9 @@
   when: ansible_facts.service_mgr == "systemd"
 
 - name: Deploy man pages
-  when: syncthing_deploy_man
+  when:
+  - syncthing_deploy_man
+  - _man_base_dir_check.stat.exists
   block:
   - name: Getting source code archive
     ansible.builtin.get_url:
@@ -89,7 +91,7 @@
   - name: Install man pages
     ansible.builtin.copy:
       src: "{{ item.path }}"
-      dest: "{{ man_base_path }}/man{{ item.path | ansible.builtin.basename | regex_search('[0-9]+$') }}/{{ item.path | ansible.builtin.basename }}"
+      dest: "{{ _man_base_dir_check.stat.path }}/man{{ item.path | ansible.builtin.basename | regex_search('[0-9]+$') }}/{{ item.path | ansible.builtin.basename }}"
       mode: '0644'
       remote_src: true
     become: true

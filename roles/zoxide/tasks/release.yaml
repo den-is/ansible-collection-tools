@@ -23,33 +23,36 @@
     mode: '0755'
     remote_src: true
 
-- name: Locate man pages
-  ansible.builtin.find:
-    paths: "{{ zoxide_extraction_dst }}/man"
-    file_type: file
-    recurse: true
-  register: _found_zoxide_man_pages
-  changed_when: false
-  when: zoxide_deploy_man
+- name: Deploy man
+  when:
+  - zoxide_deploy_man
+  - _man_base_dir_check.stat.exists
+  block:
+  - name: Locate man pages
+    ansible.builtin.find:
+      paths: "{{ zoxide_extraction_dst }}/man"
+      file_type: file
+      recurse: true
+    register: _found_zoxide_man_pages
+    changed_when: false
 
-- name: Deploying man pages
-  ansible.builtin.copy:
-    src: "{{ item.path }}"
-    dest: "{{ man_base_path }}/man{{ item.path | ansible.builtin.basename | regex_search('[0-9]+$') }}/{{ item.path | ansible.builtin.basename }}"
-    mode: '0644'
-    remote_src: true
-  loop: "{{ _found_zoxide_man_pages.files }}"
-  loop_control:
-    label: "{{ item.path }}"
-  when: zoxide_deploy_man
+  - name: Deploying man pages
+    ansible.builtin.copy:
+      src: "{{ item.path }}"
+      dest: "{{ _man_base_dir_check.stat.path }}/man{{ item.path | ansible.builtin.basename | regex_search('[0-9]+$') }}/{{ item.path | ansible.builtin.basename }}"
+      mode: '0644'
+      remote_src: true
+    loop: "{{ _found_zoxide_man_pages.files }}"
+    loop_control:
+      label: "{{ item.path }}"
 
 - name: Deploying zsh completions
   ansible.builtin.copy:
     src: '{{ zoxide_extraction_dst }}/completions/_zoxide'
-    dest: '{{ zsh_completions_path }}/_zoxide'
+    dest: '{{ _zsh_completions_dst_check.stat.path }}/_zoxide'
     mode: '0644'
     remote_src: true
-  when: zoxide_zsh_completions_install
+  when: zoxide_deploy_completions_zsh
 
 - name: Deleting downloaded artifacts
   ansible.builtin.file:

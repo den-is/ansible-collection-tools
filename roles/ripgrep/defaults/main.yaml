@@ -45,7 +45,8 @@ ripgrep_bin_dst_effective: >-
   {{ (ripgrep_bin_dst | default(tools_bin_dst | default(ripgrep_bin_dst_default))) }}
 
 ripgrep_deploy_man: true
-ripgrep_man_path: /usr/share/man
+man_base_path: /usr/share/man
+
 ripgrep_deploy_completions: true
 bash_completions_path: /usr/share/bash-completion/completions
 zsh_completions_path: /usr/share/zsh/site-functions
