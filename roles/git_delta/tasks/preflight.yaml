@@ -12,8 +12,9 @@
 
 - name: Registering pre-flight vars
   ansible.builtin.set_fact:
-    installed_delta_v: "{{ check_delta_v_task.stdout | default('0.0.0', true) }}"
+    __installed_delta_v: "{{ check_delta_v_task.stdout | default('0.0.0', true) }}"
 
 - name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_delta_v if check_delta_v_task is success else "Not Found" }}'
+    msg: >-
+      Installed version: {{ __installed_delta_v if check_delta_v_task is success else "Not Found" }}

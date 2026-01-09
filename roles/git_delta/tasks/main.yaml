@@ -6,7 +6,7 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: archive.yaml
   when:
-  - delta_v is version(installed_delta_v, 'ne')
+  - delta_v is version(__installed_delta_v, 'ne')
   - not delta_install_deb
 
 - name: Deb package installation
@@ -14,4 +14,4 @@
   when:
   - ansible_facts.os_family == "Debian"
   - delta_install_deb
-  - delta_v is version(installed_delta_v, 'ne')
+  - delta_v is version(__installed_delta_v, 'ne')
