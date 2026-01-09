@@ -1,0 +1,35 @@
+tmux_v: v3.6a
+
+_tmux_nov: "{{ tmux_v | regex_replace('^v', '') }}"
+
+# Provide checksum for downloaded archive to verify integrity
+# Found on the Github Release page
+tmux_archive_checksum: ""
+
+_tmux_arch_map:
+  x86_64: x86_64
+  aarch64: arm64
+
+_tmux_system_map:
+  Darwin: macos
+  Linux: linux
+
+_tmux_arch: "{{ _tmux_arch_map[ansible_facts.architecture] }}"
+_tmux_system: "{{ _tmux_system_map[ansible_facts.system] }}"
+
+tmux_release_base_url: https://github.com/tmux/tmux-builds/releases/download/v{{ _tmux_nov }}
+tmux_archive_name: tmux-{{ _tmux_nov }}-{{ _tmux_system }}-{{ _tmux_arch }}.tar.gz
+tmux_release_url: '{{ tmux_release_base_url }}/{{ tmux_archive_name }}'
+
+tmux_archive_download_dst: /tmp
+tmux_extraction_dst: '{{ tmux_archive_download_dst }}/tmux-{{ _tmux_nov }}'
+
+tmux_bin: tmux
+
+# tmux_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+tmux_bin_dst_default: /usr/local/bin
+tmux_bin_dst_effective: >-
+  {{ (tmux_bin_dst | default(tools_bin_dst | default(tmux_bin_dst_default))) }}
+
+tmux_post_cleanup: true

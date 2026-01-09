@@ -1,0 +1,10 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  # unfortunatelly tmux is not using semver so we just comparing strings
+  - _tmux_nov != _installed_tmux_v

@@ -1,0 +1,34 @@
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ tmux_release_url }}'
+    dest: '{{ tmux_archive_download_dst }}/{{ tmux_archive_name }}'
+    checksum: "{{ '' if tmux_archive_checksum is not defined or (tmux_archive_checksum | length <= 0) else 'sha256:' + tmux_archive_checksum }}"
+    mode: '0644'
+
+- name: Creating extraction dir {{ tmux_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ tmux_extraction_dst }}'
+    state: directory
+    mode: '0755'
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ tmux_archive_download_dst }}/{{ tmux_archive_name }}'
+    dest: '{{ tmux_extraction_dst }}'
+    remote_src: true
+
+- name: Deploying binary
+  ansible.builtin.copy:
+    src: '{{ tmux_extraction_dst }}/tmux'
+    dest: '{{ tmux_bin_dst_effective }}/{{ tmux_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deployment post cleanup
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  when: tmux_post_cleanup | bool
+  loop:
+  - '{{ tmux_archive_download_dst }}/{{ tmux_archive_name }}'
+  - '{{ tmux_extraction_dst }}'
