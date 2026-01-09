@@ -8,6 +8,11 @@
   ansible.builtin.set_fact:
     _installed_eza_v: "{{ _check_current_eza_version_task.stdout | default('0.0.0', true) }}"
 
+- name: Reporting installed version
+  ansible.builtin.debug:
+    msg: >-
+      Installed version: {{ _installed_eza_v if _check_current_eza_version_task is success else "Not Found" }}
+
 - name: Check if man path exists
   ansible.builtin.stat:
     path: "{{ man_base_path }}"
