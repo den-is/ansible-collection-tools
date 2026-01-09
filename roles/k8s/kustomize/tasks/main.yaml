@@ -6,4 +6,4 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: archive.yaml
   when:
-  - kustomize_v is version(installed_kustomize_v, 'ne')
+  - kustomize_v is version(__installed_kustomize_v, 'ne')
