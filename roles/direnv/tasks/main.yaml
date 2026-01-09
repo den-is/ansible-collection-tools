@@ -6,4 +6,4 @@
 - name: Binary download and installation
   ansible.builtin.include_tasks: release.yaml
   when:
-  - _direnv_nov is version(installed_direnv_v, 'ne')
+  - _direnv_nov is version(__installed_direnv_v, 'ne')
