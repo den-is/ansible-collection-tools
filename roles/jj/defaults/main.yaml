@@ -1,0 +1,44 @@
+jj_v: v0.37.0
+
+jj_archive_checksum: ""
+
+_jj_nov: "{{ jj_v | regex_replace('^v', '') }}"
+
+_jj_sys_map:
+  Linux: unknown-linux
+  Darwin: apple-darwin
+
+_jj_arch_map:
+  x86_64: "x86_64"
+  aarch64: "aarch64"
+
+_jj_compiler_map:
+  Linux:
+    x86_64: "-musl"
+    aarch64: "-musl"
+  Darwin:
+    x86_64: ""
+    aarch64: ""
+
+_jj_sys: "{{ _jj_sys_map[ansible_facts.system] }}"
+_jj_arch: "{{ _jj_arch_map[ansible_facts.architecture] }}"
+_jj_compiler: "{{ _jj_compiler_map[ansible_facts.system][ansible_facts.architecture] }}"
+
+_jj_release_base_url: https://github.com/jj-vcs/jj/releases/download/v{{ _jj_nov }}
+
+jj_release_archive_name: jj-v{{ _jj_nov }}-{{ _jj_arch }}-{{ _jj_sys }}{{ _jj_compiler }}.tar.gz
+jj_release_url: '{{ jj_release_base_url }}/{{ jj_release_archive_name }}'
+
+jj_checksum_verify: false
+
+jj_archive_download_dst: /tmp
+jj_full_download_path: '{{ jj_archive_download_dst }}/jj-{{ _jj_nov }}'
+
+jj_bin: jj
+# jj_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+jj_bin_dst_default: /usr/local/bin
+jj_bin_dst_effective: >-
+  {{ (jj_bin_dst | default(tools_bin_dst | default(jj_bin_dst_default))) }}
+
+jj_post_cleanup: true

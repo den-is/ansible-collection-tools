@@ -1,0 +1,34 @@
+- name: Creating extraction dir {{ jj_full_download_path }}
+  ansible.builtin.file:
+    path: '{{ jj_full_download_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ jj_release_url }}'
+    dest: '{{ jj_archive_download_dst }}/{{ jj_release_archive_name }}'
+    checksum: "{{ '' if jj_archive_checksum is not defined or (jj_archive_checksum | length <= 0) else 'sha256:' + jj_archive_checksum }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ jj_full_download_path }}
+  ansible.builtin.unarchive:
+    src: '{{ jj_archive_download_dst }}/{{ jj_release_archive_name }}'
+    dest: '{{ jj_full_download_path }}'
+    remote_src: true
+
+- name: Copying binary to {{ jj_bin_dst_effective }}
+  ansible.builtin.copy:
+    src: '{{ jj_full_download_path }}/jj'
+    dest: '{{ jj_bin_dst_effective }}/{{ jj_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  when: jj_post_cleanup | default(true)
+  loop:
+  - '{{ jj_archive_download_dst }}/{{ jj_release_archive_name }}'
+  - '{{ jj_full_download_path }}'
