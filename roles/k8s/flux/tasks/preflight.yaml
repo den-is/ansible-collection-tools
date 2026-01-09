@@ -10,10 +10,11 @@
   ignore_errors: true
   changed_when: false
 
-- name: Registering pre-flight vars
+- name: Registering preflight facts
   ansible.builtin.set_fact:
-    installed_flux_v: "{{ check_flux_v_task.stdout | default('0.0.0', true) }}"
+    __installed_flux_v: "{{ check_flux_v_task.stdout | default('0.0.0', true) }}"
 
 - name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_flux_v if check_flux_v_task is success else "Not Found" }}'
+    msg: >-
+      Installed version: {{ __installed_flux_v if check_flux_v_task is success else "Not Found" }}
