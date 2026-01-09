@@ -1,5 +1,5 @@
 - name: Check if binary already exists in $PATH
-  ansible.builtin.command: command -v {{ terragrunt_bin }}
+  ansible.builtin.shell: command -v {{ terragrunt_bin }}
   register: terragrunt_bin_exists
   ignore_errors: true
   changed_when: false

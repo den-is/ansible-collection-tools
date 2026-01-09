@@ -27,7 +27,7 @@
     label: "{{ item.item }}"
 
 - name: Check if zed binary already exists in $PATH
-  ansible.builtin.command: command -v zed
+  ansible.builtin.shell: command -v zed
   register: _zed_bin_exists
   environment:
     PATH: "{{ ansible_facts.env.PATH }}:{{ ansible_facts.env.HOME }}/.local/bin"

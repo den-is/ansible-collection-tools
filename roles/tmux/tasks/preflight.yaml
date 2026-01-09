@@ -1,5 +1,5 @@
 - name: Check if binary already exists in $PATH
-  ansible.builtin.command: command -v {{ tmux_bin }}
+  ansible.builtin.shell: command -v {{ tmux_bin }}
   register: _task_check_path_bin
   ignore_errors: true
   changed_when: false

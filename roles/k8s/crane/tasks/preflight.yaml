@@ -1,5 +1,5 @@
 - name: Check if binary already exists in $PATH
-  ansible.builtin.command: command -v {{ crane_bin }}
+  ansible.builtin.shell: command -v {{ crane_bin }}
   register: _crane_bin_exists
   ignore_errors: true
   changed_when: false

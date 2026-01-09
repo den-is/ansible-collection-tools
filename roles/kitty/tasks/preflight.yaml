@@ -27,7 +27,7 @@
     label: "{{ item.item }}"
 
 - name: Check if kitty binary already exists in $PATH
-  ansible.builtin.command: command -v kitty
+  ansible.builtin.shell: command -v kitty
   register: _kitty_bin_exists
   environment:
     PATH: "{{ ansible_facts.env.PATH }}:{{ ansible_facts.env.HOME }}/.local/bin"
@@ -35,7 +35,7 @@
   changed_when: false
 
 - name: Check if kitten binary already exists in $PATH
-  ansible.builtin.command: command -v kitten
+  ansible.builtin.shell: command -v kitten
   register: _kitten_bin_exists
   environment:
     PATH: "{{ ansible_facts.env.PATH }}:{{ ansible_facts.env.HOME }}/.local/bin"

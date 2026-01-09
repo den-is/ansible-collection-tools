@@ -27,7 +27,7 @@
     fail_msg: "Directory '{{ helm_bin_dst_effective }}' does not exist or is not a directory."
 
 - name: Check if "{{ helm_bin }}" binary already exists in $PATH
-  ansible.builtin.command: command -v {{ helm_bin }}
+  ansible.builtin.shell: command -v {{ helm_bin }}
   register: __task_check_helm_cmd
   ignore_errors: true
   changed_when: false
