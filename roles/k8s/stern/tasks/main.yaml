@@ -6,4 +6,4 @@
 - name: Installation from release archive
   ansible.builtin.include_tasks: setup.yaml
   when:
-  - stern_nov_v is version(installed_stern_v, 'ne')
+  - stern_nov_v is version(_installed_stern_v, 'ne')
