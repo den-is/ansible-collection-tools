@@ -1,9 +1,56 @@
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: command -v {{ k9s_bin }}
+  register: _check_k9s_binary_task
+  ignore_errors: true
+  changed_when: false
+
 - name: Get current K9S version if any
   ansible.builtin.shell: '{{ k9s_bin_dst_effective }}/{{ k9s_bin }} version --short | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"'
-  register: k9s_check_version_task
+  register: _k9s_check_version_task
   ignore_errors: true
   changed_when: false
 
 - name: Registering current version
   ansible.builtin.set_fact:
-    _installed_k9s_v: '{{ k9s_check_version_task.stdout | default("0.0.0", true) }}'
+    _installed_k9s_v: '{{ _k9s_check_version_task.stdout | default("0.0.0", true) }}'
+
+- name: Reporting installed version
+  ansible.builtin.debug:
+    msg: >-
+      Installed version: {{ _installed_k9s_v if _k9s_check_version_task is success else "Not Found" }}
+
+- name: Fetch checksum online
+  when:
+  - k9s_checksum_verify
+  - k9s_checksum_sha256 is undefined or k9s_checksum_sha256 == ""
+  block:
+
+  - name: Setting github headers
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Fetch checksums list online
+    ansible.builtin.set_fact:
+      __k9s_checksums: "{{ lookup('url', k9s_checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __k9s_checksums is search(k9s_release_artifact_name)
+    retries: 10
+
+  - name: Select checksum for {{ k9s_release_artifact_name }}
+    ansible.builtin.set_fact:
+      __k9s_online_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __k9s_checksums }}"
+    when:
+    - k9s_release_artifact_name in item
+
+- name: Registering checksum var
+  ansible.builtin.set_fact:
+    __k9s_release_artifact_checksum: >-
+      {{- if k9s_checksum_sha256 is defined or k9s_checksum_sha256 | length > 0 -}}
+      {{- 'sha256:' + k9s_checksum_sha256 | regex_replace('sha256:', '') -}}
+      {{- elif k9s_checksum_verify and __k9s_online_checksum is defined and __k9s_online_checksum | length > 0 -}}
+      {{- 'sha256:' + __k9s_online_checksum -}}
+      {{- else -}}
+      ""
+      {{- endif -}}

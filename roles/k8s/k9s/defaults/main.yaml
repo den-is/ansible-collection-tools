@@ -1,16 +1,26 @@
-k9s_v: v0.50.16
+k9s_v: v0.50.18
 
 _k9s_nov: "{{ k9s_v | regex_replace('^v', '') }}"
 
-k9s_arch_map:
+_k9s_arch_map:
   x86_64: amd64
   aarch64: arm64
 
 # before v0.26.8 k9s used x86_64 instead of amd64
-k9s_arch: "{{ k9s_arch_map[ansible_facts.architecture] }}"
+k9s_arch: "{{ _k9s_arch_map[ansible_facts.architecture] }}"
 
-k9s_release_base_url: https://github.com/derailed/k9s/releases/download
-k9s_release_url: "{{ k9s_release_base_url }}/v{{ _k9s_nov }}/k9s_{{ ansible_facts.system }}_{{ k9s_arch }}.tar.gz"
+k9s_release_base_url: https://github.com/derailed/k9s/releases/download/v{{ _k9s_nov }}
+k9s_release_artifact_name: k9s_{{ ansible_facts.system }}_{{ k9s_arch }}.tar.gz
+k9s_release_url: "{{ k9s_release_base_url }}/{{ k9s_release_artifact_name }}"
+
+k9s_checksum_verify: false
+k9s_checksums_url: "{{ k9s_release_base_url }}/checksums.sha256"
+# providing checksum explicitly has precedence over online fetch, always triggers check if set
+k9s_checksum_sha256: ""
+
+k9s_archive_download_dst: /tmp
+k9s_extraction_path: '{{ k9s_archive_download_dst }}/k9s-{{ ruff_v }}'
+k9s_post_cleanup: true
 
 k9s_bin: k9s
 
