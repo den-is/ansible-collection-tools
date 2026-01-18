@@ -1,4 +1,4 @@
-lazydocker_v: v0.24.3
+lazydocker_v: v0.24.4
 
 _lazydocker_nov: "{{ lazydocker_v | regex_replace('^v', '') }}"
 

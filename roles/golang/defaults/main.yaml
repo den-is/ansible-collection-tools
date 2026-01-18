@@ -1,4 +1,4 @@
-golang_v: 1.25.5
+golang_v: 1.25.6
 
 _golang_sys_map:
   Linux: linux
