@@ -44,13 +44,13 @@
     when:
     - k9s_release_artifact_name in item
 
-- name: Registering checksum var
+- name: Set checksum fact
   ansible.builtin.set_fact:
     __k9s_release_artifact_checksum: >-
-      {{- if k9s_checksum_sha256 is defined or k9s_checksum_sha256 | length > 0 -}}
-      {{- 'sha256:' + k9s_checksum_sha256 | regex_replace('sha256:', '') -}}
-      {{- elif k9s_checksum_verify and __k9s_online_checksum is defined and __k9s_online_checksum | length > 0 -}}
+      {%- if k9s_checksum_sha256 is defined and k9s_checksum_sha256 | length > 0 -%}
+      {{- 'sha256:' + k9s_checksum_sha256 | regex_replace('^sha256:', '') -}}
+      {%- elif k9s_checksum_verify and __k9s_online_checksum is defined and __k9s_online_checksum | length > 0 -%}
       {{- 'sha256:' + __k9s_online_checksum -}}
-      {{- else -}}
+      {%- else -%}
       ""
-      {{- endif -}}
+      {%- endif -%}
