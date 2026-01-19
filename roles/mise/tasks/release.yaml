@@ -1,0 +1,44 @@
+- name: Creating extraction dir {{ mise_extraction_path }}
+  ansible.builtin.file:
+    path: '{{ mise_extraction_path }}'
+    state: directory
+    mode: '0755'
+
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ mise_release_url }}'
+    dest: '{{ mise_archive_download_dst }}/{{ mise_release_archive_name }}'
+    checksum: "{{ __mise_release_artifact_checksum }}"
+    mode: '0644'
+
+- name: Extracting archive to {{ mise_extraction_path }}
+  ansible.builtin.unarchive:
+    src: '{{ mise_archive_download_dst }}/{{ mise_release_archive_name }}'
+    dest: '{{ mise_extraction_path }}'
+    remote_src: true
+    extra_opts:
+    - --strip-components=1
+    - --show-stored-names
+
+- name: Installing mise
+  ansible.builtin.copy:
+    src: '{{ mise_extraction_path }}/bin/mise'
+    dest: '{{ mise_bin_dst_effective }}/{{ mise_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Installing man pages
+  ansible.builtin.copy:
+    src: '{{ mise_extraction_path }}/man/man1/mise.1'
+    dest: '{{ _man_base_dir_check.stat.path }}/man1/mise.1'
+    mode: '0644'
+    remote_src: true
+  when: mise_deploy_man
+
+- name: Deleting release artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ mise_archive_download_dst }}/{{ mise_release_archive_name }}'
+  - '{{ mise_extraction_path }}'

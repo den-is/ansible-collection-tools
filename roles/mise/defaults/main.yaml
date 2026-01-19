@@ -1,0 +1,38 @@
+mise_v: v2026.1.4
+
+_mise_nov: "{{ mise_v | regex_replace('^v', '') }}"
+
+mise_musl: false
+
+_mise_sys_map:
+  Linux: linux
+  Darwin: macos
+
+_mise_arch_map:
+  x86_64: x64
+  aarch64: arm64
+
+_mise_sys: "{{ _mise_sys_map[ansible_facts.system] }}"
+_mise_arch: "{{ _mise_arch_map[ansible_facts.architecture] }}"
+_mise_compiler: "{{ _mise_compiler_map[ansible_facts.system][ansible_facts.architecture] }}"
+
+mise_release_base_url: https://github.com/jdx/mise/releases/download/v{{ _mise_nov }}
+mise_release_archive_name: mise-v{{ _mise_nov }}-{{ _mise_sys }}-{{ _mise_arch }}{{ '-musl' if mise_musl and mise_musl == 'linux' }}.tar.gz
+mise_release_url: '{{ mise_release_base_url }}/{{ mise_release_archive_name }}'
+
+mise_checksum_verify: false
+mise_sha256sum: ''
+mise_checksums_sha256_url: '{{ mise_release_base_url }}/SHASUMS256.txt'
+
+mise_archive_download_dst: /tmp
+mise_extraction_path: '{{ mise_archive_download_dst }}/mise-{{ _mise_nov }}'
+
+mise_bin: mise
+# mise_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+mise_bin_dst_default: /usr/local/bin
+mise_bin_dst_effective: >-
+  {{ (mise_bin_dst | default(tools_bin_dst | default(mise_bin_dst_default))) }}
+
+mise_deploy_man: false
+man_base_path: /usr/share/man

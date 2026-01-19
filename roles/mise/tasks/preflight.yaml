@@ -1,0 +1,62 @@
+- name: Check if binary already exists in $PATH
+  ansible.builtin.shell: command -v {{ mise_bin }}
+  register: _mise_bin_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Get installed version if any
+  ansible.builtin.shell: mise --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_mise_v_task
+  ignore_errors: true
+  changed_when: false
+
+- name: Register pre-flight variables
+  ansible.builtin.set_fact:
+    _installed_mise_v: "{{ _check_mise_v_task.stdout | default('0.0.0', true) }}"
+
+- name: Reporting installed version
+  ansible.builtin.debug:
+    msg: |-
+      Installed version: {{ _installed_mise_v if _check_mise_v_task is success else "Not Found" }}
+
+- name: Check if man path exists
+  ansible.builtin.stat:
+    path: "{{ man_base_path }}"
+  register: _man_base_dir_check
+  when: mise_deploy_man
+
+- name: Get checksum
+  when:
+  - mise_checksum_verify
+  - mise_sha256sum is not defined or mise_sha256sum == ''
+  block:
+
+  - name: Github API headers setup
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __mise_checksums: "{{ lookup('url', mise_checksums_sha256_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __mise_checksums is search(mise_release_archive_name)
+    retries: 10
+
+  - name: Get checksum for {{ mise_release_archive_name }}
+    ansible.builtin.set_fact:
+      __mise_online_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __mise_checksums }}"
+    when:
+    - item.endswith('  ./' ~ mise_release_archive_name)
+
+- name: Set checksum fact
+  ansible.builtin.set_fact:
+    __mise_release_artifact_checksum: >-
+      {%- if mise_sha256sum is defined and mise_sha256sum | length > 0 -%}
+      {{- 'sha256:' + mise_sha256sum | regex_replace('^sha256:', '') -}}
+      {%- elif mise_checksum_verify and __mise_online_checksum is defined and __mise_online_checksum | length > 0 -%}
+      {{ 'sha256:' + __mise_online_checksum }}
+      {%- else -%}
+      ""
+      {%- endif -%}

@@ -1,0 +1,9 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - _mise_nov is version(_installed_mise_v, 'ne')
