@@ -1,5 +1,5 @@
-helm_v: v4.0.5
-# helm_v: v3.19.4
+helm_v: v4.1.0
+# helm_v: v3.20.0
 
 helm_latest: false
 helm_latest_v3: false
