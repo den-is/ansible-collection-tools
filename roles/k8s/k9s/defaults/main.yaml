@@ -19,7 +19,7 @@ k9s_checksums_url: "{{ k9s_release_base_url }}/checksums.sha256"
 k9s_checksum_sha256: ""
 
 k9s_archive_download_dst: /tmp
-k9s_extraction_path: '{{ k9s_archive_download_dst }}/k9s-{{ ruff_v }}'
+k9s_extraction_path: '{{ k9s_archive_download_dst }}/k9s-{{ _k9s_nov }}'
 k9s_post_cleanup: true
 
 k9s_bin: k9s

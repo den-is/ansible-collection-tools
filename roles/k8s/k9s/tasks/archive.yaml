@@ -11,7 +11,7 @@
     checksum: "{{ __k9s_release_artifact_checksum }}"
     mode: "0644"
 
-- name: Extracting archive to {{ ruff_extraction_path }}
+- name: Extracting archive to {{ k9s_extraction_path }}
   ansible.builtin.unarchive:
     src: "{{ k9s_archive_download_dst }}/{{ k9s_release_artifact_name }}"
     dest: "{{ k9s_extraction_path }}"
