@@ -52,5 +52,5 @@
       {%- elif k9s_checksum_verify and __k9s_online_checksum is defined and __k9s_online_checksum | length > 0 -%}
       {{- 'sha256:' + __k9s_online_checksum -}}
       {%- else -%}
-      ""
+      {{ '' }}
       {%- endif -%}
