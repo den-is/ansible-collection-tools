@@ -1,4 +1,4 @@
-zoxide_v: v0.9.8
+zoxide_v: v0.9.9
 
 _zoxide_nov: "{{ zoxide_v | regex_replace('^v', '') }}"
 

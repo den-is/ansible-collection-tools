@@ -1,4 +1,4 @@
-atuin_v: v18.11.0
+atuin_v: v18.12.0
 
 _atuin_nov: "{{ atuin_v | regex_replace('^v', '') }}"
 
