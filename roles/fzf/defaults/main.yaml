@@ -1,9 +1,9 @@
-fzf_v: v0.67.0
+fzf_v: v0.68.0
 
 _fzf_nov: "{{ fzf_v | regex_replace('^v', '') }}"
 
 fzf_git_repo: https://github.com/junegunn/fzf.git
-fzf_git_ref: master # or a tag or "master" for latest
+fzf_git_ref: master  # or a tag or "master" for latest
 
 fzf_install_script: true
 fzf_install_script_args: '--all --no-fish'
