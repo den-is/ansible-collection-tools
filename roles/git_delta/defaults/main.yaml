@@ -1,4 +1,4 @@
-delta_v: 0.18.2
+delta_v: 0.19.1
 
 # delta GNU, otherwise MUSL
 delta_gnu: true

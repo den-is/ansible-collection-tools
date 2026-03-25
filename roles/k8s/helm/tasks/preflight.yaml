@@ -68,7 +68,7 @@
 - name: Reporting installed version
   ansible.builtin.debug:
     msg: |-
-      Current Helm version: {{ _installed_helm_v if _helm_check_version_task is success else "Not Found" }}
+      Installed Helm version: {{ _installed_helm_v if _helm_check_version_task is success else "Not Found" }}
 
 - name: Set Helm release download URL
   ansible.builtin.set_fact:

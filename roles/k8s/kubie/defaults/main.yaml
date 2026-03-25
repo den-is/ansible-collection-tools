@@ -1,4 +1,4 @@
-kubie_v: v0.26.1
+kubie_v: v0.27.0
 
 _kubie_nov: "{{ kubie_v | regex_replace('^v', '') }}"
 
