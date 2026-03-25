@@ -8,7 +8,7 @@
   ansible.builtin.get_url:
     url: '{{ mise_release_url }}'
     dest: '{{ mise_archive_download_dst }}/{{ mise_release_archive_name }}'
-    checksum: "{{ __mise_release_artifact_checksum }}"
+    checksum: "{{ __mise_release_artifact_checksum | default('', true) }}"
     mode: '0644'
 
 - name: Extracting archive to {{ mise_extraction_path }}
