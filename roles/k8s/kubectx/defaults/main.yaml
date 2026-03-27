@@ -1,7 +1,8 @@
-kubectx_v: v0.10.2
+kubectx_v: v0.11.0
 
 # kubectx go-flavor, at the moment of writing does not support multiple kubeconfig files
 # https://github.com/ahmetb/kubectx/issues/211
+# fixed in v0.10.2 https://github.com/ahmetb/kubectx/pull/489
 kubectx_go: false
 
 # force reinstall of kubectx/kubens binaries/scripts

@@ -54,7 +54,7 @@
   ansible.builtin.set_fact:
     __mise_release_artifact_checksum: >-
       {%- if mise_sha256sum is defined and mise_sha256sum | length > 0 -%}
-      {{- 'sha256:' + mise_sha256sum | regex_replace('^sha256:', '') -}}
+      {{- 'sha256:' ~ mise_sha256sum | regex_replace('^sha256:', '') -}}
       {%- elif mise_checksum_verify and __mise_online_checksum is defined and __mise_online_checksum | length > 0 -%}
-      {{ 'sha256:' + __mise_online_checksum }}
+      {{ 'sha256:' ~ __mise_online_checksum }}
       {%- endif -%}
