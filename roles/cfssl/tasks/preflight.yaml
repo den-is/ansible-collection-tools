@@ -21,7 +21,7 @@
     installed_cfssl_v: "{{ check_cfssl_v_task.stdout | default('0.0.0', true) }}"
     installed_cfssljson_v: "{{ check_cfssljson_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current versions
+- name: Displaying installed versions
   ansible.builtin.debug:
     msg: |-
       'cfssl version: {{ installed_cfssl_v if check_cfssl_v_task is success else "Not Found" }}'

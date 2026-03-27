@@ -17,4 +17,4 @@
 - name: Reporting installed version
   ansible.builtin.debug:
     msg: >-
-      Installed version: {{ __installed_zellij_v if __check_zellij_v_task is success else "Not Installed" }}
+      Installed version: {{ __installed_zellij_v if __check_zellij_v_task is success else "Not Found" }}

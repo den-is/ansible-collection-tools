@@ -4,17 +4,17 @@
   ignore_errors: true
   changed_when: false
 
-- name: Get current version if any
+- name: Get installed version if any
   ansible.builtin.shell: '{{ helmfile_bin }} version -o=short'
   register: check_helmfile_v_task
   ignore_errors: true
   changed_when: false
 
 
-- name: Get current helmfile version components
+- name: Register preflight facts
   ansible.builtin.set_fact:
     current_helmfile_v: "{{ check_helmfile_v_task.stdout | default('v0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Displaying installed version
   ansible.builtin.debug:
-    msg: 'Current helmfile version: {{ current_helmfile_v if check_helmfile_v_task is success else "Not Found" }}'
+    msg: 'Installed helmfile version: {{ current_helmfile_v if check_helmfile_v_task is success else "Not Found" }}'

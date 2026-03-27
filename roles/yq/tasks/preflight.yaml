@@ -17,4 +17,4 @@
 - name: Reporting installed version
   ansible.builtin.debug:
     msg: >-
-      Installed version: {{ __installed_yq_v if __check_yq_v_task is success else "Not installed" }}
+      Installed version: {{ __installed_yq_v if __check_yq_v_task is success else "Not Found" }}

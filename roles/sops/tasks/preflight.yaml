@@ -19,4 +19,4 @@
 - name: Reporting installed version
   ansible.builtin.debug:
     msg: >-
-      Installed version: {{ __installed_sops_v if __check_sops_v_task is success else "Not Installed" }}
+      Installed version: {{ __installed_sops_v if __check_sops_v_task is success else "Not Found" }}

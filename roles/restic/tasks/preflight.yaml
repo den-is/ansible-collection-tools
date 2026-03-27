@@ -14,6 +14,6 @@
   ansible.builtin.set_fact:
     installed_restic_v: "{{ check_restic_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Displaying installed version
   ansible.builtin.debug:
     msg: 'Installed version: {{ installed_restic_v if check_restic_v_task is success else "Not Found" }}'

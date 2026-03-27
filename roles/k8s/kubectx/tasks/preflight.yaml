@@ -14,7 +14,7 @@
   ansible.builtin.debug:
     msg: |-
       Installed kubectx version: {% if kubectx_go -%}
-        {{- installed_kubectx_v if check_kubectx_v_task is success else "Not Available" -}}'
+        {{- installed_kubectx_v if check_kubectx_v_task is success else "Not Found" -}}'
       {%- else -%}
         Bash flavor without version
       {%- endif -%}

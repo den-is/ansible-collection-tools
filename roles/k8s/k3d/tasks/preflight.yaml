@@ -16,4 +16,4 @@
 
 - name: Displaying installed version
   ansible.builtin.debug:
-    msg: 'Installed version: {{ installed_k3d_v if check_k3d_v_task is success else "Not Installed" }}'
+    msg: 'Installed version: {{ installed_k3d_v if check_k3d_v_task is success else "Not Found" }}'

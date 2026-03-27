@@ -15,6 +15,6 @@
     atlantis_without_v: "{{ atlantis_v | regex_replace('^v', '') }}"
     installed_atlantis_v: "{{ check_atlantis_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Displaying installed version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_atlantis_v if check_atlantis_v_task is success else "Not Found" }}'
+    msg: 'Installed version: {{ installed_atlantis_v if check_atlantis_v_task is success else "Not Found" }}'

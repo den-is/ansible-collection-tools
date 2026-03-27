@@ -28,5 +28,5 @@
 - name: Reporting installed version
   ansible.builtin.debug:
     msg: |-
-      Installed NVM version: {{ _installed_nvm_v if _check_nvm_v_task is success else "Not installed" }}
-      Installed Node version: {{ _installed_node_v if _check_node_v_task is success else "Not installed" }}
+      Installed NVM version: {{ _installed_nvm_v if _check_nvm_v_task is success else "Not Found" }}
+      Installed Node version: {{ _installed_node_v if _check_node_v_task is success else "Not Found" }}

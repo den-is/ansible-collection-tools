@@ -30,7 +30,7 @@
 - name: Instaled HAProxy version
   ansible.builtin.debug:
     msg: |-
-      Installed HAProxy version: {{ installed_haproxy_v if check_installed_haproxy_v is success else "Not Installed" }}
+      Installed HAProxy version: {{ installed_haproxy_v if check_installed_haproxy_v is success else "Not Found" }}
 
 - name: Load a variable file based on the OS
   ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"

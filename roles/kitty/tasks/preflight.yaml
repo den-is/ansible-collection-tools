@@ -54,6 +54,6 @@
   ansible.builtin.set_fact:
     _installed_kitty_v: "{{ _check_kitty_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Displaying installed version
   ansible.builtin.debug:
-    msg: 'Installed version: {{ _installed_kitty_v if _check_kitty_v_task is success else "Not Available" }}'
+    msg: 'Installed version: {{ _installed_kitty_v if _check_kitty_v_task is success else "Not Found" }}'

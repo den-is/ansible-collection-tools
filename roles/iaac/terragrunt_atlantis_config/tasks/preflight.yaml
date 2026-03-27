@@ -14,6 +14,6 @@
   ansible.builtin.set_fact:
     installed_terragrunt_atlantis_config_v: "{{ check_terragrunt_atlantis_config_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Displaying installed version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_terragrunt_atlantis_config_v if check_terragrunt_atlantis_config_v_task is success else "Not Found" }}'
+    msg: 'Installed version: {{ installed_terragrunt_atlantis_config_v if check_terragrunt_atlantis_config_v_task is success else "Not Found" }}'
