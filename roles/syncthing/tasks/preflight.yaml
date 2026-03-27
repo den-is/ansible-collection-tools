@@ -20,7 +20,7 @@
   ansible.builtin.set_fact:
     _installed_syncthing_v: "{{ _check_syncthing_v_task.stdout | default('v0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Reporting installed version
   ansible.builtin.debug:
     msg: >-
-      Current version: {{ _installed_syncthing_v if _check_syncthing_v_task is success else "Not Found" }}
+      Installed version: {{ _installed_syncthing_v if _check_syncthing_v_task is success else "Not Found" }}

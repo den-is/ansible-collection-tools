@@ -10,10 +10,10 @@
   ignore_errors: true
   changed_when: false
 
-- name: Register pre-flight variables
+- name: Register pre-flight facts
   ansible.builtin.set_fact:
     installed_yazi_v: "{{ _check_yazi_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Reporting installed version
   ansible.builtin.debug:
     msg: 'Installed version: {{ installed_yazi_v if _check_yazi_v_task is success else "Not Found" }}'

@@ -14,6 +14,6 @@
   ansible.builtin.set_fact:
     installed_lazydocker_v: "{{ _check_lazydocker_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Displaying current version
+- name: Reporting installed version
   ansible.builtin.debug:
-    msg: 'Current version: {{ installed_lazydocker_v if _check_lazydocker_v_task is success else "Not Installed" }}'
+    msg: 'Installed version: {{ installed_lazydocker_v if _check_lazydocker_v_task is success else "Not Found" }}'

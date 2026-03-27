@@ -14,7 +14,7 @@
   ansible.builtin.set_fact:
     _installed_crane_v: "{{ _check_crane_v_task.stdout | default('0.0.0', true) }}"
 
-- name: Reporting current version
+- name: Reporting installed version
   ansible.builtin.debug:
     msg: |-
       Installed version: {{ _installed_crane_v if _check_crane_v_task is success else "Not Found" }}

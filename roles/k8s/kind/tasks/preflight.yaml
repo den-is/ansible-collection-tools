@@ -4,13 +4,13 @@
   ignore_errors: true
   changed_when: false
 
-- name: Get current kind version if any
+- name: Get installed kind version if any
   ansible.builtin.shell: '{{ kind_bin }} version --quiet'
   register: _check_kind_v_task
   ignore_errors: true
   changed_when: false
 
-- name: Get current helmfile version components
+- name: Registering installed kind version
   ansible.builtin.set_fact:
     _installed_kind_v: "{{ _check_kind_v_task.stdout | default('0.0.0', true) }}"
 

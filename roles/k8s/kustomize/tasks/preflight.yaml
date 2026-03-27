@@ -4,7 +4,7 @@
   ignore_errors: true
   changed_when: false
 
-- name: Get current version if any
+- name: Get installed version if any
   ansible.builtin.shell: '{{ kustomize_bin }} version'
   register: check_kustomize_v_task
   ignore_errors: true

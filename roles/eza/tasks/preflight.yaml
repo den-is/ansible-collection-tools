@@ -1,4 +1,4 @@
-- name: Get currently installed version if any
+- name: Get installed version if any
   ansible.builtin.shell: eza --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
   register: _check_current_eza_version_task
   ignore_errors: true

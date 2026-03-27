@@ -4,13 +4,13 @@
   ignore_errors: true
   changed_when: false
 
-- name: Get current K9S version if any
+- name: Get installed K9S version if any
   ansible.builtin.shell: '{{ k9s_bin_dst_effective }}/{{ k9s_bin }} version --short | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"'
   register: _k9s_check_version_task
   ignore_errors: true
   changed_when: false
 
-- name: Registering current version
+- name: Registering installed version
   ansible.builtin.set_fact:
     _installed_k9s_v: '{{ _k9s_check_version_task.stdout | default("0.0.0", true) }}'
 
