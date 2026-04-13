@@ -1,4 +1,4 @@
-zellij_v: v0.44.0
+zellij_v: v0.44.1
 
 zellij_nov: "{{ zellij_v | regex_replace('^v', '') }}"
 

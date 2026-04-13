@@ -1,4 +1,4 @@
-crane_v: v0.21.3
+crane_v: v0.21.5
 
 _crane_nov: "{{ crane_v | regex_replace('^v', '') }}"
 
