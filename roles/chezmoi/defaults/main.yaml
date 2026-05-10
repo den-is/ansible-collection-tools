@@ -1,4 +1,4 @@
-chezmoi_v: v2.70.2
+chezmoi_v: v2.70.3
 chezmoi_musl: false
 
 _chezmoi_nov: "{{ chezmoi_v | regex_replace('^v', '') }}"
