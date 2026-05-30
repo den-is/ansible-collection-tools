@@ -1,4 +1,4 @@
-kubefwd_v: v1.25.14
+kubefwd_v: v1.25.15
 
 _kubefwd_nov: "{{ kubefwd_v | regex_replace('^v', '') }}"
 
