@@ -1,4 +1,4 @@
-k9s_v: v0.50.18
+k9s_v: v0.51.0
 
 _k9s_nov: "{{ k9s_v | regex_replace('^v', '') }}"
 

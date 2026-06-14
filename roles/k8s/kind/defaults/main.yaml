@@ -1,4 +1,4 @@
-kind_v: v0.31.0
+kind_v: v0.32.0
 
 _kind_nov: "{{ kind_v | regex_replace('^v', '') }}"
 
