@@ -1,4 +1,4 @@
-kubeseal_v: v0.37.0
+kubeseal_v: v0.38.1
 
 __kubeseal_nov: '{{ kubeseal_v | regex_replace("^v", "") }}'
 
@@ -13,7 +13,7 @@ kubeseal_arch_map:
 kubeseal_sys: "{{ kubeseal_sys_map[ansible_facts.system] }}"
 kubeseal_arch: "{{ kubeseal_arch_map[ansible_facts.architecture] }}"
 
-kubeseal_release_base_url: https://github.com/bitnami-labs/sealed-secrets/releases/download
+kubeseal_release_base_url: https://github.com/bitnami/sealed-secrets/releases/download
 kubeseal_release_file_name: kubeseal-{{ __kubeseal_nov }}-{{ kubeseal_sys }}-{{ kubeseal_arch }}.tar.gz
 kubeseal_release_url: "{{ kubeseal_release_base_url }}/{{ kubeseal_v }}/{{ kubeseal_release_file_name }}"
 
