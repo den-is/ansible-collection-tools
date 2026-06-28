@@ -5,9 +5,9 @@ _helm_arch_map:
 _helm_arch: "{{ _helm_arch_map[ansible_facts.architecture] }}"
 
 _helm_latest_urls:
-  # v3: https://get.helm.sh/helm-latest-version # also returns v3, at the moment of writing
   v3: https://get.helm.sh/helm3-latest-version
   v4: https://get.helm.sh/helm4-latest-version
+  # v4: https://get.helm.sh/helm-latest-version
 
 _helm_latest_url: >-
   {%- if helm_latest -%}
