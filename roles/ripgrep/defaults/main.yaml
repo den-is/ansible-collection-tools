@@ -1,4 +1,4 @@
-ripgrep_v: 15.1.0
+ripgrep_v: 15.2.0
 
 # Install ripgrep from OS packages, otherwise from github release archive
 ripgrep_os_package: false

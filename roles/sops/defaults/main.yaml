@@ -1,4 +1,4 @@
-sops_v: v3.13.2
+sops_v: v3.13.3
 
 _sops_nov: "{{ sops_v | regex_replace('^v', '') }}"
 

@@ -1,4 +1,4 @@
-kitty_v: v0.47.4
+kitty_v: v0.48.1
 
 _kitty_nov: "{{ kitty_v | regex_replace('^v', '') }}"
 
