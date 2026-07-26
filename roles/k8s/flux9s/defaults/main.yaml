@@ -1,0 +1,33 @@
+flux9s_v: v1.0.0
+
+flux9s_musl: false
+
+_flux9s_nov: "{{ flux9s_v | regex_replace('^v', '') }}"
+
+_flux9s_arch_map:
+  x86_64: x86_64
+  aarch64: aarch64
+
+_flux9s_system_map:
+  Darwin: macos
+  Linux: linux
+
+flux9s_arch: "{{ _flux9s_arch_map[ansible_facts.architecture] }}"
+flux9s_sys: "{{ _flux9s_system_map[ansible_facts.system] }}"
+
+flux9s_release_base_url: https://github.com/dgunzy/flux9s/releases/download
+flux9s_archive_name: flux9s-{{ flux9s_sys }}-{{ flux9s_arch }}{{ '-musl' if flux9s_sys == 'linux' and flux9s_musl else '-gnu' }}.tar.gz
+flux9s_release_url: '{{ flux9s_release_base_url }}/v{{ _flux9s_nov }}/{{ flux9s_archive_name }}'
+
+flux9s_checksum_verify: false
+flux9s_release_sha256sums_url: '{{ flux9s_release_base_url }}/v{{ _flux9s_nov }}/SHA256SUMS'
+
+flux9s_archive_download_dst: /tmp
+flux9s_extraction_dst: '{{ flux9s_archive_download_dst }}/flux9s-{{ flux9s_v }}'
+
+flux9s_bin: flux9s
+# flux9s_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+flux9s_bin_dst_default: /usr/local/bin
+flux9s_bin_dst_effective: >-
+  {{ (flux9s_bin_dst | default(tools_bin_dst | default(flux9s_bin_dst_default))) }}

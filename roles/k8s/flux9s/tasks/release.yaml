@@ -1,0 +1,56 @@
+- name: Get checksum
+  when: flux9s_checksum_verify
+  block:
+
+  - name: Registering checksums related vars
+    ansible.builtin.set_fact:
+      _github_api_headers: "{{ {'GITHUB_TOKEN': lookup('ansible.builtin.env', 'GITHUB_TOKEN')} if (lookup('ansible.builtin.env', 'GITHUB_TOKEN')) else {} }}"
+
+  # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
+  - name: Get checksums list
+    ansible.builtin.set_fact:
+      __flux9s_checksums: "{{ lookup('url', flux9s_release_sha256sums_url, headers=_github_api_headers, wantlist=True) | list }}"
+    run_once: true
+    until: __flux9s_checksums is search(flux9s_archive_name)
+    retries: 10
+
+  - name: Get checksum of {{ flux9s_archive_name }}
+    ansible.builtin.set_fact:
+      __flux9s_checksum: "{{ item.split(' ')[0] }}"
+    loop: "{{ __flux9s_checksums }}"
+    when:
+    - flux9s_archive_name in item
+
+- name: Getting flux9s release artifact archive
+  ansible.builtin.get_url:
+    url: '{{ flux9s_release_url }}'
+    dest: '{{ flux9s_archive_download_dst }}/{{ flux9s_archive_name }}'
+    checksum: "{{ 'sha256:' + __flux9s_checksum if flux9s_checksum_verify else '' }}"
+    mode: '0644'
+
+- name: Creating extraction dir {{ flux9s_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ flux9s_extraction_dst }}'
+    state: directory
+    mode: '0755'
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ flux9s_archive_download_dst }}/{{ flux9s_archive_name }}'
+    dest: '{{ flux9s_extraction_dst }}'
+    remote_src: true
+
+- name: Copying binary to {{ flux9s_bin_dst_effective }}
+  ansible.builtin.copy:
+    src: '{{ flux9s_extraction_dst }}/flux9s'
+    dest: '{{ flux9s_bin_dst_effective }}/{{ flux9s_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ flux9s_extraction_dst }}'
+  - '{{ flux9s_archive_download_dst }}/{{ flux9s_archive_name }}'

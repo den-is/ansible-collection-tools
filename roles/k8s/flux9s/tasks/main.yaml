@@ -1,0 +1,13 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: debug download url
+  ansible.builtin.debug:
+    msg: 'Downloading {{ flux9s_release_url }}'
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - _flux9s_nov is version(_installed_flux9s_v, 'ne')
