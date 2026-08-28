@@ -1,4 +1,4 @@
-terragrunt_v: v1.1.3
+terragrunt_v: v1.1.4
 
 _terragrunt_nov: "{{ terragrunt_v | regex_replace('^v', '') }}"
 

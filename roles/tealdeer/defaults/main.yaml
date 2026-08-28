@@ -1,4 +1,4 @@
-tealdeer_v: v1.8.1
+tealdeer_v: v1.9.0
 
 _tealdeer_nov: "{{ tealdeer_v | regex_replace('^v', '') }}"
 
