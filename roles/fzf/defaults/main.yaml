@@ -1,4 +1,4 @@
-fzf_v: v0.74.3
+fzf_v: v0.74.4
 
 _fzf_nov: "{{ fzf_v | regex_replace('^v', '') }}"
 

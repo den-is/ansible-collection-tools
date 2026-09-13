@@ -1,4 +1,4 @@
-shfmt_v: v3.14.0
+shfmt_v: v3.14.1
 
 _shfmt_nov: "{{ shfmt_v | regex_replace('^v', '') }}"
 

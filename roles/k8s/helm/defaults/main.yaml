@@ -1,4 +1,4 @@
-helm_v: v4.2.4
+helm_v: v4.3.0
 # helm_v: v3.21.4
 
 helm_latest: false
