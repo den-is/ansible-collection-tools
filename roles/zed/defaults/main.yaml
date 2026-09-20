@@ -1,4 +1,4 @@
-zed_v: v1.19.2
+zed_v: v1.20.2
 
 _zed_nov: "{{ zed_v | regex_replace('^v', '') }}"
 
