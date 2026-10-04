@@ -1,4 +1,4 @@
-opentofu_v: v1.12.6
+opentofu_v: v1.13.1
 
 _opentofu_sys_map:
   Darwin: darwin

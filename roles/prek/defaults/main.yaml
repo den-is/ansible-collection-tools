@@ -1,4 +1,4 @@
-prek_v: v0.5.3
+prek_v: v0.5.4
 
 _prek_nov: "{{ prek_v | regex_replace('^v', '') }}"
 
