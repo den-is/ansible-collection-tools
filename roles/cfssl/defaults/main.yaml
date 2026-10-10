@@ -1,4 +1,4 @@
-cfssl_v: v1.7.0
+cfssl_v: v1.7.1
 
 _cfssl_nov: "{{ cfssl_v | regex_replace('^v', '') }}"
 

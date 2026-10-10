@@ -1,4 +1,4 @@
-mise_v: v2026.10.2
+mise_v: v2026.10.7
 
 _mise_nov: "{{ mise_v | regex_replace('^v', '') }}"
 

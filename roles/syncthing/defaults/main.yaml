@@ -1,4 +1,4 @@
-syncthing_v: v2.1.5
+syncthing_v: v2.1.6
 syncthing_repo: true
 
 _syncthing_nov: "{{ syncthing_v | regex_replace('^v', '') }}"
