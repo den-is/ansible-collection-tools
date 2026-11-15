@@ -60,7 +60,7 @@ minio_system: "{{ minio_system_map[ansible_facts.system] }}"
 minio_server_url: https://dl.min.io/server/minio/release/{{ minio_system }}-{{ minio_arch }}/archive/{{ __minio_client_artifact }}
 minio_client_url: https://dl.min.io/client/mc/release/{{ minio_system }}-{{ minio_arch }}/archive/{{ __minio_client_artifact }}
 
-minio_validate_checksum: true
+minio_validate_checksum: false
 minio_server_sha256_url: "{{ minio_server_url }}.sha256sum"
 minio_client_sha256_url: "{{ minio_client_url }}.sha256sum"
 

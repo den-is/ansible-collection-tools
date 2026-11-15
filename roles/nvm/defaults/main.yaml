@@ -1,4 +1,4 @@
-nvm_v: v0.40.8
+nvm_v: v0.41.0
 
 _nvm_nov: "{{ nvm_v | regex_replace('^v', '') }}"
 

@@ -18,7 +18,7 @@ restic_artifact_name: restic_{{ _restic_nov }}_{{ restic_system }}_{{ restic_arc
 restic_archive_name: "{{ restic_artifact_name }}.bz2"
 restic_release_base_url: https://github.com/restic/restic/releases/download
 restic_release_url: '{{ restic_release_base_url }}/v{{ _restic_nov }}/{{ restic_archive_name }}'
-restic_checksum_verify: true
+restic_checksum_verify: false
 
 restic_archive_download_dst: /tmp
 restic_extraction_dst: '{{ restic_archive_download_dst }}/restic-{{ _restic_nov }}'

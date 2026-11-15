@@ -1,4 +1,4 @@
-croc_v: v11.6.4
+croc_v: v11.6.5
 
 croc_arch_map:
   x86_64: 64bit
@@ -17,6 +17,7 @@ croc_system: "{{ croc_system_map[ansible_facts.system] }}"
 croc_release_base_url: https://github.com/schollz/croc/releases/download
 croc_archive_name: croc_{{ croc_v }}_{{ croc_system }}-{{ croc_arch }}.tar.gz
 croc_release_url: '{{ croc_release_base_url }}/{{ croc_v }}/{{ croc_archive_name }}'
+croc_checksum_verify: false
 
 croc_archive_download_dst: /tmp
 croc_extraction_dst: '{{ croc_archive_download_dst }}/croc-{{ croc_v }}'

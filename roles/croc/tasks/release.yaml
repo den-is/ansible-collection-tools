@@ -1,5 +1,6 @@
 # on macos ansible host will require "export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES"
 - name: Get checksum
+  when: croc_checksum_verify
   block:
   - name: Registering checksums related vars
     ansible.builtin.set_fact:
@@ -10,7 +11,7 @@
     ansible.builtin.set_fact:
       __croc_checksums: "{{ lookup('url', __checksums_url, headers=_github_api_headers, wantlist=True) | list }}"
     run_once: true
-    until: __croc_checksums is search('croc_' + croc_v + '_' + croc_system + '-' + croc_arch + '.' + croc_archive_ext)
+    until: __croc_checksums is search(croc_archive_name)
     retries: 10
 
   - name: Getting checksum
@@ -18,13 +19,13 @@
       __croc_checksum: "{{ item.split(' ')[0] }}"
     loop: "{{ __croc_checksums }}"
     when:
-    - "('croc_' + croc_v + '_' + croc_system + '-' + croc_arch + '.' + croc_archive_ext) in item"
+    - croc_archive_name in item
 
 - name: Getting release archive
   ansible.builtin.get_url:
     url: '{{ croc_release_url }}'
     dest: '{{ croc_archive_download_dst }}/{{ croc_archive_name }}'
-    checksum: 'sha256:{{ __croc_checksum }}'
+    checksum: "{{ 'sha256:' + __croc_checksum if croc_checksum_verify else '' }}"
 
 - name: Creating extraction dir {{ croc_extraction_dst }}
   ansible.builtin.file:

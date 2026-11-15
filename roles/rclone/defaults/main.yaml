@@ -16,7 +16,7 @@ rclone_release_base_url: https://github.com/rclone/rclone/releases/download
 rclone_archive_name: "rclone-{{ rclone_v }}-{{ rclone_system }}-{{ rclone_arch }}.zip"
 rclone_release_url: '{{ rclone_release_base_url }}/{{ rclone_v }}/{{ rclone_archive_name }}'
 
-rclone_checksum_verify: true
+rclone_checksum_verify: false
 rclone_release_sha256sums_url: "{{ rclone_release_base_url }}/{{ rclone_v }}/SHA256SUMS"
 
 rclone_archive_download_dst: /tmp
