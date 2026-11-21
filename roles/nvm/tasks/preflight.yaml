@@ -20,6 +20,14 @@
   ignore_errors: true
   changed_when: false
 
+- name: Get npm version if installed
+  ansible.builtin.shell: |
+    . {{ ansible_facts.env.HOME }}/.nvm/nvm.sh
+    npm --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"
+  register: _check_npm_v_task
+  ignore_errors: true
+  changed_when: false
+
 - name: Register pre-flight variables
   ansible.builtin.set_fact:
     _installed_nvm_v: "{{ _check_nvm_v_task.stdout | default('0.0.0', true) }}"
@@ -30,3 +38,4 @@
     msg: |-
       Installed NVM version: {{ _installed_nvm_v if _check_nvm_v_task is success else "Not Found" }}
       Installed Node version: {{ _installed_node_v if _check_node_v_task is success else "Not Found" }}
+      Installed npm version: {{ _check_npm_v_task.stdout if _check_npm_v_task is success else "Not Found" }}
