@@ -1,0 +1,2 @@
+galaxy_info:
+  description: Deploys kubeseal https://github.com/bitnami/sealed-secrets

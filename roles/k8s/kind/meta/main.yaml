@@ -1,0 +1,2 @@
+galaxy_info:
+  description: Deploys kind https://github.com/kubernetes-sigs/kind
