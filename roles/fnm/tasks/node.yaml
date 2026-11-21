@@ -1,0 +1,11 @@
+- name: Install Node.js - {{ fnm_node_version }}
+  ansible.builtin.command: "{{ fnm_bin_dst_effective }}/{{ fnm_bin }} install {{ fnm_node_version }}"
+  register: _fnm_install_task
+  changed_when: "'already installed' not in (_fnm_install_task.stdout ~ _fnm_install_task.stderr)"
+
+- name: Set default Node.js alias
+  ansible.builtin.command: "{{ fnm_bin_dst_effective }}/{{ fnm_bin }} default {{ fnm_node_version }}"
+  changed_when: false
+  when:
+  - fnm_node_set_default
+  - fnm_node_version is not search('^--')

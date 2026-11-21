@@ -1,0 +1,32 @@
+- name: Getting release archive
+  ansible.builtin.get_url:
+    url: '{{ fnm_release_url }}'
+    dest: '{{ fnm_archive_download_dst }}/{{ fnm_archive_name }}'
+    mode: '0644'
+
+- name: Creating extraction dir {{ fnm_extraction_dst }}
+  ansible.builtin.file:
+    path: '{{ fnm_extraction_dst }}'
+    state: directory
+    mode: '0755'
+
+- name: Extracting archive
+  ansible.builtin.unarchive:
+    src: '{{ fnm_archive_download_dst }}/{{ fnm_archive_name }}'
+    dest: '{{ fnm_extraction_dst }}'
+    remote_src: true
+
+- name: Deploying binary to {{ fnm_bin_dst_effective }}
+  ansible.builtin.copy:
+    src: '{{ fnm_extraction_dst }}/fnm'
+    dest: '{{ fnm_bin_dst_effective }}/{{ fnm_bin }}'
+    mode: '0755'
+    remote_src: true
+
+- name: Deleting downloaded artifacts
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+  - '{{ fnm_extraction_dst }}'
+  - '{{ fnm_archive_download_dst }}/{{ fnm_archive_name }}'

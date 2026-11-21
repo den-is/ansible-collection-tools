@@ -1,0 +1,14 @@
+- name: Preflight preparation
+  ansible.builtin.include_tasks: preflight.yaml
+  tags:
+  - always
+
+- name: Installation from release archive
+  ansible.builtin.include_tasks: release.yaml
+  when:
+  - _fnm_nov is version(_installed_fnm_v, 'ne')
+
+- name: Configure Node.js with fnm
+  ansible.builtin.include_tasks: node.yaml
+  when:
+  - fnm_manage_node

@@ -1,0 +1,33 @@
+fnm_v: v1.39.0
+
+_fnm_nov: "{{ fnm_v | regex_replace('^v', '') }}"
+
+# fnm publishes: fnm-linux.zip (x86_64), fnm-arm64.zip (linux aarch64), fnm-macos.zip (universal)
+_fnm_archive_map:
+  Linux:
+    x86_64: fnm-linux.zip
+    aarch64: fnm-arm64.zip
+  Darwin:
+    x86_64: fnm-macos.zip
+    arm64: fnm-macos.zip
+
+fnm_release_base_url: https://github.com/Schniz/fnm/releases/download
+fnm_archive_name: "{{ _fnm_archive_map[ansible_facts.system][ansible_facts.architecture] }}"
+fnm_release_url: '{{ fnm_release_base_url }}/{{ fnm_v }}/{{ fnm_archive_name }}'
+
+fnm_archive_download_dst: /tmp
+fnm_extraction_dst: '{{ fnm_archive_download_dst }}/fnm-{{ _fnm_nov }}'
+
+fnm_bin: fnm
+# fnm_bin_dst: /usr/local/bin
+# tools_bin_dst: /usr/local/bin
+fnm_bin_dst_default: /usr/local/bin
+fnm_bin_dst_effective: >-
+  {{ (fnm_bin_dst | default(tools_bin_dst | default(fnm_bin_dst_default))) }}
+
+# Install Node.js after deploying fnm. Value is passed to `fnm install`:
+# `--lts`, `--latest`, `22`, `22.12.0`, `lts/iron` ...
+fnm_manage_node: false
+fnm_node_version: --lts
+# set default alias so new shells use this version
+fnm_node_set_default: true
